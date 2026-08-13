@@ -1,3 +1,4 @@
+import time
 codigos = []
 nomes = []
 quantidades = []
@@ -55,6 +56,9 @@ while True:
             for i in range(len(codigos)):
                 print(f"{codigos[i]} - {nomes[i]}")
             print("")
+            time.sleep(
+                2
+            )
         else:
             print("Nenhum nadador cadastrado.\n")
 
@@ -97,6 +101,9 @@ while True:
                 print(f"{nomes[i]} -{quantidades[i]} toalha(s)")
             print("")
             print(f"Toalhas disponíveis: {toalhas_disponiveis}")
+            time.sleep(
+                2
+            )
         else:
             print("Nenhum nadador cadastrado.")
    
