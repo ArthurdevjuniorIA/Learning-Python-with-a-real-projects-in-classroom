@@ -98,7 +98,7 @@ while True:
         if len(nomes) > 0:
 
             for i in range(len(nomes)):
-                print(f"{nomes[i]} -{quantidades[i]} toalha(s)")
+                print(f"{nomes[i]} - {quantidades[i]} toalha(s)")
             print("")
             print(f"Toalhas disponíveis: {toalhas_disponiveis}")
             time.sleep(
