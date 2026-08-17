@@ -2,31 +2,42 @@ import time
 codigos = []
 nomes = []
 quantidades = []
+retirou_toalhas = [ ]
+nova_quantida = [ ]
 toalhas_disponiveis = 30
-while True:
+def exibir_menu():
     print("=================================")
-    print(" NADO LIVRE")
-    print("=================================")
-    print(" ")
+    print("""
+███╗░░██╗░█████╗░██████╗░░█████╗░  ██╗░░░░░██╗██╗░░░██╗██████╗░███████╗
+████╗░██║██╔══██╗██╔══██╗██╔══██╗  ██║░░░░░██║██║░░░██║██╔══██╗██╔════╝
+██╔██╗██║███████║██║░░██║██║░░██║  ██║░░░░░██║╚██╗░██╔╝██████╔╝█████╗░░
+██║╚████║██╔══██║██║░░██║██║░░██║  ██║░░░░░██║░╚████╔╝░██╔══██╗██╔══╝░░
+██║░╚███║██║░░██║██████╔╝╚█████╔╝  ███████╗██║░░╚██╔╝░░██║░░██║███████╗
+╚═╝░░╚══╝╚═╝░░╚═╝╚═════╝░░╚════╝░  ╚══════╝╚═╝░░░╚═╝░░░╚═╝░░╚═╝╚══════╝
+    """)
+    time.sleep(
+        2
+    )
+    print("=================================\n")
     print("1 - Cadastrar nadador")
     print("2 - Consultar nadadores")
     print("3 - Registrar retirada de toalhas")
     print("4 - Consultar toalhas em uso")
+    print("5- Devolução de toalhas")
     print("0 - Sair")
-    print("")
-
+while True:
+    exibir_menu()
 # try/except evita que o programa quebre se o usuário digitar algo que não seja número. O Python tenta converter (try) se der erro, executa o "except ValueError" em vez de travar o programa.
 
 
     try:
-        opcao = int(input("Escolha uma opção: "))
+        opcao = int(input("\nEscolha uma opção: "))
     except ValueError:
         print("Opção inválida. Digite um número.")
         continue
 
     if opcao == 1:
-        print("===== CADASTRO DE NADADOR =====")
-        print("")
+        print("\n===== CADASTRO DE NADADOR =====\n")
 
         try:
             cod_input = int(input("Código: "))
@@ -43,15 +54,18 @@ while True:
             codigos.append(cod_input)
             nomes.append(nome_input)
             quantidades.append(0)
-            print("Nadador cadastrado com sucesso!\n")
+            print("\nNadador cadastrado com sucesso!\n")
+            time.sleep(
+                1.5
+            )
         else:
-            print("Dados inválidos! Tente novamente.\n")
+            print("\nDados inválidos! Tente novamente.\n")
 
 
 
 
     elif opcao == 2:
-        print("\n========= NADADORES =========")
+        print("\n========= NADADORES =========\n")
         if len(codigos) > 0:
             for i in range(len(codigos)):
                 print(f"{codigos[i]} - {nomes[i]}")
@@ -67,7 +81,7 @@ while True:
 
     elif opcao == 3:
         try:
-            cod_input = int(input("Código: "))
+            cod_input = int(input("\nCódigo: "))
             quantidade = int(input("Quantidade: "))
         
         except ValueError:
@@ -79,33 +93,51 @@ while True:
             if quantidade <=0:
                 print("Quantidade inválida. Digite um número maior que zero.")
             elif quantidade > toalhas_disponiveis:
-                print("Estoque insuficiente.")
-                print(f"Toalhas disponíveis: {toalhas_disponiveis}")
+                print("\nEstoque insuficiente.")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
             else:
                 indice = codigos.index(cod_input)
                 quantidades[indice] += quantidade
                 toalhas_disponiveis -= quantidade
-                print("Retirada registrada com sucesso!")
-                print(f"Toalhas disponiveis:{toalhas_disponiveis}")
+                print("\nRetirada registrada com sucesso!")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+                time.sleep(
+                    1.5
+                )
+                retirou_toalhas.append(cod_input)
         
         else:
             print("Código não encontrado!")
 
 
     elif opcao == 4:
-        print("======= TOALHAS EM USO ========")
+        print("\n======= TOALHAS EM USO ========\n")
 
         if len(nomes) > 0:
 
             for i in range(len(nomes)):
-                print(f"{nomes[i]} - {quantidades[i]} toalha(s)")
-            print("")
-            print(f"Toalhas disponíveis: {toalhas_disponiveis}")
+                if quantidades[i] > 0:
+                    print(f"{nomes[i]} - {quantidades[i]} toalha(s)")
+            print(f"\nToalhas disponíveis: {toalhas_disponiveis}\n")
             time.sleep(
                 2
             )
+
         else:
             print("Nenhum nadador cadastrado.")
+    elif opcao == 5:
+        cod_input = int(input("Digite o código: "))
+        nome_input = input("Nome: ")
+        for i in range(len(retirou_toalhas)):
+            if cod_input in retirou_toalhas:
+                print(f"Você já retirou {quantidades[i]}")
+                quantas_devolver = int(input("Digite quantas toalhas você deseja devolver: "))
+                if quantas_devolver>quantidades[i]:
+                    print("Você não pode devolver mais toalhas do que tem emprestado")
+                else:
+                    quantidade_nova = quantidades[i]- quantas_devolver
+                    nova_quantida.append(quantidade_nova)
+
    
     elif opcao == 0:
         print("Saindo do sistema...")
