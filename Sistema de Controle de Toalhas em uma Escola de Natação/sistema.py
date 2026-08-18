@@ -1,8 +1,9 @@
 import time
 codigos = []
 nomes = []
-quantidades = []
-retirou_toalhas = [ ]
+quantidades = [ ]
+codigo_quem_que_retirou_toalhas = [ ]
+quantas_toalhas_retiradas = {retirada for retirada in codigo_quem_que_retirou_toalhas : quantidade }
 nova_quantida = [ ]
 toalhas_disponiveis = 30
 def exibir_menu():
@@ -34,6 +35,9 @@ while True:
         opcao = int(input("\nEscolha uma opção: "))
     except ValueError:
         print("Opção inválida. Digite um número.")
+        time.sleep(
+            1.5
+        )
         continue
 
     if opcao == 1:
@@ -92,9 +96,15 @@ while True:
         if cod_input in codigos:
             if quantidade <=0:
                 print("Quantidade inválida. Digite um número maior que zero.")
+                time.sleep( 
+                    1.5
+                )
             elif quantidade > toalhas_disponiveis:
                 print("\nEstoque insuficiente.")
                 print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+                time.sleep(
+                    1.5
+                )
             else:
                 indice = codigos.index(cod_input)
                 quantidades[indice] += quantidade
@@ -104,10 +114,13 @@ while True:
                 time.sleep(
                     1.5
                 )
-                retirou_toalhas.append(cod_input)
+                codigo_quem_que_retirou_toalhas.append(cod_input)
         
         else:
             print("Código não encontrado!")
+            time.sleep(
+                1.5
+            )
 
 
     elif opcao == 4:
@@ -125,12 +138,14 @@ while True:
 
         else:
             print("Nenhum nadador cadastrado.")
+            time.sleep(
+                1.5
+            )
     elif opcao == 5:
         cod_input = int(input("Digite o código: "))
-        nome_input = input("Nome: ")
-        for i in range(len(retirou_toalhas)):
-            if cod_input in retirou_toalhas:
-                print(f"Você já retirou {quantidades[i]}")
+        for i in range(len(codigo_quem_que_retirou_toalhas)):
+            if cod_input in codigo_quem_que_retirou_toalhas:
+                print(f"Você já retirou {codigo_quem_que_retirou_toalhas[i]}")
                 quantas_devolver = int(input("Digite quantas toalhas você deseja devolver: "))
                 if quantas_devolver>quantidades[i]:
                     print("Você não pode devolver mais toalhas do que tem emprestado")
