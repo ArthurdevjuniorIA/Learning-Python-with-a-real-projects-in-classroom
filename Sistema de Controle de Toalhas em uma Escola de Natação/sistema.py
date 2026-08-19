@@ -19,6 +19,9 @@ def exibir_menu():
     time.sleep(
         2
     )
+while True:
+    print("=================================")
+    print("NADO LIVRE")
     print("=================================\n")
     print("1 - Cadastrar nadador")
     print("2 - Consultar nadadores")
@@ -28,8 +31,6 @@ def exibir_menu():
     print("0 - Sair")
 while True:
     exibir_menu()
-# try/except evita que o programa quebre se o usuário digitar algo que não seja número. O Python tenta converter (try) se der erro, executa o "except ValueError" em vez de travar o programa.
-
 
     try:
         opcao = int(input("\nEscolha uma opção: "))
@@ -114,8 +115,7 @@ while True:
                 time.sleep(
                     1.5
                 )
-                codigo_quem_que_retirou_toalhas.append(cod_input)
-        
+                codigo_quem_que_retirou_toalhas.append(cod_input)     
         else:
             print("Código não encontrado!")
             time.sleep(
