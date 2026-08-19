@@ -35,27 +35,35 @@ while True:
         nome_input = input("Nome: ")
 
 
-        # Validação: verifica se o código é número e se o nome não está vazio
-        if nome_input.strip() != "":
+            # Validação: verifica se o código é número e se o nome não está vazio
+        if nome_input.strip():
+              
             codigos.append(cod_input)
-            nomes.append(nome_input)
+            # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
+            nomes.append(nome_input.title())
             quantidades.append(0)
-            print("\nNadador cadastrado com sucesso!\n")
+       
+       
+            print("Nadador cadastrado com sucesso!\n")
         else:
-            print("\nDados inválidos! Tente novamente.\n")
-
-
-
-
+            print("Dados inválidos! Tente novamente.\n")
+       
+       
+       
+       
+       
+       
+       
+       
     elif opcao == 2:
-        print("\n========= NADADORES =========\n")
+        print("\n========================== NADADORES ==========================\n")
         if len(codigos) > 0:
+            print(f"{'Código':<8}{'Nome':<35}{'Toalhas'}")
+            print("---------------------------------------------------------------")
             for i in range(len(codigos)):
-                print(f"{codigos[i]} - {nomes[i]}")
+                print(f"{codigos[i]:<7} {nomes[i]:<35} {quantidades[i]}")
             print("")
-            time.sleep(
-                2
-            )
+            time.sleep(2)
         else:
             print("Nenhum nadador cadastrado.\n")
 
