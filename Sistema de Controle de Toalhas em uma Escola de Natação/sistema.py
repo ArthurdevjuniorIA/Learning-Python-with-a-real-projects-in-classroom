@@ -20,16 +20,6 @@ def exibir_menu():
         2
     )
 while True:
-    print("=================================")
-    print("NADO LIVRE")
-    print("=================================\n")
-    print("1 - Cadastrar nadador")
-    print("2 - Consultar nadadores")
-    print("3 - Registrar retirada de toalhas")
-    print("4 - Consultar toalhas em uso")
-    print("5- Devolução de toalhas")
-    print("0 - Sair")
-while True:
     exibir_menu()
 
     try:
