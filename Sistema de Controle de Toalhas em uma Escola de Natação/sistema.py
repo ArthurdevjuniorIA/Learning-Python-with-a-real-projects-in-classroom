@@ -18,6 +18,9 @@ def chamar_tempo():
 
 
 def exibir_menu():
+=======
+
+while True:
     print("=================================")
     print("NADO LIVRE")
     print("=================================\n")
@@ -55,7 +58,10 @@ while True:
         if cod_input not in codigos:
             nome_input = input("Nome: ")
 
-
+                # Validação: verifica se o nome não está vazio
+            if nome_input.strip():
+                
+                codigos.append(cod_input)
         # Validação: verifica se o código é número e se o nome não está vazio
         if nome_input.strip() != "":
             codigos.append(cod_input)
@@ -80,11 +86,15 @@ while True:
         else:
             print("Código já cadastrado! Tente novamente.\n")
             chamar_tempo()
+        else:
+            print("Código já cadastrado! Tente novamente.\n")
        
        
        
     elif opcao == 2:
         print("\===== NADADORES=====\n")
+
+        print("\n========================== NADADORES ==========================\n")
 
         if len(codigos) > 0:
             print(f"{'Código':<8}{'Nome':<35}{'Toalhas'}")
@@ -96,11 +106,10 @@ while True:
             time.sleep(2)
         else:
             print("Nenhum nadador cadastrado.\n")
-
-
-
-    
-
+   
+  
+  
+  
     elif opcao == 3:
         try:
             cod_input = int(input("\nCódigo: "))
@@ -132,6 +141,7 @@ while True:
 
 
 
+
     elif opcao == 4:
         print("\n======= TOALHAS EM USO ========\n")
 
@@ -146,6 +156,7 @@ while True:
             )
         else:
             print("Nenhum nadador cadastrado.")
+
             chamar_tempo()
 
 
@@ -157,7 +168,9 @@ while True:
 
         if consultar_codigo in codigos:
             print("\nNadador encontrado:\n")
+
             chamar_tempo()
+
             i = codigos.index(consultar_codigo)
 
             print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
@@ -167,6 +180,7 @@ while True:
         else:
             print("\nNadador não encontrado.\n")
             chamar_tempo()
+
 
 
 
