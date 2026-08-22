@@ -52,8 +52,10 @@ while True:
 
         if cod_input not in codigos:
             nome_input = input("Nome: ")
-        # Validação: verifica se o código é número e se o nome não está vazio
+
+                # Validação: verifica se o nome não está vazio
             if nome_input.strip():
+                
 
                 # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
                 
