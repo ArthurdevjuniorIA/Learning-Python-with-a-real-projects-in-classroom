@@ -1,9 +1,9 @@
 '''
 - Estudo de Caso 2 - Sistema de Controle de Toalhas em uma Escola de Natação
 - Componentes do grupo:
-    Andrew Rafael Oliveira Queiroz
-    Arthur Kauã Nascimento dos Santos
-    Marcus Paulo de Araújo Cruz
+    Andrew Rafael 
+    Arthur Kauã
+    Marcus Paulo 
 '''
 
 import time
@@ -55,17 +55,12 @@ while True:
 
                 # Validação: verifica se o nome não está vazio
             if nome_input.strip():
-                
-                codigos.append(cod_input)
-        # Validação: verifica se o código é número e se o nome não está vazio
-                # Validação: verifica se o nome não está vazio
-            if nome_input.strip():
 
                 # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
                 
                 nome_maiusculo = [nome.upper() for nome in nomes]
 
-                if nome_input.upper() not in nome_maiusculo:
+                if nome_input.title() not in nomes:
                     codigos.append(cod_input)
                     quantidades.append(0)
                     nomes.append(nome_input.title())
