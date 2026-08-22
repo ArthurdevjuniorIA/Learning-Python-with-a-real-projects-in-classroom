@@ -35,7 +35,7 @@ while True:
 
     try:
         opcao = int(input("\nEscolha uma opção: "))
-    except ValueError:
+    except ValueError: # Caso o usuário digite uma opção inválida
         print("Opção inválida. Digite um número.")
         chamar_tempo()
         print("Opção inválida. Digite um número.\n")
@@ -49,7 +49,7 @@ while True:
         try:
             cod_input = int(input("Código: "))
         except ValueError:
-            print("Código inválido. Digite um número.")
+            print("Código inválido. Digite um número.") # Caso o usuário digite um código inválido
             continue
 
         if cod_input not in codigos:
@@ -57,26 +57,25 @@ while True:
 
 
         # Validação: verifica se o código é número e se o nome não está vazio
-        if nome_input.strip() != "":
-            codigos.append(cod_input)
-            nomes.append(nome_input)
-            quantidades.append(0)
-            print("\nNadador cadastrado com sucesso!\n")
-            chamar_tempo()
                 # Validação: verifica se o nome não está vazio
             if nome_input.strip():
-                
-                codigos.append(cod_input)
 
                 # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
-                nomes.append(nome_input.title())
-                quantidades.append(0)
-        
-        
-                print("Nadador cadastrado com sucesso!\n")
+                
+                nome_maiusculo = [nome.upper() for nome in nomes]
+
+                if nome_input.upper() not in nome_maiusculo:
+                    codigos.append(cod_input)
+                    quantidades.append(0)
+                    nomes.append(nome_input.title())
+                    print("Nadador cadastrado com sucesso!\n")
+                else:
+                    print(f"O nome {nome_input} já está cadastrado no sistema")
             else:
                 print("Dados inválidos! Tente novamente.\n")
                 chamar_tempo()
+
+
         else:
             print("Código já cadastrado! Tente novamente.\n")
             chamar_tempo()
@@ -112,12 +111,16 @@ while True:
             continue
 
         if cod_input in codigos:
+
             if quantidade <=0:
                 print("Quantidade inválida. Digite um número maior que zero.")
+                chamar_tempo()
+
             elif quantidade > toalhas_disponiveis:
                 print("\nEstoque insuficiente.")
                 print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
                 chamar_tempo()
+
             else:
                 indice = codigos.index(cod_input)
                 quantidades[indice] += quantidade
@@ -158,11 +161,11 @@ while True:
         if consultar_codigo in codigos:
             print("\nNadador encontrado:\n")
             chamar_tempo()
-            i = codigos.index(consultar_codigo)
-
+            index = codigos.index(consultar_codigo)
             print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
             print("---------------------------------------------------------------")
-            print(f"{codigos[i]:<7} {nomes[i]:<33} {quantidades[i]:>7}\n")
+            print(f"{codigos[index]:<7} {nomes[index]:<33} {quantidades[index]:>7}\n")
+            time.sleep(2)
 
         else:
             print("\nNadador não encontrado.\n")
@@ -182,11 +185,13 @@ while True:
 
             print("\nNadador encontrado:\n")
             print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
+            chamar_tempo()
             print("---------------------------------------------------------------")
 
             for i in lista_buscar_nome:
                 print(f"{codigos[i]:<7} {nomes[i]:<33} {quantidades[i]:>7}")
             print("")
+            time.sleep(2)
 
         else:
             print("\nNenhum nadador encontrado.\n")
