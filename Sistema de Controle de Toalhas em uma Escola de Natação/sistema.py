@@ -10,7 +10,7 @@ import time
 codigos = []
 nomes = []
 quantidades = []
-toalhas_disponiveis = 30
+TOTAL_TOALHAS = 30
 def chamar_tempo():
     time.sleep(
         1.5
@@ -63,7 +63,7 @@ while True:
                 if nome_input.title() not in nomes:
                     codigos.append(cod_input)
                     quantidades.append(0)
-                    nomes.append(nome_input.title())
+                    nomes.append(nome_input.title().strip())
                     print("Nadador cadastrado com sucesso!\n")
                 else:
                     print(f"O nome {nome_input} já está cadastrado no sistema")
@@ -113,17 +113,17 @@ while True:
                 print("Quantidade inválida. Digite um número maior que zero.")
                 chamar_tempo()
 
-            elif quantidade > toalhas_disponiveis:
+            elif quantidade > S:
                 print("\nEstoque insuficiente.")
-                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+                print(f"Toalhas disponíveis: {S}\n")
                 chamar_tempo()
 
             else:
                 indice = codigos.index(cod_input)
                 quantidades[indice] += quantidade
-                toalhas_disponiveis -= quantidade
+                S -= quantidade
                 print("\nRetirada registrada com sucesso!")
-                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+                print(f"Toalhas disponíveis: {S}\n")
                 chamar_tempo()
         
         else:
@@ -141,7 +141,7 @@ while True:
             for i in range(len(nomes)):
                 if quantidades[i] > 0:
                     print(f"{nomes[i]} - {quantidades[i]} toalha(s)")
-            print(f"\nToalhas disponíveis: {toalhas_disponiveis}\n")
+            print(f"\nToalhas disponíveis: {S}\n")
             time.sleep(
                 2
             )
