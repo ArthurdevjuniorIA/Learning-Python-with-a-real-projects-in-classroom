@@ -179,11 +179,13 @@ while True:
         lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome.lower() in nome.lower()]
 
         if len(lista_buscar_nome) > 0:
-
-            print("\nNadador encontrado:\n")
+            if len(lista_buscar_nome) == 1:
+                print("\nNadador encontrado:\n")
+            else:
+                print("\nNadadores encontrados:\n")
             print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
             chamar_tempo()
-            print("---------------------------------------------------------------")
+            print("-" * 63)
 
             for i in lista_buscar_nome:
                 print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
