@@ -131,6 +131,7 @@ while True:
 
     elif opcao == 4:
         print("\n======================== TOALHAS EM USO ======================\n")
+        
         encontrou = False
 
         print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
