@@ -58,10 +58,10 @@ while True:
 
                 # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após
 
-                if nome_input.title() not in nomes:
+                if nome_input not in nomes:
                     codigos.append(cod_input)
                     quantidades.append(0)
-                    nomes.append(nome_input.title())
+                    nomes.append(nome_input)
                     print("Nadador cadastrado com sucesso!\n")
                 else:
                     print(f"O nome {nome_input} já está cadastrado no sistema.\n")
@@ -77,7 +77,7 @@ while True:
        
        
     elif opcao == 2:
-        print(f"\n{" NADADORES ".center(63, "=")}\n") #63
+        print(f"\n{" NADADORES ".center(63, "=")}\n")
 
         if len(codigos) > 0:
             print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
