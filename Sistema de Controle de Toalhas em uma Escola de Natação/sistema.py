@@ -18,9 +18,9 @@ def chamar_tempo():
 
 
 while True:
-    print("=================================")
-    print("NADO LIVRE")
-    print("=================================\n")
+    print("="*33)
+    print(f"{"NADO LIVRE":^33}")
+    print("="*33+"\n")
     print("1 - Cadastrar nadador")
     print("2 - Consultar nadadores")
     print("3 - Registrar retirada de toalhas")
@@ -34,9 +34,8 @@ while True:
     try:
         opcao = int(input("\nEscolha uma opção: "))
     except ValueError: # Caso o usuário digite uma opção inválida
-        print("Opção inválida. Digite um número.")
-        chamar_tempo()
         print("Opção inválida. Digite um número.\n")
+        chamar_tempo()
         continue
 
 
@@ -47,7 +46,7 @@ while True:
         try:
             cod_input = int(input("Código: "))
         except ValueError:
-            print("Código inválido. Digite um número.") # Caso o usuário digite um código inválido
+            print("Código inválido. Digite um número.\n") # Caso o usuário digite um código inválido
             continue
 
         if cod_input not in codigos:
@@ -56,9 +55,7 @@ while True:
                 # Validação: verifica se o nome não está vazio
             if nome_input.strip():
 
-                # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
-                
-                nome_maiusculo = [nome.upper() for nome in nomes]
+                # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após
 
                 if nome_input.title() not in nomes:
                     codigos.append(cod_input)
@@ -66,7 +63,7 @@ while True:
                     nomes.append(nome_input.title())
                     print("Nadador cadastrado com sucesso!\n")
                 else:
-                    print(f"O nome {nome_input} já está cadastrado no sistema")
+                    print(f"O nome {nome_input} já está cadastrado no sistema.\n")
             else:
                 print("Dados inválidos! Tente novamente.\n")
                 chamar_tempo()
@@ -79,9 +76,7 @@ while True:
        
        
     elif opcao == 2:
-        print("\===== NADADORES=====\n")
-
-        print("\n========================== NADADORES ==========================\n")
+        print(f"\n{" NADADORES ".center(63, "=")}\n") #63
 
         if len(codigos) > 0:
             print(f"{'Código':<8}{'Nome':<35}{'Toalhas'}")
@@ -103,14 +98,14 @@ while True:
             quantidade = int(input("Quantidade: "))
         
         except ValueError:
-            print("Valor inválido. Digite um número.")
+            print("Valor inválido. Digite um número.\n")
             chamar_tempo()
             continue
 
         if cod_input in codigos:
 
             if quantidade <=0:
-                print("Quantidade inválida. Digite um número maior que zero.")
+                print("Quantidade inválida. Digite um número maior que zero.\n")
                 chamar_tempo()
 
             elif quantidade > toalhas_disponiveis:
@@ -127,14 +122,14 @@ while True:
                 chamar_tempo()
         
         else:
-            print("Código não encontrado!")
+            print("Código não encontrado!\n")
             chamar_tempo()
 
 
 
 
     elif opcao == 4:
-        print("\n======= TOALHAS EM USO ========\n")
+        print("\n======================== TOALHAS EM USO ======================\n")
 
         if len(nomes) > 0:
 
@@ -146,7 +141,7 @@ while True:
                 2
             )
         else:
-            print("Nenhum nadador cadastrado.")
+            print("Nenhum nadador cadastrado.\n")
 
             chamar_tempo()
 
@@ -179,9 +174,8 @@ while True:
         print("\n===== PESQUISAR NADADOR =====\n")
 
         consultar_nome = input("Digite o nome ou parte do nome: ")
-        consultar_nome = [consultar_nome, consultar_nome.title()]
 
-        lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome[0] in nome or consultar_nome[1] in nome]
+        lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome in nome or consultar_nome.title() in nome or consultar_nome.lower() in nome]
 
         if len(lista_buscar_nome) > 0:
 
