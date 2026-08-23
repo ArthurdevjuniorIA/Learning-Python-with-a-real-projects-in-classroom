@@ -11,6 +11,7 @@ codigos = []
 nomes = []
 quantidades = []
 TOTAL_TOALHAS = 30
+toalhas_disponiveis = TOTAL_TOALHAS
 def chamar_tempo():
     time.sleep(
         1.5
@@ -18,9 +19,9 @@ def chamar_tempo():
 
 
 while True:
-    print("=================================")
-    print("NADO LIVRE")
-    print("=================================\n")
+    print("="*33)
+    print(f"{"NADO LIVRE":^33}")
+    print("="*33+"\n")
     print("1 - Cadastrar nadador")
     print("2 - Consultar nadadores")
     print("3 - Registrar retirada de toalhas")
@@ -34,9 +35,8 @@ while True:
     try:
         opcao = int(input("\nEscolha uma opção: "))
     except ValueError: # Caso o usuário digite uma opção inválida
-        print("Opção inválida. Digite um número.")
-        chamar_tempo()
         print("Opção inválida. Digite um número.\n")
+        chamar_tempo()
         continue
 
 
@@ -47,26 +47,24 @@ while True:
         try:
             cod_input = int(input("Código: "))
         except ValueError:
-            print("Código inválido. Digite um número.") # Caso o usuário digite um código inválido
+            print("Código inválido. Digite um número.\n") # Caso o usuário digite um código inválido
             continue
 
         if cod_input not in codigos:
-            nome_input = input("Nome: ")
+            nome_input = input("Nome: ").strip().title()
 
                 # Validação: verifica se o nome não está vazio
             if nome_input.strip():
 
-                # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após    
-                
-                nome_maiusculo = [nome.upper() for nome in nomes]
+                # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após
 
                 if nome_input.title() not in nomes:
                     codigos.append(cod_input)
                     quantidades.append(0)
-                    nomes.append(nome_input.title().strip())
+                    nomes.append(nome_input.title())
                     print("Nadador cadastrado com sucesso!\n")
                 else:
-                    print(f"O nome {nome_input} já está cadastrado no sistema")
+                    print(f"O nome {nome_input} já está cadastrado no sistema.\n")
             else:
                 print("Dados inválidos! Tente novamente.\n")
                 chamar_tempo()
@@ -79,16 +77,14 @@ while True:
        
        
     elif opcao == 2:
-        print("\===== NADADORES=====\n")
-
-        print("\n========================== NADADORES ==========================\n")
+        print(f"\n{" NADADORES ".center(63, "=")}\n") #63
 
         if len(codigos) > 0:
-            print(f"{'Código':<8}{'Nome':<35}{'Toalhas'}")
+            print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
             print("---------------------------------------------------------------")
 
             for i in range(len(codigos)):
-                print(f"{codigos[i]:<7} {nomes[i]:<35} {quantidades[i]}")
+                print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
             print("")
             time.sleep(2)
         else:
@@ -103,51 +99,52 @@ while True:
             quantidade = int(input("Quantidade: "))
         
         except ValueError:
-            print("Valor inválido. Digite um número.")
+            print("Valor inválido. Digite um número.\n")
             chamar_tempo()
             continue
 
         if cod_input in codigos:
 
             if quantidade <=0:
-                print("Quantidade inválida. Digite um número maior que zero.")
+                print("Quantidade inválida. Digite um número maior que zero.\n")
                 chamar_tempo()
 
-            elif quantidade > S:
+            elif quantidade > toalhas_disponiveis:
                 print("\nEstoque insuficiente.")
-                print(f"Toalhas disponíveis: {S}\n")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
                 chamar_tempo()
 
             else:
                 indice = codigos.index(cod_input)
                 quantidades[indice] += quantidade
-                S -= quantidade
+                toalhas_disponiveis -= quantidade
                 print("\nRetirada registrada com sucesso!")
-                print(f"Toalhas disponíveis: {S}\n")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
                 chamar_tempo()
         
         else:
-            print("Código não encontrado!")
+            print("Código não encontrado!\n")
             chamar_tempo()
 
 
 
 
     elif opcao == 4:
-        print("\n======= TOALHAS EM USO ========\n")
+        print("\n======================== TOALHAS EM USO ======================\n")
+        encontrou = False
 
-        if len(nomes) > 0:
+        print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
+        print("-" * 51)
 
-            for i in range(len(nomes)):
-                if quantidades[i] > 0:
-                    print(f"{nomes[i]} - {quantidades[i]} toalha(s)")
-            print(f"\nToalhas disponíveis: {S}\n")
-            time.sleep(
-                2
-            )
-        else:
-            print("Nenhum nadador cadastrado.")
-
+        for i in range(len(nomes)):
+            if quantidades[i] > 0:
+                print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
+                time.sleep(
+                    2
+                )
+                encontrou = True
+        if not encontrou:
+            print("Nenhum nadador cadastrado.\n")
             chamar_tempo()
 
 
@@ -179,9 +176,8 @@ while True:
         print("\n===== PESQUISAR NADADOR =====\n")
 
         consultar_nome = input("Digite o nome ou parte do nome: ")
-        consultar_nome = [consultar_nome, consultar_nome.title()]
 
-        lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome[0] in nome or consultar_nome[1] in nome]
+        lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome.lower() in nome.lower()]
 
         if len(lista_buscar_nome) > 0:
 
@@ -191,7 +187,7 @@ while True:
             print("---------------------------------------------------------------")
 
             for i in lista_buscar_nome:
-                print(f"{codigos[i]:<7} {nomes[i]:<33} {quantidades[i]:>7}")
+                print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
             print("")
             time.sleep(2)
 
