@@ -246,6 +246,7 @@ while True:
                 print("Voltando ao menu principal...\n")
                 break
 
+            if cod_input in codigos:
 
     elif opcao == 3:
        pass
