@@ -23,18 +23,15 @@ while True:
     print(f"{"NADO LIVRE":^33}")
     print("="*33+"\n")
     print("1 - Cadastrar nadador")
-    print("2 - Consultar nadadores")
-    print("3 - Registrar retirada de toalhas")
-    print("4 - Consultar toalhas em uso")
-    print("5 - Consultar nadador por código")
-    print("6 - Pesquisar nadador por nome")
+    print("2 - Toalhas")
+    print("3 - Movimentações")
     print("0 - Sair")
 
 # try/except evita que o programa quebre se o usuário digitar algo que não seja número. O Python tenta converter (try) se der erro, executa o "except ValueError" em vez de travar o programa.
 
-    try:
+    if opcao<3:
         opcao = int(input("\nEscolha uma opção: "))
-    except ValueError: # Caso o usuário digite uma opção inválida
+    else: # Caso o usuário digite uma opção inválida
         print("Opção inválida. Digite um número.\n")
         chamar_tempo()
         continue
@@ -43,10 +40,14 @@ while True:
 
     if opcao == 1:
         print("\n===== CADASTRO DE NADADOR =====\n")
-
-        try:
+        print("1 - Cadastrar nadador")
+        print("2 - Consultar nadadores")
+        print("3 - Consultar nadador por código")
+        print("4 - Pesquisar nadador por nome")
+        print("0 - Voltar")
+        if cod_input in codigos:
             cod_input = int(input("Código: "))
-        except ValueError:
+        else:
             print("Código inválido. Digite um número.\n") # Caso o usuário digite um código inválido
             continue
 
