@@ -46,11 +46,7 @@ while True:
             print("4 - Pesquisar nadador por nome")
             print("0 - Voltar")
 
-            try:
-                opcao = int(input("\nEscolha uma opção: "))
-            except ValueError:
-                print("Opção inválida. Por favor, digite um número.\n")
-                continue
+            opcao = int(input("\nEscolha uma opção: "))
 
             if opcao < 0 or opcao > 4:
                 print("Opção inválida. Por favor, selecione um número do submenu.\n")
@@ -184,7 +180,9 @@ while True:
                         print(f"Retirada de {quantidade} toalha(s) pelo nadador {nomes[indice]} (Código: {cod_input})\n")
                         
                         # Salva no histórico
-                        historico_movimentacoes.append(f"RETIRADA : {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
+                        # historico_movimentacoes.append(f"RETIRADA : {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
+                        historico_de_cada = ["Retirada",cod_input,nomes[indice],quantidade]
+                        historico_movimentacoes.append([historico_de_cada])
                 else:
                     print(f"Código '{cod_input}' não encontrado!\n")
 
@@ -219,7 +217,8 @@ while True:
                             print("Devolução registrada com sucesso! Movimentação concluída.\n")
                             
                             # Salva no histórico
-                            historico_movimentacoes.append(f"DEVOLUÇÃO: {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
+                            # historico_movimentacoes.append(f"(Cód: {cod_input:<8}) (Nadador: {nomes[indice]:<8}){"DEVOLUÇÃO":<8} {quantidade}toalha(s) -")
+                            historico_movimentacoes.append(["Retirada",cod_input,nomes[indice],quantidade])
                 else:
                     print(f"Código '{cod_input}' não encontrado!\n")
 
@@ -246,10 +245,24 @@ while True:
                 print("Voltando ao menu principal...\n")
                 break
 
-            if cod_input in codigos:
-
     elif opcao == 3:
-       pass
+       print("\n======== MOVIMENTAÇÕES ========\n")
+       print("1 - Consultar movimentações")
+       print("2 - Consultar movimentações do nadador")
+       print("0 - Voltar\n")
+       opcao = int(input("Escolha uma opção: "))
+       if opcao < 0 or opcao>2:
+           print("Essa opção é inválida")
+           continue
+       else:
+           if opcao == 1:
+               print(f"{"Ordem":<6}{"Código":>10}{"Nadador":>25}{"Operação":>8}{"Quantidade":>35}")
+               print("-"*55)
+               for n in range(len(historico_movimentacoes)):
+                   
+                   for historico in historico_movimentacoes[n]:
+                       n = n+1
+                       print(f"{n}{historico[1]:>10}{historico[2]:>25}{historico[0]:>8}{historico[3]:>35}")
 
 
     elif opcao == 0:
