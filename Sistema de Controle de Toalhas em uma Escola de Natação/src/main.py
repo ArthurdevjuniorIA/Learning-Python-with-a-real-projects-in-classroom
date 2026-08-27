@@ -126,6 +126,7 @@ while True:
                 if len(lista_buscar_nome) > 0:
                     if len(lista_buscar_nome) == 1:
                         print("\nNadador encontrado:\n")
+
                     else:
                         print("\nNadadores encontrados:\n")
                     print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
@@ -171,9 +172,11 @@ while True:
                 if cod_input in codigos:
                     if quantidade <= 0:
                         print("Quantidade inválida. Digite um número maior que zero.\n")
+
                     elif quantidade > toalhas_disponiveis:
                         print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
                         print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+
                     else:
                         indice = codigos.index(cod_input)
                         quantidades[indice] += quantidade
@@ -186,6 +189,7 @@ while True:
                         # historico_movimentacoes.append(f"RETIRADA : {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
                         historico_de_cada = ["Retirada",cod_input,nomes[indice],quantidade]
                         historico_movimentacoes.append([historico_de_cada])
+
                 else:
                     print(f"Código '{cod_input}' não encontrado!\n")
 
@@ -200,8 +204,10 @@ while True:
 
                 if cod_input in codigos:
                     indice = codigos.index(cod_input)
+
                     if quantidades[indice] == 0:
                         print(f"O nadador {nomes[indice]} (Código: {cod_input}) não possui toalhas para devolver.\n")
+
                     else:
                         try:
                             quantidade = int(input(f"Nadador possui {quantidades[indice]} toalhas. Quantas deseja devolver? "))
@@ -209,10 +215,13 @@ while True:
                             print("Valor inválido! Digite um número.\n")
                             continue
 
+
                         if quantidade <= 0:
                             print("Quantidade inválida. Digite um número maior que zero.\n")
+
                         elif quantidade > quantidades[indice]:
                             print(f"Erro: O nadador {nomes[indice]} possui apenas {quantidades[indice]} toalhas.\n")
+
                         else:
                             quantidades[indice] -= quantidade
                             toalhas_disponiveis += quantidade
@@ -228,13 +237,15 @@ while True:
 
             elif opcao == 3:
                 print("\n" + " TOALHAS EM USO ".center(55, '=') + "\n")
+
                 if toalhas_disponiveis < TOTAL_TOALHAS:
-                    print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>10}")
+                    print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
                     print("-" * 55)
                     for i in range(len(nomes)):
                         if quantidades[i] > 0:
-                            print(f"{codigos[i]:<10}{nomes[i]:<35}{quantidades[i]:>10}")
+                            print(f"{codigos[i]:<10}{nomes[i]:<35}{quantidades[i]:>8}")
                     print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+
                 else:
                     print("Nenhum nadador está com toalhas no momento.\n")
 
@@ -248,6 +259,8 @@ while True:
                 print("Voltando ao menu principal...\n")
                 break
 
+
+
     elif opcao == 3:
        print("\n======== MOVIMENTAÇÕES ========\n")
        print("1 - Consultar movimentações")
@@ -257,16 +270,25 @@ while True:
        if opcao < 0 or opcao>2:
            print("Essa opção é inválida")
            continue
+
+       
        else:
            if opcao == 1:
-               print(f"{"Ordem":<6}{"Código":>10}{"Nadador":>25}{"Operação":>8}{"Quantidade":>35}")
+               print(f"{"Ordem":<6}{"Código":>8}{"Nadador":>8}{"Operação":>16}{"Quantidade":>12}")
                print("-"*55)
                for n in range(len(historico_movimentacoes)):
                    
                    for historico in historico_movimentacoes[n]:
                        n = n+1
-                       print(f"{n}{historico[1]:>10}{historico[2]:>25}{historico[0]:>8}{historico[3]:>35}")
+                       print(f"{n:<6}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
 
+
+           elif opcao == 2:
+               consultar_movimentacoes_nadador = input(" Digite o nome que você deseja consultar: ").strip()
+               for historico in historico_movimentacoes[n]:
+                    if consultar_movimentacoes_nadador == historico:
+                        n = n+1
+                        print(f"{n}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
 
     elif opcao == 0:
         print("Saindo do sistema...")
