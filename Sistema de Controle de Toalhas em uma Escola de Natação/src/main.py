@@ -53,12 +53,8 @@ while True:
 
             if opcao == 1:
                 print("\n===== CADASTRO DE NADADOR =====\n")
-
-                if cod_input in codigos:
-                    cod_input = int(input("Código: "))
-                else:
-                    print("Código inválido. Digite um número.\n") 
-                    continue
+                cod_input = int(input("Código: "))
+                
 
                 if cod_input not in codigos:
                     nome_input = input("Nome: ").strip().title()
@@ -276,11 +272,9 @@ while True:
            if opcao == 1:
                print(f"{"Ordem":<6}{"Código":>8}{"Nadador":>8}{"Operação":>16}{"Quantidade":>12}")
                print("-"*55)
-               for n in range(len(historico_movimentacoes)):
                    
-                   for historico in historico_movimentacoes[n]:
-                       n = n+1
-                       print(f"{n:<6}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
+               for i, item in enumerate(historico_movimentacoes, start=1):
+                    print(f"{n:<6}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
 
 
            elif opcao == 2:
