@@ -184,7 +184,7 @@ while True:
                         # Salva no histórico
                         # historico_movimentacoes.append(f"RETIRADA : {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
                         historico_de_cada = ["Retirada",cod_input,nomes[indice],quantidade]
-                        historico_movimentacoes.append([historico_de_cada])
+                        historico_movimentacoes.append(historico_de_cada)
 
                 else:
                     print(f"Código '{cod_input}' não encontrado!\n")
@@ -226,7 +226,8 @@ while True:
                             
                             # Salva no histórico
                             # historico_movimentacoes.append(f"(Cód: {cod_input:<8}) (Nadador: {nomes[indice]:<8}){"DEVOLUÇÃO":<8} {quantidade}toalha(s) -")
-                            historico_movimentacoes.append(["Retirada",cod_input,nomes[indice],quantidade])
+                            historico_de_cada = ["Retirada",cod_input,nomes[indice],quantidade]
+                            historico_movimentacoes.append(historico_de_cada)
                 else:
                     print(f"Código '{cod_input}' não encontrado!\n")
 
@@ -258,32 +259,43 @@ while True:
 
 
     elif opcao == 3:
-       print("\n======== MOVIMENTAÇÕES ========\n")
-       print("1 - Consultar movimentações")
-       print("2 - Consultar movimentações do nadador")
-       print("0 - Voltar\n")
-       opcao = int(input("Escolha uma opção: "))
-       if opcao < 0 or opcao>2:
-           print("Essa opção é inválida")
-           continue
-
-       
-       else:
-           if opcao == 1:
-               print(f"{"Ordem":<6}{"Código":>8}{"Nadador":>8}{"Operação":>16}{"Quantidade":>12}")
-               print("-"*55)
-                   
-               for i, item in enumerate(historico_movimentacoes, start=1):
-                    print(f"{n:<6}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
+       while True:
+        print("\n======== MOVIMENTAÇÕES ========\n")
+        print("1 - Consultar movimentações")
+        print("2 - Consultar movimentações do nadador")
+        print("0 - Voltar\n")
+        sub_opcao = int(input("Escolha uma opção: "))
+        if opcao < 0 or opcao>2:
+            print("Essa opção é inválida")
+            continue
+        
+        
+        if sub_opcao == 0:
+            break
 
 
-           elif opcao == 2:
-               consultar_movimentacoes_nadador = input(" Digite o nome que você deseja consultar: ").strip()
-               for historico in historico_movimentacoes[n]:
-                    if consultar_movimentacoes_nadador == historico:
-                        n = n+1
-                        print(f"{n}{historico[1]:>8}{historico[2]:>8}{historico[0]:>16}{historico[3]:>12}")
+        elif sub_opcao == 1:
+            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+            print("-" * 57)
+            
+            for idx, item in enumerate(historico_movimentacoes, start=1):
+                # Garante leitura correta mesmo se houver lista aninhada antiga
+                reg = item[0] if isinstance(item[0], list) else item
+                print(f"{idx:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
+            print("")
 
+
+        elif sub_opcao == 2:
+            consultar_nome = input("Digite o nome que você deseja consultar: ").strip().lower()
+            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+            print("-" * 57)
+            contador = 1
+            for item in historico_movimentacoes:
+                reg = item[0] if isinstance(item[0], list) else item
+                if consultar_nome in str(reg[2]).lower():
+                    print(f"{contador:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
+                    contador += 1
+            print("")
     elif opcao == 0:
         print("Saindo do sistema...")
         break
