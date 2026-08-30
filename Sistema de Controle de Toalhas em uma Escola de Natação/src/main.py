@@ -264,7 +264,7 @@ while True:
         print("2 - Consultar movimentações do nadador")
         print("0 - Voltar\n")
         sub_opcao = int(input("Escolha uma opção: "))
-        if opcao < 0 or opcao>2:
+        if not (0 <= sub_opcao <= 2):
             print("Essa opção é inválida")
             continue
         
@@ -291,10 +291,10 @@ while True:
             print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
             print("-" * 57)
 
-            for index, item in enumerate(historico_movimentacoes):
-                reg = index[0] if isinstance(index[0], list) else index
+            for index, item in enumerate(historico_movimentacoes, start=1):
+                reg = item[0] if isinstance(item[0], list) else item
 
-                if consultar_codigo in int(reg[1]):
+                if consultar_codigo == reg[1]:
                     print(f"{index:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
             print("")
     elif opcao == 0:
