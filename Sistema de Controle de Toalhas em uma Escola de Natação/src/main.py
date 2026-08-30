@@ -225,7 +225,6 @@ while True:
                             print("Devolução registrada com sucesso! Movimentação concluída.\n")
                             
                             # Salva no histórico
-                            # historico_movimentacoes.append(f"(Cód: {cod_input:<8}) (Nadador: {nomes[indice]:<8}){"DEVOLUÇÃO":<8} {quantidade}toalha(s) -")
                             historico_de_cada = ["Devolução",cod_input,nomes[indice],quantidade]
                             historico_movimentacoes.append(historico_de_cada)
                 else:
@@ -288,14 +287,14 @@ while True:
         elif sub_opcao == 2:
             # Na opção 2 - Consultar movimentações do nadador do submenu Movimentações, nós preferimos que fosse solicitado o código do nadador, pois é único para cada nadador
             
-            consultar_nome = input("Digite o nome que você deseja consultar: ").strip().lower()
+            consultar_codigo = int(input("Digite o código que você deseja consultar: "))
             print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
             print("-" * 57)
 
-            for item,index in enumerate(historico_movimentacoes):
-                reg = item[0] if isinstance(item[0], list) else item
+            for index, item in enumerate(historico_movimentacoes):
+                reg = index[0] if isinstance(index[0], list) else index
 
-                if consultar_nome in str(reg[2]).lower():
+                if consultar_codigo in int(reg[1]):
                     print(f"{index:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
             print("")
     elif opcao == 0:
