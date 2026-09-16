@@ -8,12 +8,57 @@
 # ============================================================
 
 # Nós escolhemos que, ao escolher uma das opções do menu, o submenu seja repetido até o usuário escolher uma opção válida do submenu e concluir a ação corretamente, pois, caso ele queira voltar para o menu principal, basta escolher a opção 0 - Voltar
+'''
+nadador = {}
+nadador['codigo'] = codigo
+nadador['nome'] = nome
+nadador['quantidade'] = quantidade
+
+nadador = {
+    "codigo": codigo;
+    "nome": nome;
+    "quantidade": quantidade;
+}
+
+nadadores.append(nadador)
+
+nadadores = [
+    {
+        "codigo": codigo;
+        "nome": nome;
+        "quantidade": quantidade;
+    }
+]
 
 
-codigos = []
-nomes = []
-quantidades = []
-historico_movimentacoes = [] # opção 3
+
+historico-movimentacao = {}
+historico-movimentacao['codigo'] = codigo
+historico-movimentacao['nome'] = nome
+historico-movimentacao['quantidade'] = quantidade
+historico-movimentacao['acao'] = acao
+
+historico-movimentacao = {
+    "codigo": codigo;
+    "nome": nome;
+    "quantidade": quantidade;
+    "acao": acao;
+}
+
+historico_movimentacoes.append(historico-movimentacao)
+
+historico_movimentacoes = [
+    {
+        "codigo": codigo;
+        "nome": nome;
+        "quantidade": quantidade;
+        "acao": acao;
+    }
+]
+'''
+
+nadadores = []
+historico_movimentacoes = []
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
