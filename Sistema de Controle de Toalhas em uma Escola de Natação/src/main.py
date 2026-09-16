@@ -282,9 +282,9 @@ while True:
                 if toalhas_disponiveis < TOTAL_TOALHAS:
                     print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
                     print("-" * 55)
-                    for i in range(len(nomes)):
-                        if quantidades[i] > 0:
-                            print(f"{codigos[i]:<10}{nomes[i]:<35}{quantidades[i]:>8}")
+                    for nadador in nadadores:
+                        if nadador["quantidade"] > 0:
+                            print(f"{nadador["codigo"]:<10}{nadador["nome"]:<35}{nadador["quantidade"]:>8}")
                     print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
 
                 else:
@@ -325,7 +325,7 @@ while True:
             for idx, item in enumerate(historico_movimentacoes, start=1):
                 # Garante leitura correta mesmo se houver lista aninhada antiga
                 reg = item[0] if isinstance(item[0], list) else item
-                print(f"{idx:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
+                print(f"{idx:<6}{reg["codigo"]:>8}  {reg["nome"]:<15}{reg["acao"]:>12}{reg["quantidade"]:>12}")
             print("")
 
 
@@ -340,7 +340,7 @@ while True:
                 reg = item[0] if isinstance(item[0], list) else item
 
                 if consultar_codigo == reg[1]:
-                    print(f"{index:<6}{reg[1]:>8}  {reg[2]:<15}{reg[0]:>12}{reg[3]:>12}")
+                    print(f"{idx:<6}{reg["codigo"]:>8}  {reg["nome"]:<15}{reg["acao"]:>12}{reg["quantidade"]:>12}")
             print("")
     elif opcao == 0:
         print("Saindo do sistema...")
