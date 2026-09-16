@@ -15,18 +15,18 @@ nadador['nome'] = nome
 nadador['quantidade'] = quantidade
 
 nadador = {
-    "codigo": codigo;
-    "nome": nome;
-    "quantidade": quantidade;
+    "codigo": codigo,
+    "nome": nome,
+    "quantidade": quantidade
 }
 
 nadadores.append(nadador)
 
 nadadores = [
     {
-        "codigo": codigo;
-        "nome": nome;
-        "quantidade": quantidade;
+        "codigo": codigo,
+        "nome": nome,
+        "quantidade": quantidade
     }
 ]
 
@@ -39,20 +39,20 @@ historico-movimentacao['quantidade'] = quantidade
 historico-movimentacao['acao'] = acao
 
 historico-movimentacao = {
-    "codigo": codigo;
-    "nome": nome;
-    "quantidade": quantidade;
-    "acao": acao;
+    "codigo": codigo,
+    "nome": nome,
+    "quantidade": quantidade,
+    "acao": acao
 }
 
 historico_movimentacoes.append(historico-movimentacao)
 
 historico_movimentacoes = [
     {
-        "codigo": codigo;
-        "nome": nome;
-        "quantidade": quantidade;
-        "acao": acao;
+        "codigo": codigo,
+        "nome": nome,
+        "quantidade": quantidade,
+        "acao": acao
     }
 ]
 '''
