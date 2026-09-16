@@ -2,9 +2,9 @@
 # ESTUDO DE CASO: Nado Livre — Sistema de Controle de Toalhas
 #
 # Integrantes:
-# 202610411100xx - Andrew
-# 202610411100xx - Arthur
-# 202610411100xx - Marcus
+# 20261041110027 - Andrew
+# 20261041110017 - Arthur
+# 20261041110009 - Marcus
 # ============================================================
 
 # Nós escolhemos que, ao escolher uma das opções do menu, o submenu seja repetido até o usuário escolher uma opção válida do submenu e concluir a ação corretamente, pois, caso ele queira voltar para o menu principal, basta escolher a opção 0 - Voltar
