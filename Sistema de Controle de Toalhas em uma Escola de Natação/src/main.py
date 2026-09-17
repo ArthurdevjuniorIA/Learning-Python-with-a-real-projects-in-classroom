@@ -34,22 +34,20 @@ TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
 while True:
-    print("="*33)
+    print('=' * 33)
     print(f"{'NADO LIVRE':^33}")
-    print("="*33+"\n")
+    print('=' * 33 +"\n")
     print("1 - Nadadores")
     print("2 - Toalhas")
     print("3 - Movimentações")
     print("0 - Sair")
+
 
     opcao = int(input("\nEscolha uma opção: "))
 
     if not (0 <= opcao <= 3):
         print("Opção inválida. Por favor, selecione um número do menu.\n")
         continue
-
-
-
 
     if opcao == 1:
         while True:
@@ -60,31 +58,45 @@ while True:
             print("4 - Pesquisar nadador por nome")
             print("0 - Voltar")
 
-            opcao = int(input("\nEscolha uma opção: "))
+            try: 
+                opcao = int(input("\nEscolha uma opção: "))
+
+            except ValueError:
+                print("Solução inválida. Por favor, escolha um número do menu.")
+                continue
+
 
             if not (0 <= opcao <= 4):
-                    print("Opção inválida. Por favor, selecione um número do submenu.\n")
-                    continue
+                print("Opção inválida. Por favor, selecione um número do submenu.\n")
 
 
             if opcao == 1:
                 print("\n===== CADASTRO DE NADADOR =====\n")
-                cod_input = int(input("Código: "))
-                
 
-                if cod_input not in codigos:
+                try:
+                    cod_input = int(input("Código: "))
+                except ValueError:
+                    print("Código não válido. Tente novamente.")
+                    continue
+
+                if not any(nadador['codigo'] == cod_input for nadador in nadadores):
+                    # Substitui if "cod_input not in nadadores:"
                     nome_input = input("Nome: ").strip().title()
 
-                        # Validação: verifica se o nome não está vazio
-                    if nome_input.strip():
+                    # Validação: verifica se o nome não está vazio
+                    if nome_input:
 
                         # Deixa as primeiras letras do nome em maiúsculo e as registra na lista logo após
 
-                        codigos.append(cod_input)
-                        quantidades.append(0)
-                        nomes.append(nome_input)
+                        nadador = {
+                        'codigo': cod_input,
+                        'nome': nome_input,
+                        'toalha': 0,
+                        'historico': []
+                        }
+                        nadadores.append(nadador)
                         print("Nadador cadastrado com sucesso!\n")
-                        break
+                        
 
                     else:
                         print("Dados inválidos! Tente novamente.\n")
@@ -95,65 +107,68 @@ while True:
 
 
             elif opcao == 2:
-                print(f"\n{" NADADORES ".center(63, "=")}\n")
+                    print(f"\n{' NADADORES '.center(63, '=')}\n")
                 
-                if len(codigos) > 0:
-                    print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
-                    print("-" * 63)
+                    if len(nadadores) > 0:
+                        print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
+                        print('-' * 63)
 
-                    for i in range(len(codigos)):
-                        print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
-                    print("")
-                    break
-                else:
-                    print("Nenhum nadador cadastrado.\n")
+                        for nadador in nadadores:
+                            print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
+                        print("")
+                    
+                    else:
+                        print("Nenhum nadador cadastrado.\n")
 
 
             elif opcao == 3:
-                print("\n===== CONSULTAR NADADOR =====\n")
+                    print("\n===== CONSULTAR NADADOR =====\n")
 
-                consultar_codigo = int(input("Digite o código do nadador: "))
+                    consultar_codigo = int(input("Digite o código do nadador: "))
 
-                if consultar_codigo in codigos:
-                    print("\nNadador encontrado:\n")
 
-                    index = codigos.index(consultar_codigo)
+                    encontrado = False 
+                    for nadador in nadadores:
+                        if nadador['codigo'] == consultar_codigo:
+                            encontrado = nadador
+                        
 
-                    print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
-                    print("-" * 63)
-                    print(f"{codigos[index]:<7} {nomes[index]:<33} {quantidades[index]:>7}\n")
-                    break
+                    if encontrado:
+                        print("\nNadador encontrado:\n")
+                        print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
+                        print("-" * 63)
+                        print(f"{nadador['codigo']:<7} {nadador['nome']:<33} {nadador['toalha']:>7}\n")
+                    
 
-                else:
-                    print("\nNadador não encontrado.\n")
+                    else:
+                        print("\nNadador não encontrado.\n")
 
 
             elif opcao == 4:
-                print("\n===== PESQUISAR NADADOR =====\n")
+                    print("\n===== PESQUISAR NADADOR =====\n")
 
-                consultar_nome = input("Digite o nome ou parte do nome: ")
+                    consultar_nome = input("Digite o nome ou parte do nome: ").strip()
 
-                lista_buscar_nome = [nomes.index(nome) for nome in nomes if consultar_nome.lower() in nome.lower()]
+                    resultados = [nadador for nadador in nadadores if consultar_nome.lower() in nadador['nome'].lower()]
+                    if resultados:
+                        if len(resultados) == 1:
+                            print("\nNadador encontrado:\n")
 
-                if len(lista_buscar_nome) > 0:
-                    if len(lista_buscar_nome) == 1:
-                        print("\nNadador encontrado:\n")
+                        else:
+                            print("\nNadadores encontrados:\n")
+                        print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
+                        print("-" * 63)
+
+                        for nadador in resultados:
+                            print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
+                        print("")
 
                     else:
-                        print("\nNadadores encontrados:\n")
-                    print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
-                    print("-" * 63)
-
-                    for i in lista_buscar_nome:
-                        print(f"{codigos[i]:<8}{nomes[i]:<35}{quantidades[i]:>8}")
-                    print("")
-
-                else:
-                    print("\nNenhum nadador encontrado.\n")
+                        print("\nNenhum nadador encontrado.\n")
 
 
             else:
-                break 
+                    break 
 
 
     elif opcao == 2:
@@ -166,7 +181,8 @@ while True:
                 print("0 - Voltar")
     
                 opcao = int(input("\nEscolha uma opção: "))
-    
+
+                
                 if opcao < 0 or opcao > 4:
                     print("Opção inválida. Por favor, selecione um número do submenu.\n")
                     continue
@@ -177,7 +193,9 @@ while True:
                     try:
                         cod_input = int(input("Código do nadador: "))
                         quantidade = int(input("Quantidade de toalhas a retirar: "))
+
                     except ValueError:
+
                         print("Valor inválido. Digite um número.\n")
                         continue
     
@@ -192,16 +210,17 @@ while True:
                         else:
                             for nadador in nadadores:
                                 if nadador["codigo"] == cod_input:
+                                    nadador['toalha'] += quantidade
+                                    toalhas_disponiveis -= quantidade
                                     nome = nadador["nome"]
                                     break
-                            nadador["toalhas"] += quantidade
-                            toalhas_disponiveis -= quantidade
+
                             print("\nRetirada registrada com sucesso!")
                             print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
                             print(f"Retirada de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})\n")
                             
                             # Salva no histórico
-                            historico_de_cada = {"codigo": cod_input, "nome": nome, "toalhas": nadador["toalhas"], "acao": "Retirada"}
+                            historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Retirada"}
                             historico_movimentacoes.append(historico_de_cada)
     
                     else:
@@ -212,6 +231,7 @@ while True:
                     print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
                     try:
                         cod_input = int(input("Digite o código do nadador: "))
+
                     except ValueError:
                         print("Código inválido! Digite um número.\n")
                         continue
@@ -220,8 +240,8 @@ while True:
                         for nadador in nadadores:
                             if nadador["codigo"] == cod_input:
                                 nome = nadador["nome"]
-                                toalhas = nadador["toalhas"]
-                                break
+                                toalhas = nadador["toalha"]
+                                
     
                         if toalhas == 0:
                             print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
@@ -241,13 +261,13 @@ while True:
                                 print(f"Erro: O nadador {nome} possui apenas {toalhas} toalhas.\n")
     
                             else:
-                                nadador["toalhas"] -= quantidade
+                                nadador["toalha"] -= quantidade
                                 toalhas_disponiveis += quantidade
                                 print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})")
                                 print("Devolução registrada com sucesso! Movimentação concluída.\n")
                                 
                                 # Salva no histórico
-                                historico_de_cada = {"codigo": cod_input, "nome": nome, "toalhas": nadador["toalhas"], "acao": "Devolução"}
+                                historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Devolução"}
                                 historico_movimentacoes.append(historico_de_cada)
                     else:
                         print(f"Código '{cod_input}' não encontrado!\n")
@@ -260,8 +280,8 @@ while True:
                         print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
                         print("-" * 55)
                         for nadador in nadadores:
-                            if nadador["toalhas"] > 0:
-                                print(f"{nadador["codigo"]:<10}{nadador["nome"]:<35}{nadador["toalhas"]:>8}")
+                            if nadador["toalha"] > 0:
+                                print(f"{nadador['codigo']:<10}{nadador['nome']:<35}{nadador['toalha']:>8}")
                         print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
     
                     else:
@@ -280,45 +300,58 @@ while True:
     
     
     elif opcao == 3:
-       while True:
-        print("\n======== MOVIMENTAÇÕES ========\n")
-        print("1 - Consultar movimentações")
-        print("2 - Consultar movimentações do nadador")
-        print("0 - Voltar\n")
-        sub_opcao = int(input("Escolha uma opção: "))
-        if not (0 <= sub_opcao <= 2):
-            print("Essa opção é inválida")
-            continue
+        while True:
+            print("\n======== MOVIMENTAÇÕES ========\n")
+            print("1 - Consultar movimentações")
+            print("2 - Consultar movimentações do nadador")
+            print("0 - Voltar\n")
+
+            try:
+                sub_opcao = int(input("Escolha uma opção: "))
+
+            except ValueError:
+                print("A opção digitada é inválida. Digite um dos números do menu.")
+                continue
+            if not (0 <= sub_opcao <= 2):
+                print("Essa opção é inválida")
+                continue
         
         
-        if sub_opcao == 0:
-            break
+            if sub_opcao == 0:
+                break
 
 
-        elif sub_opcao == 1:
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print("-" * 57)
+            elif sub_opcao == 1:
+                print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+                print('-' * 57)
             
-            for idx, item in enumerate(historico_movimentacoes, start=1):
-                # Garante leitura correta mesmo se houver lista aninhada antiga
-                reg = item[0] if isinstance(item[0], list) else item
-                print(f"{idx:<6}{reg["codigo"]:>8}  {reg["nome"]:<15}{reg["acao"]:>12}{reg["quantidade"]:>12}")
-            print("")
+                for idx, item in enumerate(historico_movimentacoes, start=1):
+                    # Garante leitura correta mesmo se houver lista aninhada antiga
+                    reg = item['toalha'] if isinstance(item['toalha'], list) else item
+                    print(f"{idx:<6}{reg['codigo']:>8}  {reg['nome']:<15}{reg['acao']:>12}{reg['toalha']:>12}")
+                print("")
 
 
-        elif sub_opcao == 2:
-            # Na opção 2 - Consultar movimentações do nadador do submenu Movimentações, nós preferimos que fosse solicitado o código do nadador, pois é único para cada nadador
-            
-            consultar_codigo = int(input("Digite o código que você deseja consultar: "))
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print("-" * 57)
+            elif sub_opcao == 2:
+                # Na opção 2 - Consultar movimentações do nadador do submenu Movimentações, nós preferimos que fosse solicitado o código do nadador, pois é único para cada nadador
+                try:
 
-            for index, item in enumerate(historico_movimentacoes, start=1):
-                reg = item[0] if isinstance(item[0], list) else item
+                    consultar_codigo = int(input("Digite o código que você deseja consultar: "))
 
-                if consultar_codigo == reg[1]:
-                    print(f"{idx:<6}{reg["codigo"]:>8}  {reg["nome"]:<15}{reg["acao"]:>12}{reg["quantidade"]:>12}")
-            print("")
+                except ValueError:
+                    print("Opção inválida. Tente um número do menu.")
+                    continue
+
+                print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+                print('-' * 57)
+
+                for idx, item in enumerate(historico_movimentacoes, start=1):
+                    reg = item['toalha'] if isinstance(item['toalha'], list) else item
+
+                    if consultar_codigo == reg['codigo']:
+                        print(f"{idx:<6}{reg['codigo']:>8}  {reg['nome']:<15}{reg['acao']:>12}{reg['toalha']:>12}")
+                print("")
     elif opcao == 0:
         print("Saindo do sistema...")
         break
+        
