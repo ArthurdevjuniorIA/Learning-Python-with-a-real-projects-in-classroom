@@ -9,48 +9,21 @@
 
 # Nós escolhemos que, ao escolher uma das opções do menu, o submenu seja repetido até o usuário escolher uma opção válida do submenu e concluir a ação corretamente, pois, caso ele queira voltar para o menu principal, basta escolher a opção 0 - Voltar
 '''
-nadador = {'codigo': codigo, 'nome': nome
-nadador['quantidade'] = quantidade}
+nadador = {'codigo': codigo, 'nome': nome, 'toalhas': toalhas}
 
 nadador = {
-    "codigo": codigo;
-    "nome": nome;
-    "quantidade": quantidade;
+    "codigo": codigo,
+    "nome": nome,
+    "toalhas": toalhas
 }
 
 nadadores.append(nadador)
 
 nadadores = [
     {
-        "codigo": codigo;
-        "nome": nome;
-        "quantidade": quantidade;
-    }
-]
-
-
-
-historico-movimentacao = {}
-historico-movimentacao['codigo'] = codigo
-historico-movimentacao['nome'] = nome
-historico-movimentacao['quantidade'] = quantidade
-historico-movimentacao['acao'] = acao
-
-historico-movimentacao = {
-    "codigo": codigo;
-    "nome": nome;
-    "quantidade": quantidade;
-    "acao": acao;
-}
-
-historico_movimentacoes.append(historico-movimentacao)
-
-historico_movimentacoes = [
-    {
-        "codigo": codigo;
-        "nome": nome;
-        "quantidade": quantidade;
-        "acao": acao;
+        "codigo": codigo,
+        "nome": nome,
+        "toalhas": toalhas
     }
 ]
 '''
@@ -184,122 +157,128 @@ while True:
 
 
     elif opcao == 2:
-        while True:
-            print("\n========== TOALHAS ==========\n")
-            print("1 - Retirar toalhas")
-            print("2 - Devolver toalhas")
-            print("3 - Consulta toalhas em uso")
-            print("4 - Consultar toalhas disponíveis")
-            print("0 - Voltar")
-
-            opcao = int(input("\nEscolha uma opção: "))
-
-            if opcao < 0 or opcao > 4:
-                print("Opção inválida. Por favor, selecione um número do submenu.\n")
-                continue
-
-
-            elif opcao == 1:
-                print("\n===== RETIRADA DE TOALHAS =====\n")
-                try:
-                    cod_input = int(input("Código do nadador: "))
-                    quantidade = int(input("Quantidade de toalhas a retirar: "))
-                except ValueError:
-                    print("Valor inválido. Digite um número.\n")
+            while True:
+                print("\n========== TOALHAS ==========\n")
+                print("1 - Retirar toalhas")
+                print("2 - Devolver toalhas")
+                print("3 - Consulta toalhas em uso")
+                print("4 - Consultar toalhas disponíveis")
+                print("0 - Voltar")
+    
+                opcao = int(input("\nEscolha uma opção: "))
+    
+                if opcao < 0 or opcao > 4:
+                    print("Opção inválida. Por favor, selecione um número do submenu.\n")
                     continue
-
-                if cod_input in codigos:
-                    if quantidade <= 0:
-                        print("Quantidade inválida. Digite um número maior que zero.\n")
-
-                    elif quantidade > toalhas_disponiveis:
-                        print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
-                        print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
-
-                    else:
-                        indice = codigos.index(cod_input)
-                        quantidades[indice] += quantidade
-                        toalhas_disponiveis -= quantidade
-                        print("\nRetirada registrada com sucesso!")
-                        print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-                        print(f"Retirada de {quantidade} toalha(s) pelo nadador {nomes[indice]} (Código: {cod_input})\n")
-                        
-                        # Salva no histórico
-                        # historico_movimentacoes.append(f"RETIRADA : {quantidade} toalha(s) - Nadador: {nomes[indice]} (Cód: {cod_input})")
-                        historico_de_cada = ["Retirada",cod_input,nomes[indice],quantidade]
-                        historico_movimentacoes.append(historico_de_cada)
-
-                else:
-                    print(f"Código '{cod_input}' não encontrado!\n")
-
-
-            elif opcao == 2:
-                print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
-                try:
-                    cod_input = int(input("Digite o código do nadador: "))
-                except ValueError:
-                    print("Código inválido! Digite um número.\n")
-                    continue
-
-                if cod_input in codigos:
-                    indice = codigos.index(cod_input)
-
-                    if quantidades[indice] == 0:
-                        print(f"O nadador {nomes[indice]} (Código: {cod_input}) não possui toalhas para devolver.\n")
-
-                    else:
-                        try:
-                            quantidade = int(input(f"Nadador possui {quantidades[indice]} toalhas. Quantas deseja devolver? "))
-                        except ValueError:
-                            print("Valor inválido! Digite um número.\n")
-                            continue
-
-
+    
+    
+                elif opcao == 1:
+                    print("\n===== RETIRADA DE TOALHAS =====\n")
+                    try:
+                        cod_input = int(input("Código do nadador: "))
+                        quantidade = int(input("Quantidade de toalhas a retirar: "))
+                    except ValueError:
+                        print("Valor inválido. Digite um número.\n")
+                        continue
+    
+                    if cod_input in [nadador["codigo"] for nadador in nadadores]:
                         if quantidade <= 0:
                             print("Quantidade inválida. Digite um número maior que zero.\n")
-
-                        elif quantidade > quantidades[indice]:
-                            print(f"Erro: O nadador {nomes[indice]} possui apenas {quantidades[indice]} toalhas.\n")
-
+    
+                        elif quantidade > toalhas_disponiveis:
+                            print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
+                            print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+    
                         else:
-                            quantidades[indice] -= quantidade
-                            toalhas_disponiveis += quantidade
-                            print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nomes[indice]} (Código: {cod_input})")
-                            print("Devolução registrada com sucesso! Movimentação concluída.\n")
+                            for nadador in nadadores:
+                                if nadador["codigo"] == cod_input:
+                                    nome = nadador["nome"]
+                                    break
+                            nadador["toalhas"] += quantidade
+                            toalhas_disponiveis -= quantidade
+                            print("\nRetirada registrada com sucesso!")
+                            print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+                            print(f"Retirada de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})\n")
                             
                             # Salva no histórico
-                            historico_de_cada = ["Devolução",cod_input,nomes[indice],quantidade]
+                            historico_de_cada = {"codigo": cod_input, "nome": nome, "toalhas": nadador["toalhas"], "acao": "Retirada"}
                             historico_movimentacoes.append(historico_de_cada)
-                else:
-                    print(f"Código '{cod_input}' não encontrado!\n")
-
-
-            elif opcao == 3:
-                print("\n" + " TOALHAS EM USO ".center(55, '=') + "\n")
-
-                if toalhas_disponiveis < TOTAL_TOALHAS:
-                    print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
-                    print("-" * 55)
-                    for nadador in nadadores:
-                        if nadador["quantidade"] > 0:
-                            print(f"{nadador["codigo"]:<10}{nadador["nome"]:<35}{nadador["quantidade"]:>8}")
-                    print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-
-                else:
-                    print("Nenhum nadador está com toalhas no momento.\n")
-
-
-            elif opcao == 4:
-                print("\n" + " ESTOQUE DE TOALHAS ".center(55, '=') + "\n")
-                print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
-
-
-            elif opcao == 0:
-                print("Voltando ao menu principal...\n")
-                break
-
-
-
+    
+                    else:
+                        print(f"Código '{cod_input}' não encontrado!\n")
+    
+    
+                elif opcao == 2:
+                    print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+                    try:
+                        cod_input = int(input("Digite o código do nadador: "))
+                    except ValueError:
+                        print("Código inválido! Digite um número.\n")
+                        continue
+    
+                    if cod_input in [nadador["codigo"] for nadador in nadadores]:
+                        for nadador in nadadores:
+                            if nadador["codigo"] == cod_input:
+                                nome = nadador["nome"]
+                                toalhas = nadador["toalhas"]
+                                break
+    
+                        if toalhas == 0:
+                            print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
+    
+                        else:
+                            try:
+                                quantidade = int(input(f"Nadador possui {toalhas} toalhas. Quantas deseja devolver? "))
+                            except ValueError:
+                                print("Valor inválido! Digite um número.\n")
+                                continue
+    
+    
+                            if quantidade <= 0:
+                                print("Quantidade inválida. Digite um número maior que zero.\n")
+    
+                            elif quantidade > toalhas:
+                                print(f"Erro: O nadador {nome} possui apenas {toalhas} toalhas.\n")
+    
+                            else:
+                                nadador["toalhas"] -= quantidade
+                                toalhas_disponiveis += quantidade
+                                print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})")
+                                print("Devolução registrada com sucesso! Movimentação concluída.\n")
+                                
+                                # Salva no histórico
+                                historico_de_cada = {"codigo": cod_input, "nome": nome, "toalhas": nadador["toalhas"], "acao": "Devolução"}
+                                historico_movimentacoes.append(historico_de_cada)
+                    else:
+                        print(f"Código '{cod_input}' não encontrado!\n")
+    
+    
+                elif opcao == 3:
+                    print("\n" + " TOALHAS EM USO ".center(55, '=') + "\n")
+    
+                    if toalhas_disponiveis < TOTAL_TOALHAS:
+                        print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
+                        print("-" * 55)
+                        for nadador in nadadores:
+                            if nadador["toalhas"] > 0:
+                                print(f"{nadador["codigo"]:<10}{nadador["nome"]:<35}{nadador["toalhas"]:>8}")
+                        print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+    
+                    else:
+                        print("Nenhum nadador está com toalhas no momento.\n")
+    
+    
+                elif opcao == 4:
+                    print("\n" + " ESTOQUE DE TOALHAS ".center(55, '=') + "\n")
+                    print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
+    
+    
+                elif opcao == 0:
+                    print("Voltando ao menu principal...\n")
+                    break
+    
+    
+    
     elif opcao == 3:
        while True:
         print("\n======== MOVIMENTAÇÕES ========\n")
