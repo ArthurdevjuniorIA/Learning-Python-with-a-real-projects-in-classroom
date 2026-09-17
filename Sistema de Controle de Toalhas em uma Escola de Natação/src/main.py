@@ -9,10 +9,8 @@
 
 # Nós escolhemos que, ao escolher uma das opções do menu, o submenu seja repetido até o usuário escolher uma opção válida do submenu e concluir a ação corretamente, pois, caso ele queira voltar para o menu principal, basta escolher a opção 0 - Voltar
 '''
-nadador = {}
-nadador['codigo'] = codigo
-nadador['nome'] = nome
-nadador['quantidade'] = quantidade
+nadador = {'codigo': codigo, 'nome': nome
+nadador['quantidade'] = quantidade}
 
 nadador = {
     "codigo": codigo;
