@@ -43,7 +43,7 @@ while True:
                 opcao = int(input("\nEscolha uma opção: "))
 
             except ValueError:
-                print("Solução inválida. Por favor, escolha um número do menu.")
+                print("Opção inválida. Por favor, escolha um número do menu.")
                 continue
 
 
