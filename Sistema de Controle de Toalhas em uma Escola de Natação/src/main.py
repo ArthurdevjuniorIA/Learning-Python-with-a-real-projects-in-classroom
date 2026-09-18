@@ -309,8 +309,8 @@ while True:
             
                 for idx, item in enumerate(historico_movimentacoes, start=1):
                     # Garante leitura correta mesmo se houver lista aninhada antiga
-                    reg = item['toalha'] if isinstance(item['toalha'], list) else item
-                    print(f"{idx:<6}{reg['codigo']:>8}  {reg['nome']:<15}{reg['acao']:>12}{reg['toalha']:>12}")
+
+                    print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
                 print("")
 
 
@@ -328,10 +328,9 @@ while True:
                 print('-' * 57)
 
                 for idx, item in enumerate(historico_movimentacoes, start=1):
-                    reg = item['toalha'] if isinstance(item['toalha'], list) else item
 
-                    if consultar_codigo == reg['codigo']:
-                        print(f"{idx:<6}{reg['codigo']:>8}  {reg['nome']:<15}{reg['acao']:>12}{reg['toalha']:>12}")
+                    if consultar_codigo == item['codigo']:
+                        print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
                 print("")
     elif opcao == 0:
         print("Saindo do sistema...")
