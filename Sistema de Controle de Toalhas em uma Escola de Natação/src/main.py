@@ -43,7 +43,7 @@ while True:
                 opcao = int(input("\nEscolha uma opção: "))
 
             except ValueError:
-                print("Solução inválida. Por favor, escolha um número do menu.")
+                print("Opção inválida. Por favor, escolha um número do menu.")
                 continue
 
 
@@ -308,7 +308,6 @@ while True:
                 print('-' * 57)
             
                 for idx, item in enumerate(historico_movimentacoes, start=1):
-                    # Garante leitura correta mesmo se houver lista aninhada antiga
 
                     print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
                 print("")
