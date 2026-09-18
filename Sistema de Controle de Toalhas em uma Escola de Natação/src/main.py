@@ -8,25 +8,6 @@
 # ============================================================
 
 # Nós escolhemos que, ao escolher uma das opções do menu, o submenu seja repetido até o usuário escolher uma opção válida do submenu e concluir a ação corretamente, pois, caso ele queira voltar para o menu principal, basta escolher a opção 0 - Voltar
-'''
-nadador = {'codigo': codigo, 'nome': nome, 'toalhas': toalhas}
-
-nadador = {
-    "codigo": codigo,
-    "nome": nome,
-    "toalhas": toalhas
-}
-
-nadadores.append(nadador)
-
-nadadores = [
-    {
-        "codigo": codigo,
-        "nome": nome,
-        "toalhas": toalhas
-    }
-]
-'''
 
 nadadores = []
 historico_movimentacoes = []
@@ -93,7 +74,6 @@ while True:
                         'codigo': cod_input,
                         'nome': nome_input,
                         'toalha': 0,
-                        'historico': []
                         }
                         nadadores.append(nadador)
                         print("Nadador cadastrado com sucesso!\n")
@@ -356,4 +336,3 @@ while True:
     elif opcao == 0:
         print("Saindo do sistema...")
         break
-        
