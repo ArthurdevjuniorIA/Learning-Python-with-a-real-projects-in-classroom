@@ -68,6 +68,7 @@ while True:
 
             if not (0 <= opcao <= 4):
                 print("Opção inválida. Por favor, selecione um número do submenu.\n")
+                continue
 
 
             if opcao == 1:
@@ -131,6 +132,7 @@ while True:
                     for nadador in nadadores:
                         if nadador['codigo'] == consultar_codigo:
                             encontrado = nadador
+                            break
                         
 
                     if encontrado:
