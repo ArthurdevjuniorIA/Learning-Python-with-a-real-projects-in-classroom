@@ -12,6 +12,22 @@ historico_movimentacoes = []
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
+# FUNÇÃO PARA SOLICITAR A OPÇÃO DO MENU
+
+def solicitar_opcao_menu():
+    try: 
+        opcao = int(input("\nEscolha uma opção: "))
+        return opcao
+    except ValueError:
+        return -1
+
+# FUNÇÃO PARA BUSCAR NADADOR PELO CÓDIGO
+
+def buscar_nadador_por_codigo(cod_input):
+    for nadador in nadadores:
+        if nadador['codigo'] == cod_input:
+            return nadador
+    return None
 
 # FUNÇÕES DOS SUBMENUS
 
@@ -24,11 +40,7 @@ def menu_nadadores():
         print("4 - Pesquisar nadador por nome")
         print("0 - Voltar")
 
-        try: 
-            opcao = int(input("\nEscolha uma opção: "))
-        except ValueError:
-            print("Opção inválida. Por favor, escolha um número do menu.")
-            continue
+        opcao = solicitar_opcao_menu()
 
         if not (0 <= opcao <= 4):
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
@@ -73,16 +85,12 @@ def menu_nadadores():
         elif opcao == 3:
             print("\n===== CONSULTAR NADADOR =====\n")
             try:
-                consultar_codigo = int(input("Digite o código do nadador: "))
+                cod_input = int(input("Digite o código do nadador: "))
             except ValueError:
                 print("Código não válido.")
                 continue
 
-            encontrado = False 
-            for nadador in nadadores:
-                if nadador['codigo'] == consultar_codigo:
-                    encontrado = nadador
-                    break
+            encontrado = buscar_nadador_por_codigo(cod_input)
             
             if encontrado:
                 print("\nNadador encontrado:\n")
@@ -127,12 +135,8 @@ def menu_toalhas():
         print("4 - Consultar toalhas disponíveis")
         print("0 - Voltar")
 
-        try:
-            opcao = int(input("\nEscolha uma opção: "))
-        except ValueError:
-            print("Valor inválido. Digite um número.\n")
-            continue
-        
+        opcao = solicitar_opcao_menu()
+
         if opcao < 0 or opcao > 4:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
             continue
@@ -146,19 +150,17 @@ def menu_toalhas():
                 print("Valor inválido. Digite um número.\n")
                 continue
             
-            if cod_input in [nadador["codigo"] for nadador in nadadores]:
+            if cod_input in [nadador['codigo'] for nadador in nadadores]:
                 if quantidade <= 0:
                     print("Quantidade inválida. Digite um número maior que zero.\n")
                 elif quantidade > toalhas_disponiveis:
                     print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
                     print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
                 else:
-                    for nadador in nadadores:
-                        if nadador["codigo"] == cod_input:
-                            nadador['toalha'] += quantidade
-                            toalhas_disponiveis -= quantidade
-                            nome = nadador["nome"]
-                            break
+                    nadador = buscar_nadador_por_codigo(cod_input)
+                    nadador['toalha'] += quantidade
+                    toalhas_disponiveis -= quantidade
+                    nome = nadador['nome']
 
                     print("\nRetirada registrada com sucesso!")
                     print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
@@ -177,13 +179,11 @@ def menu_toalhas():
                 print("Código inválido! Digite um número.\n")
                 continue
             
-            if cod_input in [nadador["codigo"] for nadador in nadadores]:
-                for nadador in nadadores:
-                    if nadador["codigo"] == cod_input:
-                        nome = nadador["nome"]
-                        toalhas = nadador["toalha"]
-                        nadador_ref = nadador
-                        break
+            if cod_input in [nadador['codigo'] for nadador in nadadores]:
+                nadador = buscar_nadador_por_codigo(cod_input)
+                nome = nadador['nome']
+                toalhas = nadador['toalha']
+                nadador_ref = nadador
                         
                 if toalhas == 0:
                     print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
@@ -215,7 +215,7 @@ def menu_toalhas():
                 print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
                 print("-" * 55)
                 for nadador in nadadores:
-                    if nadador["toalha"] > 0:
+                    if nadador['toalha'] > 0:
                         print(f"{nadador['codigo']:<10}{nadador['nome']:<35}{nadador['toalha']:>8}")
                 print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
             else:
@@ -237,20 +237,16 @@ def menu_movimentacoes():
         print("2 - Consultar movimentações do nadador")
         print("0 - Voltar\n")
 
-        try:
-            sub_opcao = int(input("Escolha uma opção: "))
-        except ValueError:
-            print("A opção digitada é inválida. Digite um dos números do menu.")
+        opcao = solicitar_opcao_menu()
+        
+        if not (0 <= opcao <= 2):
+            print("Opção inválida. Por favor, selecione um número do submenu.\n")
             continue
         
-        if not (0 <= sub_opcao <= 2):
-            print("Essa opção é inválida")
-            continue
-        
-        if sub_opcao == 0:
+        if opcao == 0:
             break
 
-        elif sub_opcao == 1:
+        elif opcao == 1:
             print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
             print('-' * 57)
         
@@ -258,9 +254,9 @@ def menu_movimentacoes():
                 print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
             print("")
 
-        elif sub_opcao == 2:
+        elif opcao == 2:
             try:
-                consultar_codigo = int(input("Digite o código que você deseja consultar: "))
+                cod_input = int(input("Digite o código que você deseja consultar: "))
             except ValueError:
                 print("Opção inválida. Tente um número do menu.")
                 continue
@@ -269,43 +265,39 @@ def menu_movimentacoes():
             print('-' * 57)
 
             for idx, item in enumerate(historico_movimentacoes, start=1):
-                if consultar_codigo == item['codigo']:
+                if cod_input == item['codigo']:
                     print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
             print("")
-
 
 # MENU PRINCIPAL
 
 def menu_principal():
-    while True:
         print('=' * 33)
         print(f"{'NADO LIVRE':^33}")
         print('=' * 33 +"\n")
         print("1 - Nadadores")
         print("2 - Toalhas")
         print("3 - Movimentações")
-        print("0 - Sair")
+        print("0 - Sair") 
 
-        try:
-            opcao = int(input("\nEscolha uma opção: "))
-        except ValueError:
-            print("Opção inválida. Digite um número.\n")
-            continue
+# PROGRAMA PRINCIPAL
 
-        if not (0 <= opcao <= 3):
-            print("Opção inválida. Por favor, selecione um número do menu.\n")
-            continue
+while True:
+    menu_principal()
 
-        # CHAMADA
-        if opcao == 1:
-            menu_nadadores()
-        elif opcao == 2:
-            menu_toalhas()
-        elif opcao == 3:
-            menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break 
+    opcao = solicitar_opcao_menu()
 
-# Por fim, o script começa rodando o menu principal
-menu_principal()
+    if not (0 <= opcao <= 3):
+        print("Opção inválida. Por favor, selecione um número do menu.\n")
+        continue
+
+    # CHAMADA
+    if opcao == 1:
+        menu_nadadores()
+    elif opcao == 2:
+        menu_toalhas()
+    elif opcao == 3:
+        menu_movimentacoes()
+    elif opcao == 0:
+        print("Saindo do sistema... Até logo!")
+        break
