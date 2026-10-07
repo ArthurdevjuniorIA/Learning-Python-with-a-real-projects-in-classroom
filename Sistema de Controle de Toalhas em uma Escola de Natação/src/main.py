@@ -31,7 +31,7 @@ def buscar_nadador_por_codigo(cod_input):
 
 # FUNÇÕES DOS SUBMENUS
 
-def opcao_1_Menu_nadadores():
+def opcao_1_menu_nadadores():
             
     print("\n===== CADASTRO DE NADADOR =====\n")
     try:
@@ -60,7 +60,7 @@ def opcao_1_Menu_nadadores():
     else:
         print("Código já cadastrado! Tente novamente.\n")
 
-def opcao_2_Menu_nadadores():
+def opcao_2_menu_nadadores():
     print(f"\n{' NADADORES '.center(63, '=')}\n")
     
     if len(nadadores) > 0:
@@ -110,16 +110,14 @@ def opcao_4_menu_nadadores():
     else:
         print("\nNenhum nadador encontrado.\n")
 
-def printar_menu_nadadores():
-    print("\n========== NADADORES ==========\n")
-    print("1 - Cadastrar nadador")
-    print("2 - Consultar nadadores")
-    print("3 - Consultar nadador por código")
-    print("4 - Pesquisar nadador por nome")
-    print("0 - Voltar")
-
-while True:
-        printar_menu_nadadores()
+def menu_nadadores():
+    while True:
+        print("\n========== NADADORES ==========\n")
+        print("1 - Cadastrar nadador")
+        print("2 - Consultar nadadores")
+        print("3 - Consultar nadador por código")
+        print("4 - Pesquisar nadador por nome")
+        print("0 - Voltar")
 
         opcao = solicitar_opcao_menu()
 
@@ -127,16 +125,26 @@ while True:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
             continue
 
+
         if opcao == 1:
-            opcao_1_Menu_nadadores()
+            opcao_1_menu_nadadores()
+
+
         elif opcao == 2:
-            opcao_2_Menu_nadadores()
+            opcao_2_menu_nadadores()
+
+
         elif opcao == 3:
             opcao_3_menu_nadadores()
+
+
         elif opcao == 4:
             opcao_4_menu_nadadores()
-        elif opcao == 0:
-            break 
+
+
+        else:
+            print("")
+            break
 
 
 def menu_toalhas():
@@ -301,13 +309,17 @@ def menu_principal():
 while True:
     menu_principal()
 
-    # CHAMADA
+    opcao = solicitar_opcao_menu()
+
+    if not (0 <= opcao <= 3):
+        print("Opção inválida. Por favor, selecione um número do submenu.\n")
+        continue
+
     if opcao == 1:
-            printar_menu_nadadores()
+        menu_nadadores()
     elif opcao == 2:
-            menu_toalhas()
+        menu_toalhas()
     elif opcao == 3:
-            menu_movimentacoes()
+        menu_movimentacoes()
     elif opcao == 0:
-        print("Saindo do sistema... Até logo!")
         break
