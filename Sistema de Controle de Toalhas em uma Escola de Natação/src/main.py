@@ -309,7 +309,7 @@ def menu_principal():
 
         # CHAMADA
         if opcao == 1:
-            menu_nadadores()
+            printar_menu_nadadores()
         elif opcao == 2:
             menu_toalhas()
         elif opcao == 3:
