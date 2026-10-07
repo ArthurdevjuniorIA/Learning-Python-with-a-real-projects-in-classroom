@@ -31,6 +31,84 @@ def buscar_nadador_por_codigo(cod_input):
 
 # FUNÇÕES DOS SUBMENUS
 
+def opcao_1_Menu_nadadores():
+            
+    print("\n===== CADASTRO DE NADADOR =====\n")
+    try:
+        cod_input = int(input("Código: "))
+    except ValueError:
+        print("Código não válido. Tente novamente.")
+        return
+    if cod_input<=0:
+        print("O código não pode ser menor que 0\n")
+        return
+
+
+    if not any(nadador['codigo'] == cod_input for nadador in nadadores):
+        nome_input = input("Nome: ").strip().title()
+
+        if nome_input:
+            nadador = {
+            'codigo': cod_input,
+            'nome': nome_input,
+            'toalha': 0,
+            }
+            nadadores.append(nadador)
+            print("Nadador cadastrado com sucesso!\n")
+        else:
+            print("Dados inválidos! Tente novamente.\n")
+    else:
+        print("Código já cadastrado! Tente novamente.\n")
+
+def opcao_2_Menu_nadadores():
+    print(f"\n{' NADADORES '.center(63, '=')}\n")
+    
+    if len(nadadores) > 0:
+        print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
+        print('-' * 63)
+        for nadador in nadadores:
+            print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
+        print("")
+    else:
+        print("Nenhum nadador cadastrado.\n")
+
+def opcao_3_menu_nadadores():
+
+    print("\n===== CONSULTAR NADADOR =====\n")
+    try:
+        cod_input = int(input("Digite o código do nadador: "))
+    except ValueError:
+        print("Código não válido.")
+        return
+
+    encontrado = buscar_nadador_por_codigo(cod_input)
+    
+    if encontrado:
+        print("\nNadador encontrado:\n")
+        print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
+        print("-" * 63)
+        print(f"{encontrado['codigo']:<7} {encontrado['nome']:<33} {encontrado['toalha']:>7}\n")
+    else:
+        print("\nNadador não encontrado.\n")
+
+def opcao_4_menu_nadadores():
+    print("\n===== PESQUISAR NADADOR =====\n")
+    consultar_nome = input("Digite o nome ou parte do nome: ").strip()
+
+    resultados = [nadador for nadador in nadadores if consultar_nome.lower() in nadador['nome'].lower()]
+    if resultados:
+        if len(resultados) == 1:
+            print("\nNadador encontrado:\n")
+        else:
+            print("\nNadadores encontrados:\n")
+        
+        print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
+        print("-" * 63)
+        for nadador in resultados:
+            print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
+        print("")
+    else:
+        print("\nNenhum nadador encontrado.\n")
 
 def printar_menu_nadadores():
     print("\n========== NADADORES ==========\n")
@@ -39,7 +117,8 @@ def printar_menu_nadadores():
     print("3 - Consultar nadador por código")
     print("4 - Pesquisar nadador por nome")
     print("0 - Voltar")
-    while True:
+
+while True:
         printar_menu_nadadores()
 
         opcao = solicitar_opcao_menu()
@@ -47,81 +126,7 @@ def printar_menu_nadadores():
         if not (0 <= opcao <= 4):
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
             continue
-        def opcao_1_Menu_nadadores():
-            print("\n===== CADASTRO DE NADADOR =====\n")
-            try:
-                cod_input = int(input("Código: "))
-            except ValueError:
-                print("Código não válido. Tente novamente.")
-                return
-            if cod_input<=0:
-                print("O código não pode ser menor que 0\n")
-                return
 
-
-            if not any(nadador['codigo'] == cod_input for nadador in nadadores):
-                nome_input = input("Nome: ").strip().title()
-
-                if nome_input:
-                    nadador = {
-                    'codigo': cod_input,
-                    'nome': nome_input,
-                    'toalha': 0,
-                    }
-                    nadadores.append(nadador)
-                    print("Nadador cadastrado com sucesso!\n")
-                else:
-                    print("Dados inválidos! Tente novamente.\n")
-            else:
-                print("Código já cadastrado! Tente novamente.\n")
-        def opcao_2_Menu_nadadores():
-            print(f"\n{' NADADORES '.center(63, '=')}\n")
-            
-            if len(nadadores) > 0:
-                print(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
-                print('-' * 63)
-                for nadador in nadadores:
-                    print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
-                print("")
-            else:
-                print("Nenhum nadador cadastrado.\n")
-        def opcao_3_menu_nadadores():
-
-            print("\n===== CONSULTAR NADADOR =====\n")
-            try:
-                cod_input = int(input("Digite o código do nadador: "))
-            except ValueError:
-                print("Código não válido.")
-                continue
-
-            encontrado = buscar_nadador_por_codigo(cod_input)
-            
-            if encontrado:
-                print("\nNadador encontrado:\n")
-                print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
-                print("-" * 63)
-                print(f"{encontrado['codigo']:<7} {encontrado['nome']:<33} {encontrado['toalha']:>7}\n")
-            else:
-                print("\nNadador não encontrado.\n")
-
-        def opcao_4_menu_nadadores():
-            print("\n===== PESQUISAR NADADOR =====\n")
-            consultar_nome = input("Digite o nome ou parte do nome: ").strip()
-
-            resultados = [nadador for nadador in nadadores if consultar_nome.lower() in nadador['nome'].lower()]
-            if resultados:
-                if len(resultados) == 1:
-                    print("\nNadador encontrado:\n")
-                else:
-                    print("\nNadadores encontrados:\n")
-                
-                print(f"{'Código':<7} {'Nome':<33} {'Toalhas':>7}")
-                print("-" * 63)
-                for nadador in resultados:
-                    print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
-                print("")
-            else:
-                print("\nNenhum nadador encontrado.\n")
         if opcao == 1:
             opcao_1_Menu_nadadores()
         elif opcao == 2:
@@ -296,16 +301,16 @@ def menu_principal():
 while True:
     menu_principal()
 
-        # CHAMADA
-        if opcao == 1:
+    # CHAMADA
+    if opcao == 1:
             printar_menu_nadadores()
-        elif opcao == 2:
+    elif opcao == 2:
             menu_toalhas()
-        elif opcao == 3:
+    elif opcao == 3:
             menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break 
+    elif opcao == 0:
+        print("Saindo do sistema... Até logo!")
+        break 
 
     opcao = solicitar_opcao_menu()
 
@@ -316,7 +321,7 @@ while True:
 
     # CHAMADA
     if opcao == 1:
-        menu_nadadores()
+        printar_menu_nadadores()
     elif opcao == 2:
         menu_toalhas()
     elif opcao == 3:
