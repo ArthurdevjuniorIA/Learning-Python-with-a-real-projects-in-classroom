@@ -296,11 +296,23 @@ def menu_principal():
 while True:
     menu_principal()
 
+        # CHAMADA
+        if opcao == 1:
+            printar_menu_nadadores()
+        elif opcao == 2:
+            menu_toalhas()
+        elif opcao == 3:
+            menu_movimentacoes()
+        elif opcao == 0:
+            print("Saindo do sistema... Até logo!")
+            break 
+
     opcao = solicitar_opcao_menu()
 
     if not (0 <= opcao <= 3):
         print("Opção inválida. Por favor, selecione um número do menu.\n")
         continue
+
 
     # CHAMADA
     if opcao == 1:
