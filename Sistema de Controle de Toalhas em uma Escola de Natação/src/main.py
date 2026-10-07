@@ -254,6 +254,30 @@ def menu_toalhas():
             break
 
 
+def opcao_1_menu_movimentacoes(historico_movimentacoes):
+    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+    print('-' * 57)
+
+    for idx, item in enumerate(historico_movimentacoes, start=1):
+        print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+    print("")
+
+
+def opcao_2_menu_movimentacoes(historico_movimentacoes):
+    try:
+        cod_input = int(input("Digite o código que você deseja consultar: "))
+
+        print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+        print('-' * 57)
+
+        for idx, item in enumerate(historico_movimentacoes, start=1):
+            if cod_input == item['codigo']:
+                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+        print("")
+    except ValueError:
+        print("Opção inválida. Tente um número do menu.")
+
+
 def menu_movimentacoes():
     while True:
         print("\n======== MOVIMENTAÇÕES ========\n")
@@ -271,27 +295,10 @@ def menu_movimentacoes():
             break
 
         elif opcao == 1:
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print('-' * 57)
-        
-            for idx, item in enumerate(historico_movimentacoes, start=1):
-                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-            print("")
+            opcao_1_menu_movimentacoes(historico_movimentacoes)
 
         elif opcao == 2:
-            try:
-                cod_input = int(input("Digite o código que você deseja consultar: "))
-            except ValueError:
-                print("Opção inválida. Tente um número do menu.")
-                continue
-
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print('-' * 57)
-
-            for idx, item in enumerate(historico_movimentacoes, start=1):
-                if cod_input == item['codigo']:
-                    print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-            print("")
+            opcao_2_menu_movimentacoes(historico_movimentacoes)
 
 # MENU PRINCIPAL
 
@@ -322,4 +329,5 @@ while True:
     elif opcao == 3:
         menu_movimentacoes()
     elif opcao == 0:
+        print("Saindo do sistema... Até logo!")
         break
