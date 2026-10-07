@@ -31,7 +31,7 @@ def buscar_nadador_por_codigo(cod_input):
 
 # FUNÇÕES DOS SUBMENUS
 
-def opcao_1_Menu_nadadores():
+def opcao_1_menu_nadadores():
             
     print("\n===== CADASTRO DE NADADOR =====\n")
     try:
@@ -60,7 +60,7 @@ def opcao_1_Menu_nadadores():
     else:
         print("Código já cadastrado! Tente novamente.\n")
 
-def opcao_2_Menu_nadadores():
+def opcao_2_menu_nadadores():
     print(f"\n{' NADADORES '.center(63, '=')}\n")
     
     if len(nadadores) > 0:
@@ -110,16 +110,14 @@ def opcao_4_menu_nadadores():
     else:
         print("\nNenhum nadador encontrado.\n")
 
-def printar_menu_nadadores():
-    print("\n========== NADADORES ==========\n")
-    print("1 - Cadastrar nadador")
-    print("2 - Consultar nadadores")
-    print("3 - Consultar nadador por código")
-    print("4 - Pesquisar nadador por nome")
-    print("0 - Voltar")
-
-while True:
-        printar_menu_nadadores()
+def menu_nadadores():
+    while True:
+        print("\n========== NADADORES ==========\n")
+        print("1 - Cadastrar nadador")
+        print("2 - Consultar nadadores")
+        print("3 - Consultar nadador por código")
+        print("4 - Pesquisar nadador por nome")
+        print("0 - Voltar")
 
         opcao = solicitar_opcao_menu()
 
@@ -127,16 +125,26 @@ while True:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
             continue
 
+
         if opcao == 1:
-            opcao_1_Menu_nadadores()
+            opcao_1_menu_nadadores()
+
+
         elif opcao == 2:
-            opcao_2_Menu_nadadores()
+            opcao_2_menu_nadadores()
+
+
         elif opcao == 3:
             opcao_3_menu_nadadores()
+
+
         elif opcao == 4:
             opcao_4_menu_nadadores()
-        elif opcao == 0:
-            break 
+
+
+        else:
+            print("")
+            break
 
 
 def menu_toalhas():
@@ -246,6 +254,30 @@ def menu_toalhas():
             break
 
 
+def opcao_1_menu_movimentacoes(historico_movimentacoes):
+    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+    print('-' * 57)
+
+    for idx, item in enumerate(historico_movimentacoes, start=1):
+        print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+    print("")
+
+
+def opcao_2_menu_movimentacoes(historico_movimentacoes):
+    try:
+        cod_input = int(input("Digite o código que você deseja consultar: "))
+
+        print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+        print('-' * 57)
+
+        for idx, item in enumerate(historico_movimentacoes, start=1):
+            if cod_input == item['codigo']:
+                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+        print("")
+    except ValueError:
+        print("Opção inválida. Tente um número do menu.")
+
+
 def menu_movimentacoes():
     while True:
         print("\n======== MOVIMENTAÇÕES ========\n")
@@ -263,27 +295,10 @@ def menu_movimentacoes():
             break
 
         elif opcao == 1:
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print('-' * 57)
-        
-            for idx, item in enumerate(historico_movimentacoes, start=1):
-                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-            print("")
+            opcao_1_menu_movimentacoes(historico_movimentacoes)
 
         elif opcao == 2:
-            try:
-                cod_input = int(input("Digite o código que você deseja consultar: "))
-            except ValueError:
-                print("Opção inválida. Tente um número do menu.")
-                continue
-
-            print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-            print('-' * 57)
-
-            for idx, item in enumerate(historico_movimentacoes, start=1):
-                if cod_input == item['codigo']:
-                    print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-            print("")
+            opcao_2_menu_movimentacoes(historico_movimentacoes)
 
 # MENU PRINCIPAL
 
@@ -301,27 +316,14 @@ def menu_principal():
 while True:
     menu_principal()
 
-    # CHAMADA
-    if opcao == 1:
-            printar_menu_nadadores()
-    elif opcao == 2:
-            menu_toalhas()
-    elif opcao == 3:
-            menu_movimentacoes()
-    elif opcao == 0:
-        print("Saindo do sistema... Até logo!")
-        break 
-
     opcao = solicitar_opcao_menu()
 
     if not (0 <= opcao <= 3):
-        print("Opção inválida. Por favor, selecione um número do menu.\n")
+        print("Opção inválida. Por favor, selecione um número do submenu.\n")
         continue
 
-
-    # CHAMADA
     if opcao == 1:
-        printar_menu_nadadores()
+        menu_nadadores()
     elif opcao == 2:
         menu_toalhas()
     elif opcao == 3:
