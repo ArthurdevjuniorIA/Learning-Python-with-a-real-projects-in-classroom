@@ -28,7 +28,7 @@ Os dados ficam em memória (listas e dicionários) e a navegação é feita por 
 cd Sistema de controle de Toalhas em uma escola de natação
 ```
 ```bash
-python nado_livre.py
+python main.py
 ```
 
 Requer Python 3.6 ou superior (uso de f-strings).
