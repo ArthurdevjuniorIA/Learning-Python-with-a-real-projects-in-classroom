@@ -24,7 +24,9 @@ Com ele é possível:
 Os dados ficam em memória (listas e dicionários) e a navegação é feita por menus e submenus.
 
 ## Como executar
-
+```bash
+cd Sistema de controle de Toalhas em uma escola de natação
+```
 ```bash
 python nado_livre.py
 ```
@@ -64,15 +66,6 @@ NADO LIVRE
 | `menu_toalhas()` | Submenu de toalhas: retirada, devolução, toalhas em uso e estoque. Atualiza `toalhas_disponiveis` e registra cada operação no histórico. |
 | `menu_movimentacoes()` | Consulta o histórico completo ou apenas as movimentações de um nadador. |
 
-### Dados compartilhados
-
-| Variável | Tipo | Uso |
-|----------|------|-----|
-| `nadadores` | `list[dict]` | Nadadores cadastrados (`codigo`, `nome`, `toalha`). |
-| `historico_movimentacoes` | `list[dict]` | Registro de retiradas e devoluções. |
-| `TOTAL_TOALHAS` | `int` | Total de toalhas do clube (30). |
-| `toalhas_disponiveis` | `int` | Toalhas atualmente em estoque. |
-
 ## Refatoração
 
 O código foi dividido por responsabilidade: uma função para o menu principal e uma para cada área do sistema (nadadores, toalhas e movimentações), em vez de um único bloco com vários `if/elif` aninhados.
@@ -97,9 +90,3 @@ O código foi dividido por responsabilidade: uma função para o menu principal 
 | 7 | Consultas de movimentações sem aviso quando não havia resultados. | Mensagem "Nenhuma movimentação encontrada." |
 | 8 | "Toalhas em uso" dependia apenas do estoque. | Verifica se algum nadador possui `toalha > 0`. |
 | 9 | `encontrado = False` recebendo um dicionário. | Uso de `None`. |
-
-## Limitações e melhorias futuras
-
-- Os dados não são persistidos: ao fechar o programa, tudo é perdido. Uma melhoria possível é salvar em arquivo (JSON ou CSV).
-- O método `.title()` pode capitalizar preposições ("Da Silva", "De Souza").
-- O tamanho de coluna do nome nas tabelas é fixo e pode desalinhar nomes muito longos.
