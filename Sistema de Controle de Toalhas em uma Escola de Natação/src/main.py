@@ -1,12 +1,3 @@
-# ============================================================
-# ESTUDO DE CASO: Nado Livre — Sistema de Controle de Toalhas
-#
-# Integrantes:
-# 20261041110027 - Andrew
-# 20261041110017 - Arthur
-# 20261041110009 - Marcus
-# ============================================================
-
 nadadores = []
 historico_movimentacoes = []
 TOTAL_TOALHAS = 30
@@ -34,7 +25,7 @@ def cadastro_nadador():
     cod_input = int(input("Código: "))
     
     if cod_input <= 0:
-        print("O código não pode ser menor que 0\n")
+        print("O código deve ser maior que zero.")
         return
 
 
@@ -43,9 +34,9 @@ def cadastro_nadador():
 
         if nome_input:
             nadador = {
-            'codigo': cod_input,
-            'nome': nome_input,
-            'toalha': 0,
+                'codigo': cod_input,
+                'nome': nome_input,
+                'toalha': 0,
             }
             nadadores.append(nadador)
             print("Nadador cadastrado com sucesso!\n")
@@ -139,7 +130,7 @@ def menu_nadadores():
             break
 
 
-def submenu_retirada_toalhas():
+def retirar_toalhas():
 
     global toalhas_disponiveis 
 
@@ -168,7 +159,7 @@ def submenu_retirada_toalhas():
     else:
         print(f"Código '{cod_input}' não encontrado!\n")
 
-def submenu_devolucao_toalhas():
+def devolver_toalhas():
 
     global toalhas_disponiveis
     print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
@@ -178,7 +169,6 @@ def submenu_devolucao_toalhas():
         nadador = buscar_nadador_por_codigo(cod_input)
         nome = nadador['nome']
         toalhas = nadador['toalha']
-        nadador_ref = nadador
                 
         if toalhas == 0:
             print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
@@ -190,7 +180,7 @@ def submenu_devolucao_toalhas():
             elif quantidade > toalhas:
                 print(f"Erro: O nadador {nome} possui apenas {toalhas} toalhas.\n")
             else:
-                nadador_ref["toalha"] -= quantidade
+                nadador["toalha"] -= quantidade
                 toalhas_disponiveis += quantidade
                 print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})")
                 print("Devolução registrada com sucesso! Movimentação concluída.\n")
@@ -212,12 +202,11 @@ def toalhas_em_uso():
     else:
         print("Nenhum nadador está com toalhas no momento.\n")
 
-def consulta_toalhas():
+def consultar_toalhas():
     print("\n" + " ESTOQUE DE TOALHAS ".center(55, '=') + "\n")
     print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
 
 def menu_toalhas():
-    global toalhas_disponiveis 
     
     while True:
         print("\n========== TOALHAS ==========\n")
@@ -234,16 +223,16 @@ def menu_toalhas():
             continue
 
         if opcao == 1:
-           submenu_retirada_toalhas()
+            retirar_toalhas()
 
         elif opcao == 2:
-            submenu_devolucao_toalhas()
+            devolver_toalhas()
 
         elif opcao == 3: 
             toalhas_em_uso()
 
         elif opcao == 4:
-            consulta_toalhas()
+            consultar_toalhas()
 
         elif opcao == 0:
             print("Voltando ao menu principal...\n")
@@ -251,24 +240,29 @@ def menu_toalhas():
 
 
 def consultar_movimentacoes(historico_movimentacoes):
-    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-    print('-' * 57)
+    if len(historico_movimentacoes) == 0:
+        print("\nNenhuma movimentação registrada.\n")
+    else:
+        print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+        print('-' * 57)
 
-    for idx, item in enumerate(historico_movimentacoes, start=1):
-        print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-    print("")
+        for idx, item in enumerate(historico_movimentacoes, start=1):
+            print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+        print("")
 
 def consultar_movimentacoes_nadadores(historico_movimentacoes):
     cod_input = int(input("Digite o código que você deseja consultar: "))
 
-    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-    print('-' * 57)
+    if len(historico_movimentacoes) == 0:
+        print("\nNenhuma movimentação registrada.\n")
+    else:
+        print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+        print('-' * 57)
 
-    for idx, item in enumerate(historico_movimentacoes, start=1):
-        if cod_input == item['codigo']:
-            print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-    print("")
-
+        for idx, item in enumerate(historico_movimentacoes, start=1):
+            if cod_input == item['codigo']:
+                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+        print("")
 
 def menu_movimentacoes():
     while True:
