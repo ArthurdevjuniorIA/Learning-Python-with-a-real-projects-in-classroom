@@ -57,12 +57,12 @@ NADO LIVRE
 
 | Função | Responsabilidade |
 |--------|------------------|
-| `menu_principal()` | Exibe o menu inicial e direciona para cada submenu. |
+| `menu_principal()` | Exibe as opções do menu inicial do sistema. |
 | `menu_nadadores()` | Submenu de nadadores; chama as funções de cadastro, listagem e busca. |
-| `cadastrar_nadador()` | Cadastra um nadador, validando código numérico, positivo e único, e nome não vazio. |
+| `cadastro_nadador()` | Cadastra um nadador, validando código numérico, positivo e único, e nome não vazio. |
 | `listar_nadadores()` | Lista todos os nadadores cadastrados. |
-| `consultar_nadador_por_codigo()` | Busca um nadador pelo código. |
-| `pesquisar_nadador_por_nome()` | Busca nadadores pelo nome ou parte dele. |
+| `consultar_nadadores()` | Busca um nadador pelo código. |
+| `pesquisar_nadadores()` | Busca nadadores pelo nome ou parte dele. |
 | `menu_toalhas()` | Submenu de toalhas: retirada, devolução, toalhas em uso e estoque. Atualiza `toalhas_disponiveis` e registra cada operação no histórico. |
 | `menu_movimentacoes()` | Consulta o histórico completo ou apenas as movimentações de um nadador. |
 
