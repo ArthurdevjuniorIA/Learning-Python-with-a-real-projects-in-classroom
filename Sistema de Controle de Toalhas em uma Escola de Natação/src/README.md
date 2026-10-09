@@ -25,10 +25,10 @@ Os dados ficam em memória (listas e dicionários) e a navegação é feita por 
 
 ## Como executar
 ```bash
-cd Sistema de controle de Toalhas em uma escola de natação
+cd "Sistema de Controle de Toalhas em uma escola de natação"
 ```
 ```bash
-python main.py
+python src/main.py
 ```
 
 Requer Python 3.6 ou superior (uso de f-strings).
@@ -41,15 +41,18 @@ NADO LIVRE
 │   ├── 1 - Cadastrar nadador
 │   ├── 2 - Consultar nadadores
 │   ├── 3 - Consultar nadador por código
-│   └── 4 - Pesquisar nadador por nome
+│   ├── 4 - Pesquisar nadador por nome
+│   └── 0 - Voltar
 ├── 2 - Toalhas
 │   ├── 1 - Retirar toalhas
 │   ├── 2 - Devolver toalhas
 │   ├── 3 - Consultar toalhas em uso
-│   └── 4 - Consultar toalhas disponíveis
+│   ├── 4 - Consultar toalhas disponíveis
+│   └── 0 - Voltar
 ├── 3 - Movimentações
 │   ├── 1 - Consultar movimentações
-│   └── 2 - Consultar movimentações do nadador
+│   ├── 2 - Consultar movimentações do nadador
+│   └── 0 - Voltar
 └── 0 - Sair
 ```
 
@@ -73,6 +76,6 @@ O código foi dividido por responsabilidade: uma função para o menu principal 
 ### Como a refatoração melhorou a organização
 
 - **Legibilidade:** cada função tem um propósito claro, como imprimir o menu principal, enquanto o laço principal realiza o direcionamento.
-- **Manutenção:** um problema no cadastro, por exemplo, é procurado só nas funções de nadadores, sem afetar o restante.
+- **Manutenção:** um problema no cadastro, por exemplo, pode ser localizado mais facilmente nas funções relacionadas aos nadadores, reduzindo a necessidade de alterar outras partes do sistema.
 - **Dados centralizados:** as variáveis compartilhadas ficam no topo do arquivo e são usadas por todos os menus.
 - **Facilidade para evoluir:** novas opções entram no submenu correto sem mexer nos demais.
