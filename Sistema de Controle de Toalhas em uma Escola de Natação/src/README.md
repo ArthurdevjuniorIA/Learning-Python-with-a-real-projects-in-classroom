@@ -72,7 +72,7 @@ O código foi dividido por responsabilidade: uma função para o menu principal 
 
 ### Como a refatoração melhorou a organização
 
-- **Legibilidade:** cada função tem um propósito claro e o menu principal funciona apenas como roteador.
+- **Legibilidade:** cada função tem um propósito claro, como imprimir o menu principal, enquanto o laço principal realiza o direcionamento.
 - **Manutenção:** um problema no cadastro, por exemplo, é procurado só nas funções de nadadores, sem afetar o restante.
 - **Dados centralizados:** as variáveis compartilhadas ficam no topo do arquivo e são usadas por todos os menus.
 - **Facilidade para evoluir:** novas opções entram no submenu correto sem mexer nos demais.
