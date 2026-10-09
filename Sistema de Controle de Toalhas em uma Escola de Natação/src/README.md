@@ -57,12 +57,12 @@ NADO LIVRE
 
 | Função | Responsabilidade |
 |--------|------------------|
-| `menu_principal()` | Exibe o menu inicial e direciona para cada submenu. |
+| `menu_principal()` | Exibe as opções do menu inicial do sistema. |
 | `menu_nadadores()` | Submenu de nadadores; chama as funções de cadastro, listagem e busca. |
-| `cadastrar_nadador()` | Cadastra um nadador, validando código numérico, positivo e único, e nome não vazio. |
+| `cadastro_nadador()` | Cadastra um nadador, validando código numérico, positivo e único, e nome não vazio. |
 | `listar_nadadores()` | Lista todos os nadadores cadastrados. |
-| `consultar_nadador_por_codigo()` | Busca um nadador pelo código. |
-| `pesquisar_nadador_por_nome()` | Busca nadadores pelo nome ou parte dele. |
+| `consultar_nadadores()` | Busca um nadador pelo código. |
+| `pesquisar_nadadores()` | Busca nadadores pelo nome ou parte dele. |
 | `menu_toalhas()` | Submenu de toalhas: retirada, devolução, toalhas em uso e estoque. Atualiza `toalhas_disponiveis` e registra cada operação no histórico. |
 | `menu_movimentacoes()` | Consulta o histórico completo ou apenas as movimentações de um nadador. |
 
@@ -72,7 +72,7 @@ O código foi dividido por responsabilidade: uma função para o menu principal 
 
 ### Como a refatoração melhorou a organização
 
-- **Legibilidade:** cada função tem um propósito claro e o menu principal funciona apenas como roteador.
+- **Legibilidade:** cada função tem um propósito claro, como imprimir o menu principal, enquanto o laço principal realiza o direcionamento.
 - **Manutenção:** um problema no cadastro, por exemplo, é procurado só nas funções de nadadores, sem afetar o restante.
 - **Dados centralizados:** as variáveis compartilhadas ficam no topo do arquivo e são usadas por todos os menus.
 - **Facilidade para evoluir:** novas opções entram no submenu correto sem mexer nos demais.
