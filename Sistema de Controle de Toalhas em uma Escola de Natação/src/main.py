@@ -15,11 +15,8 @@ toalhas_disponiveis = TOTAL_TOALHAS
 # FUNÇÃO PARA SOLICITAR A OPÇÃO DO MENU
 
 def solicitar_opcao_menu():
-    try: 
-        opcao = int(input("\nEscolha uma opção: "))
-        return opcao
-    except ValueError:
-        return -1
+    opcao = int(input("\nEscolha uma opção: "))
+    return opcao
 
 # FUNÇÃO PARA BUSCAR NADADOR PELO CÓDIGO
 
@@ -32,14 +29,11 @@ def buscar_nadador_por_codigo(cod_input):
 # FUNÇÕES DOS SUBMENUS
 
 def cadastro_nadador():
-            
+         
     print("\n===== CADASTRO DE NADADOR =====\n")
-    try:
-        cod_input = int(input("Código: "))
-    except ValueError:
-        print("Código não válido. Tente novamente.")
-        return
-    if cod_input<=0:
+    cod_input = int(input("Código: "))
+    
+    if cod_input <= 0:
         print("O código não pode ser menor que 0\n")
         return
 
@@ -73,13 +67,8 @@ def listar_nadadores():
         print("Nenhum nadador cadastrado.\n")
 
 def consultar_nadadores():
-
     print("\n===== CONSULTAR NADADOR =====\n")
-    try:
-        cod_input = int(input("Digite o código do nadador: "))
-    except ValueError:
-        print("Código não válido.")
-        return
+    cod_input = int(input("Digite o código do nadador: "))
 
     encontrado = buscar_nadador_por_codigo(cod_input)
     
@@ -150,8 +139,84 @@ def menu_nadadores():
             break
 
 
+def submenu_retirada_toalhas():
+
+    global toalhas_disponiveis 
+
+    print("\n===== RETIRADA DE TOALHAS =====\n")
+    cod_input = int(input("Código do nadador: "))
+    quantidade = int(input("Quantidade de toalhas a retirar: "))
+    
+    if cod_input in [nadador['codigo'] for nadador in nadadores]:
+        if quantidade <= 0:
+            print("Quantidade inválida. Digite um número maior que zero.\n")
+        elif quantidade > toalhas_disponiveis:
+            print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
+            print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
+        else:
+            nadador = buscar_nadador_por_codigo(cod_input)
+            nadador['toalha'] += quantidade
+            toalhas_disponiveis -= quantidade
+            nome = nadador['nome']
+
+            print("\nRetirada registrada com sucesso!")
+            print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+            print(f"Retirada de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})\n")
+            
+            historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Retirada"}
+            historico_movimentacoes.append(historico_de_cada)
+    else:
+        print(f"Código '{cod_input}' não encontrado!\n")
+
+def submenu_devolucao_toalhas():
+
+    global toalhas_disponiveis
+    print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+    cod_input = int(input("Digite o código do nadador: "))
+    
+    if cod_input in [nadador['codigo'] for nadador in nadadores]:
+        nadador = buscar_nadador_por_codigo(cod_input)
+        nome = nadador['nome']
+        toalhas = nadador['toalha']
+        nadador_ref = nadador
+                
+        if toalhas == 0:
+            print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
+        else:
+            quantidade = int(input(f"Nadador possui {toalhas} toalhas. Quantas deseja devolver? "))
+            
+            if quantidade <= 0:
+                print("Quantidade inválida. Digite um número maior que zero.\n")
+            elif quantidade > toalhas:
+                print(f"Erro: O nadador {nome} possui apenas {toalhas} toalhas.\n")
+            else:
+                nadador_ref["toalha"] -= quantidade
+                toalhas_disponiveis += quantidade
+                print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})")
+                print("Devolução registrada com sucesso! Movimentação concluída.\n")
+                
+                historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Devolução"}
+                historico_movimentacoes.append(historico_de_cada)
+    else:
+        print(f"Código '{cod_input}' não encontrado!\n")
+
+def toalhas_em_uso():
+    print("\n" + " TOALHAS EM USO ".center(55, '=') + "\n")
+    if toalhas_disponiveis < TOTAL_TOALHAS:
+        print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
+        print("-" * 55)
+        for nadador in nadadores:
+            if nadador['toalha'] > 0:
+                print(f"{nadador['codigo']:<10}{nadador['nome']:<35}{nadador['toalha']:>8}")
+        print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+    else:
+        print("Nenhum nadador está com toalhas no momento.\n")
+
+def consulta_toalhas():
+    print("\n" + " ESTOQUE DE TOALHAS ".center(55, '=') + "\n")
+    print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
+
 def menu_toalhas():
-    # Modificar a variável global de toalhas
     global toalhas_disponiveis 
     
     while True:
@@ -169,97 +234,16 @@ def menu_toalhas():
             continue
 
         if opcao == 1:
-            print("\n===== RETIRADA DE TOALHAS =====\n")
-            
-            try:
-                cod_input = int(input("Código do nadador: "))
-                quantidade = int(input("Quantidade de toalhas a retirar: "))
-            
-            except ValueError:
-                print("Valor inválido. Digite um número.\n")
-                continue
-            
-            if cod_input in [nadador['codigo'] for nadador in nadadores]:
-                
-                if quantidade <= 0:
-                    print("Quantidade inválida. Digite um número maior que zero.\n")
-                
-                elif quantidade > toalhas_disponiveis:
-                    print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
-                    print(f"Toalhas disponíveis: {toalhas_disponiveis}\n")
-                
-                else:
-                    nadador = buscar_nadador_por_codigo(cod_input)
-                    nadador['toalha'] += quantidade
-                    toalhas_disponiveis -= quantidade
-                    nome = nadador['nome']
+           submenu_retirada_toalhas()
 
-                    print("\nRetirada registrada com sucesso!")
-                    print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-                    print(f"Retirada de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})\n")
-                    
-                    historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Retirada"}
-                    historico_movimentacoes.append(historico_de_cada)
-            
-            else:
-                print(f"Código '{cod_input}' não encontrado!\n")
-
-        
-        
-        
         elif opcao == 2:
-            print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
-            try:
-                cod_input = int(input("Digite o código do nadador: "))
-            except ValueError:
-                print("Código inválido! Digite um número.\n")
-                continue
-            
-            if cod_input in [nadador['codigo'] for nadador in nadadores]:
-                nadador = buscar_nadador_por_codigo(cod_input)
-                nome = nadador['nome']
-                toalhas = nadador['toalha']
-                nadador_ref = nadador
-                        
-                if toalhas == 0:
-                    print(f"O nadador {nome} (Código: {cod_input}) não possui toalhas para devolver.\n")
-                else:
-                    try:
-                        quantidade = int(input(f"Nadador possui {toalhas} toalhas. Quantas deseja devolver? "))
-                    except ValueError:
-                        print("Valor inválido! Digite um número.\n")
-                        continue
-                    
-                    if quantidade <= 0:
-                        print("Quantidade inválida. Digite um número maior que zero.\n")
-                    elif quantidade > toalhas:
-                        print(f"Erro: O nadador {nome} possui apenas {toalhas} toalhas.\n")
-                    else:
-                        nadador_ref["toalha"] -= quantidade
-                        toalhas_disponiveis += quantidade
-                        print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nome} (Código: {cod_input})")
-                        print("Devolução registrada com sucesso! Movimentação concluída.\n")
-                        
-                        historico_de_cada = {"codigo": cod_input, "nome": nome, "toalha": quantidade, "acao": "Devolução"}
-                        historico_movimentacoes.append(historico_de_cada)
-            else:
-                print(f"Código '{cod_input}' não encontrado!\n")
+            submenu_devolucao_toalhas()
 
-        elif opcao == 3:
-            print("\n" + " TOALHAS EM USO ".center(55, '=') + "\n")
-            if toalhas_disponiveis < TOTAL_TOALHAS:
-                print(f"{'Código':<10}{'Nome':<35}{'Toalhas':>8}")
-                print("-" * 55)
-                for nadador in nadadores:
-                    if nadador['toalha'] > 0:
-                        print(f"{nadador['codigo']:<10}{nadador['nome']:<35}{nadador['toalha']:>8}")
-                print(f"\nToalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-            else:
-                print("Nenhum nadador está com toalhas no momento.\n")
+        elif opcao == 3: 
+            toalhas_em_uso()
 
         elif opcao == 4:
-            print("\n" + " ESTOQUE DE TOALHAS ".center(55, '=') + "\n")
-            print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
+            consulta_toalhas()
 
         elif opcao == 0:
             print("Voltando ao menu principal...\n")
@@ -274,21 +258,16 @@ def consultar_movimentacoes(historico_movimentacoes):
         print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
     print("")
 
-
 def consultar_movimentacoes_nadadores(historico_movimentacoes):
-    try:
-        cod_input = int(input("Digite o código que você deseja consultar: "))
+    cod_input = int(input("Digite o código que você deseja consultar: "))
 
-        print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
-        print('-' * 57)
+    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<15}{'Operação':>12}{'Quantidade':>12}")
+    print('-' * 57)
 
-        for idx, item in enumerate(historico_movimentacoes, start=1):
-            if cod_input == item['codigo']:
-                print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
-        print("")
-    
-    except ValueError:
-        print("Opção inválida. Tente um número do menu.")
+    for idx, item in enumerate(historico_movimentacoes, start=1):
+        if cod_input == item['codigo']:
+            print(f"{idx:<6}{item['codigo']:>8}  {item['nome']:<15}{item['acao']:>12}{item['toalha']:>12}")
+    print("")
 
 
 def menu_movimentacoes():
