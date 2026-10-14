@@ -1,12 +1,3 @@
-# ============================================================
-# ESTUDO DE CASO: Nado Livre — Sistema de Controle de Toalhas
-#
-# Integrantes:
-# 20261041110027 - Andrew
-# 20261041110017 - Arthur
-# 20261041110009 - Marcus
-# ============================================================
-
 nadadores = []
 historico_movimentacoes = []
 TOTAL_TOALHAS = 30
@@ -84,12 +75,12 @@ def imprimir_tabela_nadadores(lista):
 
 
 def imprimir_cabecalho_movimentacoes():
-    print(f"\n{'Ordem':<6}{'Código':>8}  {'Nadador':<20}{'Operação':>12}{'Quantidade':>12}")
-    print('-' * 60)
+    print(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
+    print('-' * 61)
 
 
 def imprimir_movimentacao(ordem, item):
-    print(f"{ordem:<6}{item['codigo']:>8}  {item['nome']:<20}{item['acao']:>12}{item['toalha']:>12}")
+    print(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
 
 
 # ------------------------------------------------------------
@@ -269,7 +260,7 @@ def consulta_toalhas():
 
 def menu_toalhas():
     while True:
-        print("\n========== TOALHAS ==========\n")
+        print("\n=========== TOALHAS ===========\n")
         print("1 - Retirar toalhas")
         print("2 - Devolver toalhas")
         print("3 - Consultar toalhas em uso")
@@ -366,25 +357,23 @@ def exibir_menu_principal():
     print("3 - Movimentações")
     print("0 - Sair")
 
+# ------------------------------------------------------------
+# PROGRAMA PRINCIPAL
+# ------------------------------------------------------------
 
-def main():
-    while True:
-        exibir_menu_principal()
+while True:
+    exibir_menu_principal()
 
-        opcao = solicitar_opcao_menu()
+    opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            menu_nadadores()
-        elif opcao == 2:
-            menu_toalhas()
-        elif opcao == 3:
-            menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break
-        else:
-            print("Opção inválida. Por favor, selecione um número do menu.\n")
-
-
-if __name__ == "__main__":
-    main()
+    if opcao == 1:
+        menu_nadadores()
+    elif opcao == 2:
+        menu_toalhas()
+    elif opcao == 3:
+        menu_movimentacoes()
+    elif opcao == 0:
+        print("Saindo do sistema... Até logo!")
+        break
+    else:
+        print("Opção inválida. Por favor, selecione um número do menu.\n")
