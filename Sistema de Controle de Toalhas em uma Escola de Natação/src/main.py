@@ -182,7 +182,7 @@ def menu_nadadores():
 # TOALHAS
 # ------------------------------------------------------------
 
-def submenu_retirada_toalhas():
+def submenu_retirada_toalhas(total):
     global toalhas_disponiveis
 
     print("\n===== RETIRADA DE TOALHAS =====\n")
