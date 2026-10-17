@@ -257,15 +257,18 @@ def consulta_toalhas():
     print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
     print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
 
+def exibir_menu_toalhas():
+    print("\n=========== TOALHAS ===========\n")
+    print("1 - Retirar toalhas")
+    print("2 - Devolver toalhas")
+    print("3 - Consultar toalhas em uso")
+    print("4 - Consultar toalhas disponíveis")
+    print("0 - Voltar")
 
+    
 def menu_toalhas():
     while True:
-        print("\n=========== TOALHAS ===========\n")
-        print("1 - Retirar toalhas")
-        print("2 - Devolver toalhas")
-        print("3 - Consultar toalhas em uso")
-        print("4 - Consultar toalhas disponíveis")
-        print("0 - Voltar")
+        exibir_menu_toalhas()
 
         opcao = solicitar_opcao_menu()
 
@@ -324,13 +327,14 @@ def consultar_movimentacoes_nadadores():
         imprimir_movimentacao(ordem, item)
     print("")
 
-
+def exibir_menu_movimentacoes():
+    print("\n======== MOVIMENTAÇÕES ========\n")
+    print("1 - Consultar movimentações")
+    print("2 - Consultar movimentações do nadador")
+    print("0 - Voltar")
 def menu_movimentacoes():
     while True:
-        print("\n======== MOVIMENTAÇÕES ========\n")
-        print("1 - Consultar movimentações")
-        print("2 - Consultar movimentações do nadador")
-        print("0 - Voltar")
+        exibir_menu_movimentacoes()
 
         opcao = solicitar_opcao_menu()
 
