@@ -94,7 +94,7 @@ def cadastro_nadador():
 
     codigo = solicitar_codigo()
     if codigo is None:
-        return
+        return 
 
     if buscar_nadador_por_codigo(codigo):
         print("Código já cadastrado! Tente novamente.\n")
@@ -123,7 +123,7 @@ def consultar_nadadores():
 
     codigo = solicitar_codigo()
     if codigo is None:
-        return
+        return 
 
     encontrado = buscar_nadador_por_codigo(codigo)
     if encontrado:
@@ -183,7 +183,7 @@ def submenu_retirada_toalhas(toalhas_em_uso):
 
     codigo = solicitar_codigo()
     if codigo is None:
-        return
+        return toalhas_em_uso
 
     nadador = buscar_nadador_por_codigo(codigo)
     if nadador is None:
@@ -214,7 +214,7 @@ def submenu_devolucao_toalhas(toalhas_em_uso):
 
     codigo = solicitar_codigo()
     if codigo is None:
-        return
+        return toalhas_em_uso
 
     nadador = buscar_nadador_por_codigo(codigo)
     if nadador is None:
@@ -273,19 +273,16 @@ def exibir_menu_toalhas():
 def menu_toalhas(toalhas_em_uso):
     while True:
         exibir_menu_toalhas()
+       
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
-            # Passa o valor local e atualiza com o retorno
-            retorno = submenu_retirada_toalhas(toalhas_em_uso)
-            if retorno is not None:
-                toalhas_disponiveis = retorno
+             # Armazena o restante das toalhas na variável toalhas em uso
+            toalhas_em_uso = submenu_retirada_toalhas(toalhas_em_uso)
 
         elif opcao == 2:
-            # Passa o valor local e atualiza com o retorno
-            retorno = submenu_devolucao_toalhas(toalhas_em_uso)
-            if retorno is not None:
-                toalhas_disponiveis = retorno
+            # Armazena o restante das toalhas na variável toalhas em uso
+            toalhas_em_uso = submenu_devolucao_toalhas(toalhas_em_uso)
 
         elif opcao == 3:
             # Chama a função que lista os nadadores com toalha
@@ -299,6 +296,7 @@ def menu_toalhas(toalhas_em_uso):
         elif opcao == 0:
             # Retorna o valor final atualizado para quem chamou o menu_toalhas
             return toalhas_em_uso
+        
         else:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
     
@@ -325,7 +323,7 @@ def consultar_movimentacoes_nadadores():
 
     codigo = solicitar_codigo()
     if codigo is None:
-        return
+        return 
 
     # Mantém a ordem original de cada movimentação no histórico geral
     movimentacoes = [
@@ -391,7 +389,7 @@ while True:
     if opcao == 1:
         menu_nadadores()
     elif opcao == 2:
-        toalhas_em_uso = menu_toalhas(toalhas_disponiveis)
+        toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
     elif opcao == 3:
         menu_movimentacoes()
     elif opcao == 0:
