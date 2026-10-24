@@ -64,6 +64,7 @@ def registrar_movimentacao(nadador, quantidade, acao):
         'acao': acao,
     })
 
+
 def cabecalho_da_tabela(texto):
     print(texto)
     print('-' * 61)
@@ -78,6 +79,7 @@ def imprimir_tabela_nadadores(lista):
 
 
 def imprimir_cabecalho_movimentacoes():
+
 
     cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
 
@@ -94,6 +96,7 @@ def cadastro_nadador():
 
     codigo = solicitar_codigo()
     if codigo is None:
+
         return 
 
     if buscar_nadador_por_codigo(codigo):
@@ -300,6 +303,13 @@ def menu_toalhas(toalhas_em_uso):
         else:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
     
+
+# ------------------------------------------------------------
+# MOVIMENTAÇÕES
+# ------------------------------------------------------------
+
+def consultar_movimentacoes():
+    print("\n===== MOVIMENTAÇÕES =====")
 
 # ------------------------------------------------------------
 # MOVIMENTAÇÕES
