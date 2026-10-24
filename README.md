@@ -89,8 +89,13 @@ Boas práticas adotadas pela equipe:
 
 ## 🛠 Tecnologias
 
-- Python 3
-- Git e GitHub
+## 🛠 Tecnologias
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</p>
 
 ---
 
