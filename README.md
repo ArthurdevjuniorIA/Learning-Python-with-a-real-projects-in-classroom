@@ -40,13 +40,15 @@ Repositório criado para reunir os **primeiros projetos reais** desenvolvidos em
 
 ```bash
 git clone https://github.com/ArthurdevjuniorIA/Learning-Python-with-a-real-projects-in-classroom.git
-cd Learning-Python-with-a-real-projects-in-classroom
-```
 
-**2. Entre na pasta do projeto desejado e execute**
+```
+**2. Entre na pasta do projeto**
 
 ```bash
-cd "Sistema de Controle de Toalhas"
+cd Learning-Python-with-a-real-projects-in-classroom
+```
+**3. Rode o projeto**
+```bash
 python main.py
 ```
 
