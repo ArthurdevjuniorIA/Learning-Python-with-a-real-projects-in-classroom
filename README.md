@@ -1,67 +1,107 @@
-# 🏊‍♂️ Nado Livre — Sistema de Controle de Toalhas
+# 🐍 Learning Python with Real Projects in Classroom
 
-O **Nado Livre** é um sistema em Python desenvolvido para gerenciamento de nadadores e controle do fluxo de empréstimo e devolução de toalhas de uma academia/clube de natação. O sistema garante o rastreamento preciso do estoque de toalhas, histórico de movimentações e prevenção de erros operacionais.
-
----
-
-## 👥 Integrantes do Projeto
-
-* **Andrew Rafael**
-* **Arthur Kauã** 
-* **Marcus Paulo** 
+Repositório criado para reunir os **primeiros projetos reais** desenvolvidos em colaboração com outras pessoas durante as aulas. Aqui você encontra trabalho em equipe de verdade e as boas práticas do dia a dia de quem desenvolve software: versionamento com Git, divisão de tarefas, revisão de código via Pull Requests e documentação.
 
 ---
 
-## 🎯 Funcionalidades
+## 📋 Índice
 
-### 1. 👤 Gestão de Nadadores
-* **Cadastrar Nadador:** Registo com código único e formatação automática de nome.
-* **Consultar Nadadores:** Listagem geral formatada em tabela de todos os nadadores cadastrados.
-* **Consultar por Código:** Busca rápida e direta utilizando o código único do atleta.
-* **Pesquisar por Nome:** Busca flexível por nome completo ou partes do nome (case-insensitive).
-
-### 2. 🧺 Controle de Toalhas
-* **Retirar Toalhas:** Empréstimo com validação de estoque e verificação de cadastro do nadador.
-* **Devolver Toalhas:** Processamento de devolução com validações contra devoluções excedentes ou para nadadores sem toalhas pendentes.
-* **Toalhas em Uso:** Relatório detalhado exibindo quem está em posse de toalhas no momento.
-* **Estoque de Toalhas:** Painel em tempo real da quantidade de toalhas disponíveis versus capacidade total ($30$ unidades).
-
-### 3. 📜 Registros e Movimentações
-* **Histórico Geral:** Registro em ordem cronológica de todas as retiradas e devoluções executadas no sistema.
-* **Histórico Individual:** Filtragem das movimentações por código do nadador.
+- [Projetos](#-projetos)
+- [Como usar este repositório](#-como-usar-este-repositório)
+- [Estrutura do repositório](#-estrutura-do-repositório)
+- [Fluxo de colaboração](#-fluxo-de-colaboração)
+- [Tecnologias](#-tecnologias)
+- [Colaboradores](#-colaboradores)
 
 ---
 
-## 💡 Decisões de Design e UX
+## 📂 Projetos
 
-* **Submenus Persistentes:** O sistema mantém o utilizador no submenu atual após cada operação concluída, evitando navegações redundantes até que seja acionada a opção `0 - Voltar`.
-* **Identificador Único:** O código do nadador é tratado como chave primária única, garantindo a integridade nas buscas e nos históricos de movimentação.
-* **Tratamento de Exceções:** Todos os dados de entrada (`inputs`) possuem validações com blocos `try/except` para impedir falhas de execução por dados mal formatados ou tipos inválidos.
+| Projeto | Descrição | Tecnologias |
+|---|---|---|
+| [🏊 Sistema de Controle de Toalhas (Nado Livre)](./Sistema-de-Controle-de-Toalhas) | Sistema de terminal para cadastrar nadadores, controlar retirada/devolução de toalhas e consultar o histórico de movimentações. | Python 3 |
+
+> Novos projetos serão adicionados a esta tabela conforme forem desenvolvidos.
+
+### Destaque: Nado Livre
+
+- Cadastro, listagem, consulta por código e pesquisa por nome de nadadores
+- Controle de estoque de toalhas (30 unidades) com retirada e devolução
+- Histórico completo de movimentações, geral ou por nadador
+- Validação de todas as entradas do usuário
+
+➡️ Veja o [README do projeto](./Sistema-de-Controle-de-Toalhas/README.md) para a documentação completa.
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## 🚀 Como usar este repositório
 
-* **Linguagem:** [Python 3.x](https://www.python.org/)
-* **Estrutura de Dados:** Listas e Dicionários nativos para armazenamento em memória.
+**1. Clone o repositório**
 
----
-
-## 🚀 Como Executar o Projeto
-
-### Pré-requisitos
-Ter o Python 3 instalado no seu computador.
-
-### Passo a Passo
-
-1. **Clone ou baixe o repositório:**
-   ```bash
-   git clone [https://github.com/seu-usuario/nado-livre.git](https://github.com/seu-usuario/nado-livre.git)
-2. **Acesse a pasta do projeto**
-```bash 
-  cd nado-livre
-````
-3. **Execute o arquivo principal**
 ```bash
-  python main.py
-````
+git clone https://github.com/ArthurdevjuniorIA/Learning-Python-with-a-real-projects-in-classroom.git
+cd Learning-Python-with-a-real-projects-in-classroom
+```
+
+**2. Entre na pasta do projeto desejado e execute**
+
+```bash
+cd "Sistema de Controle de Toalhas"
+python main.py
+```
+
+> Use `python3` em Linux/macOS. Ajuste o nome do arquivo caso o seu seja diferente de `main.py`.
+
+**Requisitos:** [Python 3.6+](https://www.python.org/downloads/). Os projetos usam apenas a biblioteca padrão, sem dependências externas.
+
+---
+
+## 🗂 Estrutura do repositório
+
+```
+Learning-Python-with-a-real-projects-in-classroom/
+│
+├── Sistema de Controle de Toalhas/
+│   ├── main.py
+│   └── README.md
+│
+├── .gitignore
+└── README.md          # você está aqui
+```
+
+Cada projeto fica em sua **própria pasta**, com código e README próprios.
+
+---
+
+## 🤝 Fluxo de colaboração
+
+Boas práticas adotadas pela equipe:
+
+1. **Atualizar** a cópia local antes de começar: `git pull origin main`
+2. **Criar uma branch** para cada tarefa: `git checkout -b feature/nome-da-tarefa`
+3. **Commits pequenos e descritivos**, por exemplo: `feat: adiciona pesquisa de nadador por nome`
+4. **Abrir um Pull Request** para revisão de outro integrante
+5. **Fazer o merge** na `main` apenas após a revisão
+
+---
+
+## 🛠 Tecnologias
+
+- Python 3
+- Git e GitHub
+
+---
+
+## 👥 Colaboradores
+
+| Nome | GitHub |
+|---|---|
+| Arthur | [@ArthurdevjuniorIA](https://github.com/ArthurdevjuniorIA) |
+| Marcus | [@Marcuspdev](https://github.com/Marcuspdev) |
+| Andrew | .[@andrewqdev](https://github.com/andrewqdev).|
+
+---
+
+## 📄 Licença
+
+Repositório com fins educacionais.

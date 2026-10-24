@@ -1,0 +1,77 @@
+# Nado Livre: Sistema de Controle de Toalhas
+
+Estudo de Caso desenvolvido em Python para o controle de empréstimo de toalhas em um clube de natação.
+
+## Integrantes
+
+| Matrícula       | Nome                              |
+|-----------------|-----------------------------------|
+| 20261041110027  | Andrew Rafael Oliveira Queiroz    |
+| 20261041110017  | Arthur Kauã Nascimento dos Santos |
+| 20261041110009  | Marcus Paulo de Araújo Cruz       |
+
+## Descrição do sistema
+
+O **Nado Livre** é um programa executado no terminal que controla o empréstimo de toalhas para os nadadores. O estoque inicial é de **30 toalhas**.
+
+Com ele é possível:
+
+- cadastrar nadadores e consultá-los por código ou por nome;
+- registrar a retirada e a devolução de toalhas, validando o estoque e a quantidade que cada nadador possui;
+- consultar as toalhas em uso e o estoque disponível;
+- consultar o histórico de movimentações, geral ou por nadador.
+
+Os dados ficam em memória (listas e dicionários) e a navegação é feita por menus e submenus.
+
+Requer Python 3.6 ou superior (uso de f-strings).
+
+## Estrutura de menus
+
+```
+NADO LIVRE
+├── 1 - Nadadores
+│   ├── 1 - Cadastrar nadador
+│   ├── 2 - Consultar nadadores
+│   ├── 3 - Consultar nadador por código
+│   ├── 4 - Pesquisar nadador por nome
+│   └── 0 - Voltar
+├── 2 - Toalhas
+│   ├── 1 - Retirar toalhas
+│   ├── 2 - Devolver toalhas
+│   ├── 3 - Consultar toalhas em uso
+│   ├── 4 - Consultar toalhas disponíveis
+│   └── 0 - Voltar
+├── 3 - Movimentações
+│   ├── 1 - Consultar movimentações
+│   ├── 2 - Consultar movimentações do nadador
+│   └── 0 - Voltar
+└── 0 - Sair
+```
+
+## Principais funções
+
+| Função | Responsabilidade |
+|--------|------------------|
+| `exibir_menu_principal()` | Exibe as opções do menu inicial do sistema. |
+| `menu_nadadores()` | Submenu de nadadores; chama as funções de cadastro, listagem e busca. |
+| `cadastro_nadador()` | Cadastra um nadador, validando código numérico, positivo e único, e nome não vazio. |
+| `listar_nadadores()` | Lista todos os nadadores cadastrados. |
+| `consultar_nadadores()` | Busca um nadador pelo código. |
+| `pesquisar_nadadores()` | Busca nadadores pelo nome ou parte dele. |
+| `menu_toalhas()` | Submenu de toalhas; chama as funções de retirada, devolução e consultas. |
+| `submenu_retirada_toalhas()` | Registra a retirada, validando nadador e estoque, e atualiza `toalhas_disponiveis`. |
+| `submenu_devolucao_toalhas()` | Registra a devolução, impedindo devolver mais do que o nadador possui. |
+| `registrar_movimentacao(nadador, quantidade, acao)` | Grava cada retirada ou devolução no histórico. |
+| `menu_movimentacoes()` | Consulta o histórico completo ou apenas as movimentações de um nadador. |
+
+## Refatoração
+
+O código foi dividido por responsabilidade: uma função para cada operação do sistema (cadastro, consultas, retirada, devolução e movimentações), funções auxiliares para ler e validar as entradas, e uma função para cada menu. O programa principal ficou apenas com o laço que direciona para os submenus.
+
+### Como a refatoração melhorou a organização
+
+- **Legibilidade:** cada função tem um propósito claro, como imprimir o menu principal, enquanto o laço principal realiza o direcionamento.
+- **Manutenção:** um problema no cadastro, por exemplo, pode ser localizado mais facilmente nas funções relacionadas aos nadadores, reduzindo a necessidade de alterar outras partes do sistema.
+- **Dados centralizados:** as variáveis compartilhadas ficam no topo do arquivo e são usadas por todos os menus.
+- **Facilidade para evoluir:** novas opções entram no submenu correto sem mexer nos demais.
+- **Reaproveitamento:** por exemplo, `buscar_nadador_por_codigo` e `imprimir_tabela_nadadores` evitam repetir a busca e a formatação da tabela em várias partes do programa.
