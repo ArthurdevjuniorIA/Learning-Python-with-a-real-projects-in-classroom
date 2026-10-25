@@ -45,7 +45,7 @@ git clone https://github.com/ArthurdevjuniorIA/Learning-Python-with-a-real-proje
 **2. Entre na pasta do projeto**
 
 ```bash
-cd Learning-Python-with-a-real-projects-in-classroom
+cd Sistema de Controle de Toalhas em uma Escola de Natação
 ```
 **3. Rode o projeto**
 ```bash
