@@ -40,13 +40,15 @@ Repositório criado para reunir os **primeiros projetos reais** desenvolvidos em
 
 ```bash
 git clone https://github.com/ArthurdevjuniorIA/Learning-Python-with-a-real-projects-in-classroom.git
-cd Learning-Python-with-a-real-projects-in-classroom
-```
 
-**2. Entre na pasta do projeto desejado e execute**
+```
+**2. Entre na pasta do projeto**
 
 ```bash
-cd "Sistema de Controle de Toalhas"
+cd Sistema de Controle de Toalhas em uma Escola de Natação
+```
+**3. Rode o projeto**
+```bash
 python main.py
 ```
 
@@ -87,8 +89,12 @@ Boas práticas adotadas pela equipe:
 
 ## 🛠 Tecnologias
 
-- Python 3
-- Git e GitHub
+
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.x-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3" />
+  <img src="https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white" alt="Git" />
+  <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+</p>
 
 ---
 
