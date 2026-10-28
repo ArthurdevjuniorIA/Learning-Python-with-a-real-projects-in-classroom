@@ -32,6 +32,15 @@ def solicitar_codigo():
     return codigo
 
 
+def encontrar_novo_codigo(nadadores):
+    """Retorna um novo código para o novo registro."""
+    if len(nadadores) == 0:
+        codigo = 1
+    else:
+        codigo = nadadores[-1]['codigo'] + 1
+    return codigo
+
+
 def solicitar_quantidade(mensagem):
     """Lê uma quantidade de toalhas. Retorna None (com mensagem) se for inválida."""
     quantidade = input(mensagem).strip()
@@ -98,22 +107,15 @@ def imprimir_movimentacao(ordem, item):
 def cadastro_nadador(nadadores):
     print("\n===== CADASTRO DE NADADOR =====\n")
 
-    codigo = solicitar_codigo()
-    if codigo is None:
-
-        return 
-
-    if buscar_nadador_por_codigo(codigo, nadadores):
-        print("Código já cadastrado! Tente novamente.\n")
-        return
-
     nome = input("Nome: ").strip().title()
     if not nome:
         print("Dados inválidos! O nome não pode ser vazio.\n")
         return
 
+    codigo = encontrar_novo_codigo(nadadores)
+
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
-    print("Nadador cadastrado com sucesso!\n")
+    print(f"Nadador (código: {codigo}) cadastrado com sucesso!\n")
 
 
 def listar_nadadores(nadadores):
