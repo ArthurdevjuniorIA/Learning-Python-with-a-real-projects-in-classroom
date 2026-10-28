@@ -80,12 +80,11 @@ def imprimir_tabela_nadadores(lista):
 
 def imprimir_cabecalho_movimentacoes():
 
-
     cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
 
 
 def imprimir_movimentacao(ordem, item):
-    cabecalho_da_tabela(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
+    print(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
 
 # ------------------------------------------------------------
 # NADADORES
@@ -297,20 +296,13 @@ def menu_toalhas(toalhas_em_uso):
         
         else:
             print("Opção inválida. Por favor, selecione um número do submenu.\n")
-    
+
 
 # ------------------------------------------------------------
 # MOVIMENTAÇÕES
 # ------------------------------------------------------------
 
 def consultar_movimentacoes(historico_movimentacoes):
-    print("\n===== MOVIMENTAÇÕES =====")
-
-# ------------------------------------------------------------
-# MOVIMENTAÇÕES
-# ------------------------------------------------------------
-
-def consultar_movimentacoes():
     print("\n===== MOVIMENTAÇÕES =====")
 
     if not historico_movimentacoes:
