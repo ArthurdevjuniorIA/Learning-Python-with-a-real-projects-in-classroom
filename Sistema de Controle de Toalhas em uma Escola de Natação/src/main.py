@@ -54,6 +54,11 @@ def buscar_nadador_por_codigo(codigo, nadadores):
             return nadador
     return None
 
+def buscar_nadador_por_nome(consultar_nome, nadadores):
+    """Retorna a lista de nadadores ou None se não existir."""
+    resultados = [n for n in nadadores if consultar_nome in n['nome'].lower()]
+    return resultados
+
 
 def registrar_movimentacao(nadador, quantidade, acao):
     """Adiciona uma retirada ou devolução ao histórico."""
@@ -135,13 +140,12 @@ def consultar_nadadores(nadadores):
         print("\nNadador não encontrado.\n")
 
 
-def pesquisar_nadadores(consultar_nome):
+def pesquisar_nadadores(consultar_nome, nadadores):
     print("\n===== PESQUISAR NADADOR =====\n")
 
-    resultados = [n for n in nadadores if consultar_nome in n['nome'].lower()]
+    resultados = buscar_nadador_por_nome(consultar_nome, nadadores)
 
     if resultados:
-        print("\nNadador encontrado:\n" if len(resultados) == 1 else "\nNadadores encontrados:\n")
         imprimir_tabela_nadadores(resultados)
     else:
         print("\nNenhum nadador encontrado.\n")
@@ -168,7 +172,7 @@ def menu_nadadores(nadadores):
             consultar_nadadores(nadadores)
         elif opcao == 4:
             consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
-            pesquisar_nadadores(consultar_nome)
+            pesquisar_nadadores(consultar_nome, nadadores)
         elif opcao == 0:
             break
         else:
