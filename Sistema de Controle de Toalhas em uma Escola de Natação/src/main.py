@@ -146,7 +146,6 @@ def pesquisar_nadadores(consultar_nome, nadadores):
     resultados = buscar_nadador_por_nome(consultar_nome, nadadores)
 
     if resultados:
-        print("\nNadador encontrado:\n" if len(resultados) == 1 else "\nNadadores encontrados:\n")
         imprimir_tabela_nadadores(resultados)
     else:
         print("\nNenhum nadador encontrado.\n")
