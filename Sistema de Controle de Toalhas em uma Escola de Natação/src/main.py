@@ -135,9 +135,8 @@ def consultar_nadadores(nadadores):
         print("\nNadador não encontrado.\n")
 
 
-def pesquisar_nadadores(nadadores):
+def pesquisar_nadadores(consultar_nome):
     print("\n===== PESQUISAR NADADOR =====\n")
-    consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
 
     resultados = [n for n in nadadores if consultar_nome in n['nome'].lower()]
 
@@ -168,7 +167,8 @@ def menu_nadadores(nadadores):
         elif opcao == 3:
             consultar_nadadores(nadadores)
         elif opcao == 4:
-            pesquisar_nadadores(nadadores)
+            consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
+            pesquisar_nadadores(consultar_nome)
         elif opcao == 0:
             break
         else:
