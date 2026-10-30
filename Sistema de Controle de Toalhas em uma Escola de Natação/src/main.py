@@ -77,7 +77,11 @@ def registrar_movimentacao(nadador, quantidade, acao):
         'toalha': quantidade,
         'acao': acao,
     })
+def opcao_invalida():
+    print("Opção inválida. Por favor, selecione um número do submenu.\n")
 
+def cabecalho(mensagem):
+    print(mensagem)
 
 def cabecalho_da_tabela(texto):
     print(texto)
@@ -105,7 +109,7 @@ def imprimir_movimentacao(ordem, item):
 # ------------------------------------------------------------
 
 def cadastro_nadador(nadadores):
-    print("\n===== CADASTRO DE NADADOR =====\n")
+    cabecalho("\n===== CADASTRO DE NADADOR =====\n")
 
     nome = input("Nome: ").strip().title()
     if not nome:
@@ -128,7 +132,7 @@ def listar_nadadores(nadadores):
 
 
 def consultar_nadadores(nadadores):
-    print("\n===== CONSULTAR NADADOR =====\n")
+    cabecalho("\n===== CONSULTAR NADADOR =====\n")
 
     codigo = solicitar_codigo()
     if codigo is None:
@@ -143,7 +147,7 @@ def consultar_nadadores(nadadores):
 
 
 def pesquisar_nadadores(consultar_nome, nadadores):
-    print("\n===== PESQUISAR NADADOR =====\n")
+    cabecalho("\n===== PESQUISAR NADADOR =====\n")
 
     resultados = buscar_nadador_por_nome(consultar_nome, nadadores)
 
@@ -178,7 +182,7 @@ def menu_nadadores(nadadores):
         elif opcao == 0:
             break
         else:
-            print("Opção inválida. Por favor, selecione um número do submenu.\n")
+            opcao_invalida()
 
 
 # ------------------------------------------------------------
@@ -187,7 +191,7 @@ def menu_nadadores(nadadores):
 
 def submenu_retirada_toalhas(toalhas_em_uso, nadadores):
 
-    print("\n===== RETIRADA DE TOALHAS =====\n")
+    cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
 
     codigo = solicitar_codigo()
     if codigo is None:
@@ -219,7 +223,7 @@ def submenu_retirada_toalhas(toalhas_em_uso, nadadores):
 
 def submenu_devolucao_toalhas(toalhas_em_uso, nadadores):
 
-    print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+    cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
 
     codigo = solicitar_codigo()
     if codigo is None:
@@ -301,7 +305,7 @@ def menu_toalhas(toalhas_em_uso):
             return toalhas_em_uso
         
         else:
-            print("Opção inválida. Por favor, selecione um número do submenu.\n")
+            opcao_invalida()
 
 
 # ------------------------------------------------------------
@@ -309,7 +313,7 @@ def menu_toalhas(toalhas_em_uso):
 # ------------------------------------------------------------
 
 def consultar_movimentacoes(historico_movimentacoes):
-    print("\n===== MOVIMENTAÇÕES =====")
+    cabecalho("\n===== MOVIMENTAÇÕES =====")
 
     if not historico_movimentacoes:
         print("\nNenhuma movimentação registrada.\n")
@@ -322,7 +326,7 @@ def consultar_movimentacoes(historico_movimentacoes):
 
 
 def consultar_movimentacoes_nadadores(historico_movimentacoes):
-    print("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
+    cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
 
     codigo = solicitar_codigo()
     if codigo is None:
@@ -364,7 +368,7 @@ def menu_movimentacoes(historico_movimentacoes):
         elif opcao == 0:
             break
         else:
-            print("Opção inválida. Por favor, selecione um número do submenu.\n")
+            opcao_invalida()
 
 
 # ------------------------------------------------------------
@@ -399,4 +403,4 @@ while True:
         print("Saindo do sistema... Até logo!")
         break
     else:
-        print("Opção inválida. Por favor, selecione um número do menu.\n")
+        opcao_invalida()
