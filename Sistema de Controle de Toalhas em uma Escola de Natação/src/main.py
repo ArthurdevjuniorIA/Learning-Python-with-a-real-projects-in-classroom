@@ -89,12 +89,9 @@ def imprimir_tabela_nadadores(lista):
     print("")
 
 
-def imprimir_cabecalho_movimentacoes():
-
-    cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
-
-
 def imprimir_movimentacao(ordem, item):
+    cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
+    
     print(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
 
 # ------------------------------------------------------------
@@ -320,7 +317,6 @@ def consultar_movimentacoes(historico_movimentacoes):
         print("\nNenhuma movimentação registrada.\n")
         return
 
-    imprimir_cabecalho_movimentacoes()
     for ordem, item in enumerate(historico_movimentacoes, start=1):
         imprimir_movimentacao(ordem, item)
     print("")
@@ -344,7 +340,7 @@ def consultar_movimentacoes_nadadores(historico_movimentacoes):
         print("\nNenhuma movimentação encontrada para esse código.\n")
         return
 
-    imprimir_cabecalho_movimentacoes()
+    
     for ordem, item in movimentacoes:
         imprimir_movimentacao(ordem, item)
     print("")
