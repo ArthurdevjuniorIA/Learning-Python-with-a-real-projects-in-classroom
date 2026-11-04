@@ -101,56 +101,19 @@ def imprimir_movimentacao(ordem, item):
 # NADADORES
 # ------------------------------------------------------------
 
-def cadastro_nadador(nadadores):
+def cadastro_nadador(nadadores,nome):
     global contador_id
-    cabecalho("\n===== CADASTRO DE NADADOR =====\n")
 
-    nome = input("Nome: ").strip().title()
     if not nome:
-        print("Dados inválidos! O nome não pode ser vazio.\n")
-        return
+        return None
 
     codigo = contador_id
     contador_id += 1  # Incrementa o contador de ID para o próximo nadador
     
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
-    print(f"Nadador (código: {codigo}) cadastrado com sucesso!\n")
+    return codigo
 
-
-
-def listar_nadadores(nadadores):
-    print(f"\n{' NADADORES '.center(51, '=')}\n")
-
-    if nadadores:
-        imprimir_tabela_nadadores(nadadores)
-    else:
-        print("Nenhum nadador cadastrado.\n")
-
-
-def consultar_nadadores(nadadores):
-    cabecalho("\n===== CONSULTAR NADADOR =====\n")
-
-    codigo = solicitar_codigo()
-    if codigo is None:
-        return 
-
-    encontrado = buscar_nadador_por_codigo(codigo, nadadores)
-    if encontrado:
-        print("\nNadador encontrado:\n")
-        imprimir_tabela_nadadores([encontrado])
-    else:
-        print("\nNadador não encontrado.\n")
-
-
-def pesquisar_nadadores(consultar_nome, nadadores):
-    cabecalho("\n===== PESQUISAR NADADOR =====\n")
-
-    resultados = buscar_nadador_por_nome(consultar_nome, nadadores)
-
-    if resultados:
-        imprimir_tabela_nadadores(resultados)
-    else:
-        print("\nNenhum nadador encontrado.\n")
+    
 
 def exibir_menu_nadadores():
     print("\n========== NADADORES ==========\n")
@@ -167,15 +130,57 @@ def menu_nadadores(nadadores):
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
-            cadastro_nadador(nadadores)
+            cabecalho("\n===== CADASTRO DE NADADOR =====\n")
+            nome = input("Nome: ").strip().title()
+            resultado = cadastro_nadador(nadadores,nome)
+            if resultado is None:
+                print("Dados inválidos! O nome não pode ser vazio.\n")
+            else:
+                print(f"Nadador (código: {resultado}) cadastrado com sucesso!\n")
+
+
+
         elif opcao == 2:
-            listar_nadadores(nadadores)
+            print(f"\n{' NADADORES '.center(51, '=')}\n")
+
+            if not nadadores:
+                print("Nenhum nadador cadastrado.\n")
+            else:
+                imprimir_tabela_nadadores(nadadores)
+
+                
+                
         elif opcao == 3:
-            consultar_nadadores(nadadores)
+            cabecalho("\n===== CONSULTAR NADADOR =====\n")
+            codigo = solicitar_codigo()
+            if codigo is None:
+                return 
+        
+            encontrado = buscar_nadador_por_codigo(codigo, nadadores)
+            if encontrado:
+                print("\nNadador encontrado:\n")
+                imprimir_tabela_nadadores([encontrado])
+            else:
+                print("\nNadador não encontrado.\n")
+
         elif opcao == 4:
             consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
-            pesquisar_nadadores(consultar_nome, nadadores)
+            cabecalho("\n===== PESQUISAR NADADOR =====\n")
+            
+            resultados = buscar_nadador_por_nome(consultar_nome, nadadores)
+        
+            if resultados:
+                cabecalho_da_tabela(f"{'Código':<8}{'Nome':<35}{'Toalhas':>8}")
+                
+                for nadador in nadadores:
+                    print(f"{nadador['codigo']:<8}{nadador['nome']:<35}{nadador['toalha']:>8}")
+                print("")
+            else:
+                print("\nNenhum nadador encontrado.\n")
+
+
         elif opcao == 0:
+            input("Aperte uma tecla qualquer para sair do sistema")
             break
         else:
             opcao_invalida()
