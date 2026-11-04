@@ -2,6 +2,7 @@ nadadores = []
 historico_movimentacoes = []
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
+contador_id = 1
 
 
 # ------------------------------------------------------------
@@ -31,14 +32,6 @@ def solicitar_codigo():
         return None
     return codigo
 
-
-def encontrar_novo_codigo(nadadores):
-    """Retorna um novo código para o novo registro."""
-    if len(nadadores) == 0:
-        codigo = 1
-    else:
-        codigo = nadadores[-1]['codigo'] + 1
-    return codigo
 
 
 def solicitar_quantidade(mensagem):
@@ -109,6 +102,7 @@ def imprimir_movimentacao(ordem, item):
 # ------------------------------------------------------------
 
 def cadastro_nadador(nadadores):
+    global contador_id
     cabecalho("\n===== CADASTRO DE NADADOR =====\n")
 
     nome = input("Nome: ").strip().title()
@@ -116,10 +110,12 @@ def cadastro_nadador(nadadores):
         print("Dados inválidos! O nome não pode ser vazio.\n")
         return
 
-    codigo = encontrar_novo_codigo(nadadores)
-
+    codigo = contador_id
+    contador_id += 1  # Incrementa o contador de ID para o próximo nadador
+    
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
     print(f"Nadador (código: {codigo}) cadastrado com sucesso!\n")
+
 
 
 def listar_nadadores(nadadores):
