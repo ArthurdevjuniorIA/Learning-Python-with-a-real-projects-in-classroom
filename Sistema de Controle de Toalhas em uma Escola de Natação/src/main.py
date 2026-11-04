@@ -91,7 +91,7 @@ def imprimir_tabela_nadadores(lista):
 
 def imprimir_movimentacao(ordem, item):
     cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
-    
+
     print(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
 
 # ------------------------------------------------------------
@@ -177,7 +177,6 @@ def menu_nadadores(nadadores):
 
 
         elif opcao == 0:
-            input("Aperte uma tecla qualquer para sair do sistema")
             break
         else:
             opcao_invalida()
