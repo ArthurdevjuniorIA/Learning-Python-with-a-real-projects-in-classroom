@@ -6,9 +6,9 @@ Estudo de Caso desenvolvido em Python para o controle de empréstimo de toalhas 
 
 | Matrícula       | Nome                              |
 |-----------------|-----------------------------------|
-| 20261041110027  | Andrew Rafael Oliveira Queiroz    |
-| 20261041110017  | Arthur Kauã Nascimento dos Santos |
-| 20261041110009  | Marcus Paulo de Araújo Cruz       |
+| 202610411100**  | Andrew Rafael Oliveira Queiroz    |
+| 202610411100**  | Arthur Kauã Nascimento dos Santos |
+| 202610411100**  | Marcus Paulo de Araújo Cruz       |
 
 ## Descrição do sistema
 
