@@ -3,8 +3,11 @@
 # ============================================================
 
 nadadores = []
-proximo_id = 1
+proximo_id_nadador = 1
+
 historico_movimentacoes = []
+proximo_id_movimentacao = 1
+
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
@@ -29,13 +32,13 @@ def buscar_nadador_por_nome(consultar_nome):
     return lista
 
 def cadastro_nadador(nome):
-    global proximo_id
+    global proximo_id_nadador
 
     if not nome:
         return None
 
-    codigo = proximo_id
-    proximo_id += 1
+    codigo = proximo_id_nadador
+    proximo_id_nadador += 1
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
     return codigo
 
@@ -51,63 +54,27 @@ def pesquisar_nadadores(consultar_nome):
 
 def registrar_movimentacao(nadador, quantidade, acao):
     """Adiciona uma retirada ou devolução ao histórico."""
+    global proximo_id_movimentacao
+
     historico_movimentacoes.append({
+        'ordem': proximo_id_movimentacao,
         'codigo': nadador['codigo'],
         'nome': nadador['nome'],
         'toalha': quantidade,
         'acao': acao,
     })
 
-def consultar_movimentacoes(historico_movimentacoes):
-    cabecalho("\n===== MOVIMENTAÇÕES =====")
-
-    if not historico_movimentacoes:
-        print("\nNenhuma movimentação registrada.\n")
-        return
-
-    imprimir_cabecalho_movimentacoes()
-    for ordem, item in enumerate(historico_movimentacoes, start=1):
-        imprimir_movimentacao(ordem, item)
-    print("")
+    proximo_id_movimentacao += 1
 
 
-# ALTERADO: função NOVA. Só faz o filtro (sem print e sem input). Mantém a ordem
-# original de cada movimentação no histórico geral.
+# Filtra sem alterar os registros, preservando a ordem registrada em cada item.
 def filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo):
-    """Retorna uma lista de (ordem, item) com as movimentações do nadador."""
+    """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
     return [
-        (ordem, item)
-        for ordem, item in enumerate(historico_movimentacoes, start=1)
+        item
+        for item in historico_movimentacoes
         if item['codigo'] == codigo
     ]
-
-
-# ALTERADO: o filtro saiu daqui e foi para a função acima.
-# Esta função ficou só com a parte da tela (pedir o código e imprimir).
-def consultar_movimentacoes_nadadores(historico_movimentacoes):
-    cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
-
-    codigo = solicitar_codigo()
-    if codigo is None:
-        return
-
-    movimentacoes = filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo)
-
-    if not movimentacoes:
-        print("\nNenhuma movimentação encontrada para esse código.\n")
-        return
-
-    imprimir_cabecalho_movimentacoes()
-    for ordem, item in movimentacoes:
-        imprimir_movimentacao(ordem, item)
-    print("")
-
-
-def exibir_menu_movimentacoes():
-    print("\n======== MOVIMENTAÇÕES ========\n")
-    print("1 - Consultar movimentações")
-    print("2 - Consultar movimentações do nadador")
-    print("0 - Voltar")
 
 
 # ============================================================
@@ -289,8 +256,8 @@ def imprimir_cabecalho_movimentacoes():
     cabecalho_da_tabela(f"\n{'Ordem':<7}{'Código':<8}{'Nadador':<21}{'Operação':<15}{'Quantidade':>10}")
 
 
-def imprimir_movimentacao(ordem, item):
-    print(f"{ordem:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
+def imprimir_movimentacao(item):
+    print(f"{item['ordem']:<7}{item['codigo']:<8}{item['nome']:<21}{item['acao']:<15}{item['toalha']:>10}")
 
 
 # ============================================================
@@ -409,14 +376,43 @@ def menu_toalhas(toalhas_disponiveis):
 
 def menu_movimentacoes(historico_movimentacoes):
     while True:
-        exibir_menu_movimentacoes()
+        print("\n======== MOVIMENTAÇÕES ========\n")
+        print("1 - Consultar movimentações")
+        print("2 - Consultar movimentações do nadador")
+        print("0 - Voltar")
 
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
-            consultar_movimentacoes(historico_movimentacoes)
+            cabecalho("\n===== MOVIMENTAÇÕES =====")
+
+            if not historico_movimentacoes:
+                print("\nNenhuma movimentação registrada.\n")
+                return
+
+            imprimir_cabecalho_movimentacoes()
+            for item in historico_movimentacoes:
+                imprimir_movimentacao(item)
+            print("")
+
         elif opcao == 2:
-            consultar_movimentacoes_nadadores(historico_movimentacoes)
+            cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
+
+            codigo = solicitar_codigo()
+            if codigo is None:
+                return
+
+            movimentacoes = filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo)
+
+            if not movimentacoes:
+                print("\nNenhuma movimentação encontrada para esse código.\n")
+                return
+
+            imprimir_cabecalho_movimentacoes()
+            for item in movimentacoes:
+                imprimir_movimentacao(item)
+            print("")
+        
         elif opcao == 0:
             print("Voltando ao menu principal...\n")
             break
