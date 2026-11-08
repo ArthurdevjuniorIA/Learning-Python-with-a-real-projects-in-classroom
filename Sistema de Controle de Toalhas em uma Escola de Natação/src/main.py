@@ -354,6 +354,7 @@ def menu_nadadores():
                 print("\nNenhum nadador encontrado.\n")
 
         elif opcao == 0:
+            print("Voltando ao menu principal...\n")
             break
         else:
             opcao_invalida()
@@ -394,6 +395,7 @@ def menu_toalhas(toalhas_disponiveis):
             print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
 
         elif opcao == 0:
+            print("Voltando ao menu principal...\n")
             # Devolve o valor final atualizado para quem chamou o menu_toalhas
             return toalhas_disponiveis
 
@@ -416,6 +418,7 @@ def menu_movimentacoes(historico_movimentacoes):
         elif opcao == 2:
             consultar_movimentacoes_nadadores(historico_movimentacoes)
         elif opcao == 0:
+            print("Voltando ao menu principal...\n")
             break
         else:
             opcao_invalida()
