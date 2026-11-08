@@ -52,6 +52,9 @@ def pesquisar_nadadores(consultar_nome):
 # GERENCIAMENTO DE MOVIMENTAÇÕES
 # ============================================================
 
+def listar_movimentacoes():
+    return historico_movimentacoes
+
 def registrar_movimentacao(nadador, quantidade, acao):
     """Adiciona uma retirada ou devolução ao histórico."""
     global proximo_id_movimentacao
@@ -357,13 +360,15 @@ def menu_movimentacoes():
 
         if opcao == 1:
             cabecalho("\n===== MOVIMENTAÇÕES =====")
+            
+            lista = listar_movimentacoes()
 
-            if not historico_movimentacoes:
+            if not lista:
                 print("\nNenhuma movimentação registrada.\n")
                 continue
 
             imprimir_cabecalho_movimentacoes()
-            for item in historico_movimentacoes:
+            for item in lista:
                 imprimir_movimentacao(item)
             print("")
 
