@@ -42,6 +42,30 @@ def cadastro_nadador(nome):
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
     return codigo
 
+def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
+    """Tenta retirar toalhas para o nadador.
+    Retorna (sucesso, toalhas_disponiveis_atualizado)."""
+    if quantidade > toalhas_disponiveis:
+        return False, toalhas_disponiveis
+
+    nadador['toalha'] += quantidade
+    return True, toalhas_disponiveis - quantidade
+
+
+def devolver_toalhas(nadador, quantidade, toalhas_disponiveis):
+    """Tenta devolver toalhas do nadador ao estoque.
+    Retorna (sucesso, toalhas_disponiveis_atualizado)."""
+    if quantidade > nadador['toalha']:
+        return False, toalhas_disponiveis
+
+    nadador['toalha'] -= quantidade
+    return True, toalhas_disponiveis + quantidade
+
+
+def filtrar_nadadores_com_toalhas():
+    """Retorna a lista de nadadores que estão com toalhas."""
+    return [n for n in nadadores if n['toalha'] > 0]
+
 
 # ============================================================
 # GERENCIAMENTO DE MOVIMENTAÇÕES
@@ -72,31 +96,6 @@ def filtrar_movimentacoes_por_codigo(codigo):
         for item in historico_movimentacoes
         if item['codigo'] == codigo
     ]
-
-
-def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
-    """Tenta retirar toalhas para o nadador.
-    Retorna (sucesso, toalhas_disponiveis_atualizado)."""
-    if quantidade > toalhas_disponiveis:
-        return False, toalhas_disponiveis
-
-    nadador['toalha'] += quantidade
-    return True, toalhas_disponiveis - quantidade
-
-
-def devolver_toalhas(nadador, quantidade, toalhas_disponiveis):
-    """Tenta devolver toalhas do nadador ao estoque.
-    Retorna (sucesso, toalhas_disponiveis_atualizado)."""
-    if quantidade > nadador['toalha']:
-        return False, toalhas_disponiveis
-
-    nadador['toalha'] -= quantidade
-    return True, toalhas_disponiveis + quantidade
-
-
-def filtrar_nadadores_com_toalhas():
-    """Retorna a lista de nadadores que estão com toalhas."""
-    return [n for n in nadadores if n['toalha'] > 0]
 
 
 # ============================================================
