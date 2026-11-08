@@ -67,8 +67,7 @@ def registrar_movimentacao(nadador, quantidade, acao):
     proximo_id_movimentacao += 1
 
 
-# Filtra sem alterar os registros, preservando a ordem registrada em cada item.
-def filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo):
+def filtrar_movimentacoes_por_codigo(codigo):
     """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
     return [
         item
@@ -164,16 +163,11 @@ def submenu_devolucao_toalhas(toalhas_disponiveis):
     return toalhas_disponiveis
 
 
-# ALTERADO: função NOVA. Só faz o filtro (sem print e sem input) e devolve a lista
-# de nadadores que estão com toalha.
 def filtrar_nadadores_com_toalhas():
     """Retorna a lista de nadadores que estão com toalhas."""
     return [n for n in nadadores if n['toalha'] > 0]
 
 
-# ALTERADO: agora usa a função de filtro acima, a docstring diz o que a função
-# realmente faz (imprime), o parâmetro foi renomeado para 'toalhas_disponiveis'
-# e removi o 'return toalhas_em_uso' do final, que ninguém usava.
 def listar_toalhas_em_uso(toalhas_disponiveis):
     """Imprime os nadadores que estão com toalhas e o estoque disponível."""
     print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
@@ -264,8 +258,6 @@ def imprimir_movimentacao(item):
 # MENU DE NADADORES
 # ============================================================
 
-# ALTERADO: só a indentação (alinhada de 4 em 4 espaços) e as linhas em branco
-# soltas. A lógica é a mesma.
 def menu_nadadores():
     while True:
         print("\n========== NADADORES ==========\n")
@@ -331,8 +323,6 @@ def menu_nadadores():
 # MENU DE TOALHAS
 # ============================================================
 
-# ALTERADO: o parâmetro 'toalhas_em_uso' virou 'toalhas_disponiveis' (é isso que ele guarda)
-# e os comentários foram corrigidos.
 def menu_toalhas(toalhas_disponiveis):
     while True:
         print("\n=========== TOALHAS ===========\n")
@@ -345,19 +335,15 @@ def menu_toalhas(toalhas_disponiveis):
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
-            # Guarda em toalhas_disponiveis o que sobrou no estoque depois da retirada
             toalhas_disponiveis = submenu_retirada_toalhas(toalhas_disponiveis)
 
         elif opcao == 2:
-            # Guarda em toalhas_disponiveis o estoque atualizado depois da devolução
             toalhas_disponiveis = submenu_devolucao_toalhas(toalhas_disponiveis)
 
         elif opcao == 3:
-            # Lista os nadadores que estão com toalha
             listar_toalhas_em_uso(toalhas_disponiveis)
 
         elif opcao == 4:
-            # Mostra o estoque na tela
             print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
             print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
 
@@ -374,7 +360,7 @@ def menu_toalhas(toalhas_disponiveis):
 # MENU DE MOVIMENTAÇÕES
 # ============================================================
 
-def menu_movimentacoes(historico_movimentacoes):
+def menu_movimentacoes():
     while True:
         print("\n======== MOVIMENTAÇÕES ========\n")
         print("1 - Consultar movimentações")
@@ -402,7 +388,7 @@ def menu_movimentacoes(historico_movimentacoes):
             if codigo is None:
                 continue
 
-            movimentacoes = filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo)
+            movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
 
             if not movimentacoes:
                 print("\nNenhuma movimentação encontrada para esse código.\n")
@@ -441,7 +427,7 @@ def menu_principal(toalhas_disponiveis):
         elif opcao == 2:
             toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
         elif opcao == 3:
-            menu_movimentacoes(historico_movimentacoes)
+            menu_movimentacoes()
         elif opcao == 0:
             print("Saindo do sistema... Até logo!")
             break
