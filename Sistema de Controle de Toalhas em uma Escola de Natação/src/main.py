@@ -388,7 +388,7 @@ def menu_movimentacoes(historico_movimentacoes):
 
             if not historico_movimentacoes:
                 print("\nNenhuma movimentação registrada.\n")
-                return
+                continue
 
             imprimir_cabecalho_movimentacoes()
             for item in historico_movimentacoes:
@@ -400,13 +400,13 @@ def menu_movimentacoes(historico_movimentacoes):
 
             codigo = solicitar_codigo()
             if codigo is None:
-                return
+                continue
 
             movimentacoes = filtrar_movimentacoes_por_codigo(historico_movimentacoes, codigo)
 
             if not movimentacoes:
                 print("\nNenhuma movimentação encontrada para esse código.\n")
-                return
+                continue
 
             imprimir_cabecalho_movimentacoes()
             for item in movimentacoes:
