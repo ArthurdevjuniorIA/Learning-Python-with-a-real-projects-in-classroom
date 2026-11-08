@@ -91,34 +91,6 @@ def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
     return True, toalhas_disponiveis - quantidade
 
 
-def submenu_retirada_toalhas(toalhas_disponiveis):
-    cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
-
-    codigo = solicitar_codigo()
-    if codigo is None:
-        return toalhas_disponiveis
-
-    nadador = buscar_nadador_por_codigo(codigo)
-    if nadador is None:
-        print(f"Código '{codigo}' não encontrado!\n")
-        return toalhas_disponiveis
-
-    quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
-    if quantidade is None:
-        return toalhas_disponiveis
-
-    sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
-
-    if sucesso:
-        print("\nRetirada registrada com sucesso!")
-        print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
-    else:
-        print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
-
-    print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-    return toalhas_disponiveis
-
-
 def devolver_toalhas(nadador, quantidade, toalhas_disponiveis):
     """Tenta devolver toalhas do nadador ao estoque.
     Retorna (sucesso, toalhas_disponiveis_atualizado)."""
@@ -130,55 +102,9 @@ def devolver_toalhas(nadador, quantidade, toalhas_disponiveis):
     return True, toalhas_disponiveis + quantidade
 
 
-def submenu_devolucao_toalhas(toalhas_disponiveis):
-    cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
-
-    codigo = solicitar_codigo()
-    if codigo is None:
-        return toalhas_disponiveis
-
-    nadador = buscar_nadador_por_codigo(codigo)
-    if nadador is None:
-        print(f"Código '{codigo}' não encontrado!\n")
-        return toalhas_disponiveis
-
-    if nadador['toalha'] == 0:
-        print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
-        return toalhas_disponiveis
-
-    quantidade = solicitar_quantidade(
-        f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
-    )
-    if quantidade is None:
-        return toalhas_disponiveis
-
-    sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
-
-    if sucesso:
-        print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
-        print("Devolução registrada com sucesso! Movimentação concluída.\n")
-    else:
-        print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
-
-    return toalhas_disponiveis
-
-
 def filtrar_nadadores_com_toalhas():
     """Retorna a lista de nadadores que estão com toalhas."""
     return [n for n in nadadores if n['toalha'] > 0]
-
-
-def listar_toalhas_em_uso(toalhas_disponiveis):
-    """Imprime os nadadores que estão com toalhas e o estoque disponível."""
-    print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
-
-    com_toalhas = filtrar_nadadores_com_toalhas()
-
-    if com_toalhas:
-        imprimir_tabela_nadadores(com_toalhas)
-        print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-    else:
-        print("Nenhum nadador está com toalhas no momento.\n")
 
 
 # ============================================================
@@ -335,13 +261,73 @@ def menu_toalhas(toalhas_disponiveis):
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
-            toalhas_disponiveis = submenu_retirada_toalhas(toalhas_disponiveis)
+            cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
+
+            codigo = solicitar_codigo()
+            if codigo is None:
+                continue
+
+            nadador = buscar_nadador_por_codigo(codigo)
+            if nadador is None:
+                print(f"Código '{codigo}' não encontrado!\n")
+                continue
+
+            quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
+            if quantidade is None:
+                continue
+
+            sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
+
+            if sucesso:
+                print("\nRetirada registrada com sucesso!")
+                print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+            else:
+                print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
+
+            print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+            continue
 
         elif opcao == 2:
-            toalhas_disponiveis = submenu_devolucao_toalhas(toalhas_disponiveis)
+            cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+
+            codigo = solicitar_codigo()
+            if codigo is None:
+                continue
+
+            nadador = buscar_nadador_por_codigo(codigo)
+            if nadador is None:
+                print(f"Código '{codigo}' não encontrado!\n")
+                continue
+
+            if nadador['toalha'] == 0:
+                print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
+                continue
+
+            quantidade = solicitar_quantidade(
+                f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
+            )
+            if quantidade is None:
+                continue
+
+            sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
+
+            if sucesso:
+                print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+                print("Devolução registrada com sucesso! Movimentação concluída.\n")
+            else:
+                print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
+
+            continue
 
         elif opcao == 3:
-            listar_toalhas_em_uso(toalhas_disponiveis)
+            print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
+            com_toalhas = filtrar_nadadores_com_toalhas()
+
+            if com_toalhas:
+                imprimir_tabela_nadadores(com_toalhas)
+                print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+            else:
+                print("Nenhum nadador está com toalhas no momento.\n")
 
         elif opcao == 4:
             print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
