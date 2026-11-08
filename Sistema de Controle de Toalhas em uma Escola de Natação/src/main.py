@@ -43,11 +43,6 @@ def cadastro_nadador(nome):
     return codigo
 
 
-def pesquisar_nadadores(consultar_nome):
-    lista = buscar_nadador_por_nome(consultar_nome)
-    return lista
-
-
 # ============================================================
 # GERENCIAMENTO DE MOVIMENTAÇÕES
 # ============================================================
@@ -79,10 +74,6 @@ def filtrar_movimentacoes_por_codigo(codigo):
     ]
 
 
-# ============================================================
-# GERENCIAMENTO DE TOALHAS DISPONÍVEIS E POR NADADOR
-# ============================================================
-
 def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
     """Tenta retirar toalhas para o nadador.
     Retorna (sucesso, toalhas_disponiveis_atualizado)."""
@@ -90,7 +81,6 @@ def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
         return False, toalhas_disponiveis
 
     nadador['toalha'] += quantidade
-    registrar_movimentacao(nadador, quantidade, "Retirada")
     return True, toalhas_disponiveis - quantidade
 
 
@@ -101,7 +91,6 @@ def devolver_toalhas(nadador, quantidade, toalhas_disponiveis):
         return False, toalhas_disponiveis
 
     nadador['toalha'] -= quantidade
-    registrar_movimentacao(nadador, quantidade, "Devolução")
     return True, toalhas_disponiveis + quantidade
 
 
@@ -224,18 +213,20 @@ def menu_nadadores():
             if codigo is None:
                 continue
 
-            lista = buscar_nadador_por_codigo(codigo)
+            nadador = buscar_nadador_por_codigo(codigo)
             
-            if lista:
+            if nadador:
                 print("\nNadador encontrado:\n")
-                imprimir_tabela_nadadores([lista])
+                imprimir_tabela_nadadores([nadador])
             else:
                 print("\nNadador não encontrado.\n")
 
         elif opcao == 4:
             cabecalho("\n===== PESQUISAR NADADOR =====\n")
             consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
-            lista = pesquisar_nadadores(consultar_nome)
+            print("")
+
+            lista = buscar_nadador_por_nome(consultar_nome)
             if lista:
                 imprimir_tabela_nadadores(lista)
             else:
@@ -284,11 +275,12 @@ def menu_toalhas(toalhas_disponiveis):
             if sucesso:
                 print("\nRetirada registrada com sucesso!")
                 print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+
+                registrar_movimentacao(nadador, quantidade, "Retirada")
             else:
                 print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
 
             print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-            continue
 
         elif opcao == 2:
             cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
@@ -317,10 +309,10 @@ def menu_toalhas(toalhas_disponiveis):
             if sucesso:
                 print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
                 print("Devolução registrada com sucesso! Movimentação concluída.\n")
+
+                registrar_movimentacao(nadador, quantidade, "Devolução")
             else:
                 print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
-
-            continue
 
         elif opcao == 3:
             print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
