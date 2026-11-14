@@ -11,6 +11,29 @@ proximo_id_movimentacao = 1
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
+# ============================================================
+# TESTE E VALIDAÇÕES
+# ============================================================
+def validar_nome(nome):
+    if not nome.replace(" ","").isalpha():
+        return None
+
+def validando_numero(number):
+    try:
+        # Tenta converter a string em inteiro
+        number = int(number)
+        
+        # Verifica se é positivo (conforme sua mensagem de erro indicava)
+        if 0 >= number:
+            print("Erro: Digite um número inteiro positivo\n")
+            return None
+            
+        return number
+    except ValueError:
+        print("Erro: Digite um número inteiro válido\n")
+        return None
+
+
 
 # ============================================================
 # GERENCIAMENTO DE NADADORES
@@ -114,15 +137,11 @@ def solicitar_opcao_menu():
 def solicitar_codigo():
     """Lê o código do nadador. Retorna None (com mensagem) se for inválido."""
     codigo = input("Código: ").strip()
-
-    if not codigo.isdecimal():
-        print("Código inválido. Digite um número inteiro positivo.\n")
+    # Validando se é um número
+    codigo = validando_numero(codigo)
+    if codigo is None:
         return None
 
-    codigo = int(codigo)
-    if codigo <= 0:
-        print("O código deve ser maior que zero.\n")
-        return None
     return codigo
 
 
@@ -189,6 +208,11 @@ def menu_nadadores():
         if opcao == 1:
             cabecalho("\n===== CADASTRO DE NADADOR =====\n")
             nome = input("Nome: ").strip().title()
+            nome = validar_nome(nome)
+            if nome is None:
+                print("Erro: O nome não pode ter caracteres especiais ou números")
+                return -1
+
             codigo = cadastro_nadador(nome)
 
             if codigo is None:
