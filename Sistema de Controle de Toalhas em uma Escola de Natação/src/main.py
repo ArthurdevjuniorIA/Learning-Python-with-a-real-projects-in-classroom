@@ -54,16 +54,29 @@ def buscar_nadador_por_nome(consultar_nome):
     lista = [n for n in nadadores if consultar_nome in n['nome'].lower()]
     return lista
 
+
+# ALTERADO: voltou a devolver (codigo, erros). Na versão anterior ela devolvia só
+# o código (ou None), e o menu mostrava "cadastrado com sucesso! Código: None"
+# quando o nome era inválido, sem dizer qual era o erro.
 def cadastro_nadador(nome):
+    """Cadastra um nadador. Retorna (codigo, erros). Se houver erros, codigo é None."""
     global proximo_id_nadador
 
-    if not nome:
-        return None
+    erros = []
+
+    if nome == "":
+        erros.append("O nome não pode ser vazio.")
+
+    if nome.isdecimal():
+        erros.append("O nome não pode ser apenas números.")
+
+    if erros:
+        return None, erros
 
     codigo = proximo_id_nadador
     proximo_id_nadador += 1
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
-    return codigo
+    return codigo, erros
 
 def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
     """Tenta retirar toalhas para o nadador.
@@ -111,7 +124,6 @@ def registrar_movimentacao(nadador, quantidade, acao):
 
     proximo_id_movimentacao += 1
 
-
 def filtrar_movimentacoes_por_codigo(codigo):
     """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
     return [
@@ -125,6 +137,7 @@ def filtrar_movimentacoes_por_codigo(codigo):
 # FUNÇÕES AUXILIARES
 # ============================================================
 
+# ALTERADO: docstring corrigida (estava com o texto de outra função).
 def solicitar_opcao_menu():
     """Lê a opção do menu. Retorna -1 se não for um número inteiro positivo."""
     opcao = input("\nEscolha uma opção: ").strip()
@@ -134,9 +147,20 @@ def solicitar_opcao_menu():
     return int(opcao)
 
 
+# ALTERADO: docstring corrigida. Agora a função levanta ValueError, não devolve erros.
 def solicitar_codigo():
-    """Lê o código do nadador. Retorna None (com mensagem) se for inválido."""
+    """Lê o código do nadador. Levanta ValueError se for inválido."""
+
     codigo = input("Código: ").strip()
+
+
+    if not codigo.isdecimal():
+        raise ValueError("Código inválido. Digite um número inteiro positivo.")
+
+    codigo = int(codigo)
+    if codigo <= 0:
+        raise ValueError("O código deve ser maior que zero.")
+        
     # Validando se é um número
     codigo = validando_numero(codigo)
     if codigo is None:
@@ -145,18 +169,18 @@ def solicitar_codigo():
     return codigo
 
 
+# ALTERADO: docstring corrigida e a mensagem de erro dizia "Código inválido";
+# agora diz "Quantidade inválida".
 def solicitar_quantidade(mensagem):
-    """Lê uma quantidade de toalhas. Retorna None (com mensagem) se for inválida."""
+    """Lê uma quantidade de toalhas. Levanta ValueError se for inválida."""
     quantidade = input(mensagem).strip()
 
     if not quantidade.isdecimal():
-        print("Quantidade inválida. Digite um número inteiro positivo.\n")
-        return None
+        raise ValueError("Quantidade inválida. Digite um número inteiro positivo.")
 
     quantidade = int(quantidade)
     if quantidade <= 0:
-        print("Quantidade inválida. Digite um número maior que zero.\n")
-        return None
+        raise ValueError("A quantidade deve ser maior que zero.")
     return quantidade
 
 
@@ -203,7 +227,8 @@ def menu_nadadores():
         print("4 - Pesquisar nadador por nome")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
         if opcao == 1:
             cabecalho("\n===== CADASTRO DE NADADOR =====\n")
@@ -215,51 +240,64 @@ def menu_nadadores():
 
             codigo = cadastro_nadador(nome)
 
-            if codigo is None:
-                print("Dados inválidos! O nome não pode ser vazio.\n")
+                # ALTERADO: voltou a receber (codigo, erros) e a mostrar os erros.
+                codigo, erros = cadastro_nadador(nome)
+
+                if codigo is None:
+                    for erro in erros:
+                        print(f"Erro: {erro}")
+                    print("")
+                else:
+                    print(f"\nNadador cadastrado com sucesso! Código: {codigo}\n")
+
+            elif opcao == 2:
+                print(f"\n{' NADADORES '.center(51, '=')}\n")
+
+                lista = listar_nadadores()
+
+                # ALTERADO: tirei o espaço sobrando no final da linha.
+                if lista:
+                    imprimir_tabela_nadadores(lista)
+                else:
+                    print("Nenhum nadador cadastrado.\n")
+
+            elif opcao == 3:
+                cabecalho("\n===== CONSULTAR NADADOR =====\n")
+                codigo = solicitar_codigo()
+
+                nadador = buscar_nadador_por_codigo(codigo)
+
+                if nadador:
+                    print("\nNadador encontrado:\n")
+                    imprimir_tabela_nadadores([nadador])
+                else:
+                    print("\nNadador não encontrado.\n")
+
+            elif opcao == 4:
+                cabecalho("\n===== PESQUISAR NADADOR =====\n")
+                consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
+
+                # ALTERADO: NOVO. Busca vazia listava todos os nadadores.
+                # Agora levanta ValueError e o except do menu mostra a mensagem.
+                if consultar_nome == "":
+                    raise ValueError("Informe um nome para a busca.")
+
+                print("")
+
+                lista = buscar_nadador_por_nome(consultar_nome)
+                if lista:
+                    imprimir_tabela_nadadores(lista)
+                else:
+                    print("\nNenhum nadador encontrado.\n")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                break
             else:
-                print(f"\nNadador cadastrado com sucesso! Código: {codigo}\n")
-
-        elif opcao == 2:
-            print(f"\n{' NADADORES '.center(51, '=')}\n")
-
-            lista = listar_nadadores()
-
-            if lista:
-                    imprimir_tabela_nadadores(lista) 
-            else:
-                print("Nenhum nadador cadastrado.\n")
-
-        elif opcao == 3:
-            cabecalho("\n===== CONSULTAR NADADOR =====\n")
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
-
-            nadador = buscar_nadador_por_codigo(codigo)
-            
-            if nadador:
-                print("\nNadador encontrado:\n")
-                imprimir_tabela_nadadores([nadador])
-            else:
-                print("\nNadador não encontrado.\n")
-
-        elif opcao == 4:
-            cabecalho("\n===== PESQUISAR NADADOR =====\n")
-            consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
-            print("")
-
-            lista = buscar_nadador_por_nome(consultar_nome)
-            if lista:
-                imprimir_tabela_nadadores(lista)
-            else:
-                print("\nNenhum nadador encontrado.\n")
-
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            break
-        else:
-            opcao_invalida()
+                opcao_invalida()
+        # ALTERADO: as mensagens já terminam com ponto; agora só mostra a mensagem.
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -275,89 +313,88 @@ def menu_toalhas(toalhas_disponiveis):
         print("4 - Consultar toalhas disponíveis")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
+            if opcao == 1:
+                cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
 
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
+                codigo = solicitar_codigo()
 
-            nadador = buscar_nadador_por_codigo(codigo)
-            if nadador is None:
-                print(f"Código '{codigo}' não encontrado!\n")
-                continue
+                nadador = buscar_nadador_por_codigo(codigo)
+                if nadador is None:
+                    print(f"Código '{codigo}' não encontrado!\n")
+                    continue
 
-            quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
-            if quantidade is None:
-                continue
+                quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
 
-            sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
+                sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
 
-            if sucesso:
-                print("\nRetirada registrada com sucesso!")
-                print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+                if sucesso:
+                    print("\nRetirada registrada com sucesso!")
+                    print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
 
-                registrar_movimentacao(nadador, quantidade, "Retirada")
-            else:
-                print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
+                    registrar_movimentacao(nadador, quantidade, "Retirada")
+                else:
+                    print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
 
-            print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-
-        elif opcao == 2:
-            cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
-
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
-
-            nadador = buscar_nadador_por_codigo(codigo)
-            if nadador is None:
-                print(f"Código '{codigo}' não encontrado!\n")
-                continue
-
-            if nadador['toalha'] == 0:
-                print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
-                continue
-
-            quantidade = solicitar_quantidade(
-                f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
-            )
-            if quantidade is None:
-                continue
-
-            sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
-
-            if sucesso:
-                print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
-                print("Devolução registrada com sucesso! Movimentação concluída.\n")
-
-                registrar_movimentacao(nadador, quantidade, "Devolução")
-            else:
-                print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
-
-        elif opcao == 3:
-            print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
-            com_toalhas = filtrar_nadadores_com_toalhas()
-
-            if com_toalhas:
-                imprimir_tabela_nadadores(com_toalhas)
                 print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+
+            elif opcao == 2:
+                cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+
+                codigo = solicitar_codigo()
+
+                nadador = buscar_nadador_por_codigo(codigo)
+                if nadador is None:
+                    print(f"Código '{codigo}' não encontrado!\n")
+                    continue
+
+                if nadador['toalha'] == 0:
+                    print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
+                    continue
+
+                # ALTERADO: era "quantidade, erros = solicitar_quantidade(...)" seguido de
+                # "if quantidade is None ... for erro in erros". Isso quebrava o programa
+                # (a função agora devolve só um número). Agora é só uma linha.
+                quantidade = solicitar_quantidade(
+                    f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
+                )
+
+                sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
+
+                if sucesso:
+                    print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+                    print("Devolução registrada com sucesso! Movimentação concluída.\n")
+
+                    registrar_movimentacao(nadador, quantidade, "Devolução")
+                else:
+                    print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
+
+            elif opcao == 3:
+                print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
+                com_toalhas = filtrar_nadadores_com_toalhas()
+
+                if com_toalhas:
+                    imprimir_tabela_nadadores(com_toalhas)
+                    print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+                else:
+                    print("Nenhum nadador está com toalhas no momento.\n")
+
+            elif opcao == 4:
+                print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                # Devolve o valor final atualizado para quem chamou o menu_toalhas
+                return toalhas_disponiveis
+
             else:
-                print("Nenhum nadador está com toalhas no momento.\n")
-
-        elif opcao == 4:
-            print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
-            print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
-
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            # Devolve o valor final atualizado para quem chamou o menu_toalhas
-            return toalhas_disponiveis
-
-        else:
-            opcao_invalida()
+                opcao_invalida()
+        # ALTERADO: só mostra a mensagem do erro.
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -371,45 +408,50 @@ def menu_movimentacoes():
         print("2 - Consultar movimentações do nadador")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== MOVIMENTAÇÕES =====")
-            
-            lista = listar_movimentacoes()
+            if opcao == 1:
+                cabecalho("\n===== MOVIMENTAÇÕES =====")
 
-            if not lista:
-                print("\nNenhuma movimentação registrada.\n")
-                continue
+                lista = listar_movimentacoes()
 
-            imprimir_cabecalho_movimentacoes()
-            for item in lista:
-                imprimir_movimentacao(item)
-            print("")
+                if not lista:
+                    print("\nNenhuma movimentação registrada.\n")
+                    continue
 
-        elif opcao == 2:
-            cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
+                imprimir_cabecalho_movimentacoes()
+                for item in lista:
+                    imprimir_movimentacao(item)
+                print("")
 
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
+            elif opcao == 2:
+                cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
 
-            movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
+                # ALTERADO: removi o "if codigo is None: continue". Código inválido
+                # agora vai direto para o except, então esse if nunca seria verdadeiro.
+                codigo = solicitar_codigo()
 
-            if not movimentacoes:
-                print("\nNenhuma movimentação encontrada para esse código.\n")
-                continue
+                movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
 
-            imprimir_cabecalho_movimentacoes()
-            for item in movimentacoes:
-                imprimir_movimentacao(item)
-            print("")
-        
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            break
-        else:
-            opcao_invalida()
+                if not movimentacoes:
+                    print("\nNenhuma movimentação encontrada para esse código.\n")
+                    continue
+
+                imprimir_cabecalho_movimentacoes()
+                for item in movimentacoes:
+                    imprimir_movimentacao(item)
+                print("")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                break
+            else:
+                opcao_invalida()
+
+        # ALTERADO: só mostra a mensagem do erro.
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -425,20 +467,25 @@ def menu_principal(toalhas_disponiveis):
         print("2 - Toalhas")
         print("3 - Movimentações")
         print("0 - Sair")
-        
-        opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            menu_nadadores()
-        elif opcao == 2:
-            toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
-        elif opcao == 3:
-            menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break
-        else:
-            opcao_invalida()
+        try:
+
+            opcao = solicitar_opcao_menu()
+
+            if opcao == 1:
+                menu_nadadores()
+            elif opcao == 2:
+                toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
+            elif opcao == 3:
+                menu_movimentacoes()
+            elif opcao == 0:
+                print("Saindo do sistema... Até logo!")
+                break
+            else:
+                opcao_invalida()
+        # ALTERADO: só mostra a mensagem do erro.
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
