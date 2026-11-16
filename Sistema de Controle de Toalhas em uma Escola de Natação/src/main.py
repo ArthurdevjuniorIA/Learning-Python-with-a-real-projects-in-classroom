@@ -11,6 +11,29 @@ proximo_id_movimentacao = 1
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
+# ============================================================
+# TESTE E VALIDAÇÕES
+# ============================================================
+def validar_nome(nome):
+    if not nome.replace(" ","").isalpha():
+        return None
+
+def validando_numero(number):
+    try:
+        # Tenta converter a string em inteiro
+        number = int(number)
+        
+        # Verifica se é positivo (conforme sua mensagem de erro indicava)
+        if 0 >= number:
+            print("Erro: Digite um número inteiro positivo\n")
+            return None
+            
+        return number
+    except ValueError:
+        print("Erro: Digite um número inteiro válido\n")
+        return None
+
+
 
 # ============================================================
 # GERENCIAMENTO DE NADADORES
@@ -130,12 +153,19 @@ def solicitar_codigo():
 
     codigo = input("Código: ").strip()
 
+
     if not codigo.isdecimal():
         raise ValueError("Código inválido. Digite um número inteiro positivo.")
 
     codigo = int(codigo)
     if codigo <= 0:
         raise ValueError("O código deve ser maior que zero.")
+        
+    # Validando se é um número
+    codigo = validando_numero(codigo)
+    if codigo is None:
+        return None
+
     return codigo
 
 
@@ -200,9 +230,15 @@ def menu_nadadores():
         try:
             opcao = solicitar_opcao_menu()
 
-            if opcao == 1:
-                cabecalho("\n===== CADASTRO DE NADADOR =====\n")
-                nome = input("Nome: ").strip().title()
+        if opcao == 1:
+            cabecalho("\n===== CADASTRO DE NADADOR =====\n")
+            nome = input("Nome: ").strip().title()
+            nome = validar_nome(nome)
+            if nome is None:
+                print("Erro: O nome não pode ter caracteres especiais ou números")
+                return -1
+
+            codigo = cadastro_nadador(nome)
 
                 # ALTERADO: voltou a receber (codigo, erros) e a mostrar os erros.
                 codigo, erros = cadastro_nadador(nome)
