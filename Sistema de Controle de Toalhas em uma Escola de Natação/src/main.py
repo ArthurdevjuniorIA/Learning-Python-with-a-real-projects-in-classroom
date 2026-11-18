@@ -11,28 +11,14 @@ proximo_id_movimentacao = 1
 TOTAL_TOALHAS = 30
 toalhas_disponiveis = TOTAL_TOALHAS
 
+
 # ============================================================
-# TESTE E VALIDAÇÕES
+# VALIDAÇÕES
 # ============================================================
+
 def validar_nome(nome):
-    if not nome.replace(" ","").isalpha():
-        return None
-
-def validando_numero(number):
-    try:
-        # Tenta converter a string em inteiro
-        number = int(number)
-        
-        # Verifica se é positivo (conforme sua mensagem de erro indicava)
-        if 0 >= number:
-            print("Erro: Digite um número inteiro positivo\n")
-            return None
-            
-        return number
-    except ValueError:
-        print("Erro: Digite um número inteiro válido\n")
-        return None
-
+    """Retorna True se o nome tem apenas letras e espaços (e não é vazio)."""
+    return nome.replace(" ", "").isalpha()
 
 
 # ============================================================
@@ -46,18 +32,16 @@ def buscar_nadador_por_codigo(codigo):
             return nadador
     return None
 
+
 def listar_nadadores():
     return nadadores
 
+
 def buscar_nadador_por_nome(consultar_nome):
     """Retorna a lista de nadadores cujo nome contém o texto buscado (lista vazia se nenhum)."""
-    lista = [n for n in nadadores if consultar_nome in n['nome'].lower()]
-    return lista
+    return [n for n in nadadores if consultar_nome in n['nome'].lower()]
 
 
-# ALTERADO: voltou a devolver (codigo, erros). Na versão anterior ela devolvia só
-# o código (ou None), e o menu mostrava "cadastrado com sucesso! Código: None"
-# quando o nome era inválido, sem dizer qual era o erro.
 def cadastro_nadador(nome):
     """Cadastra um nadador. Retorna (codigo, erros). Se houver erros, codigo é None."""
     global proximo_id_nadador
@@ -66,9 +50,8 @@ def cadastro_nadador(nome):
 
     if nome == "":
         erros.append("O nome não pode ser vazio.")
-
-    if nome.isdecimal():
-        erros.append("O nome não pode ser apenas números.")
+    elif not validar_nome(nome):
+        erros.append("O nome não pode ter caracteres especiais ou números.")
 
     if erros:
         return None, erros
@@ -77,6 +60,7 @@ def cadastro_nadador(nome):
     proximo_id_nadador += 1
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
     return codigo, erros
+
 
 def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
     """Tenta retirar toalhas para o nadador.
@@ -110,6 +94,7 @@ def filtrar_nadadores_com_toalhas():
 def listar_movimentacoes():
     return historico_movimentacoes
 
+
 def registrar_movimentacao(nadador, quantidade, acao):
     """Adiciona uma retirada ou devolução ao histórico."""
     global proximo_id_movimentacao
@@ -124,20 +109,16 @@ def registrar_movimentacao(nadador, quantidade, acao):
 
     proximo_id_movimentacao += 1
 
+
 def filtrar_movimentacoes_por_codigo(codigo):
     """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
-    return [
-        item
-        for item in historico_movimentacoes
-        if item['codigo'] == codigo
-    ]
+    return [item for item in historico_movimentacoes if item['codigo'] == codigo]
 
 
 # ============================================================
 # FUNÇÕES AUXILIARES
 # ============================================================
 
-# ALTERADO: docstring corrigida (estava com o texto de outra função).
 def solicitar_opcao_menu():
     """Lê a opção do menu. Retorna -1 se não for um número inteiro positivo."""
     opcao = input("\nEscolha uma opção: ").strip()
@@ -147,12 +128,9 @@ def solicitar_opcao_menu():
     return int(opcao)
 
 
-# ALTERADO: docstring corrigida. Agora a função levanta ValueError, não devolve erros.
 def solicitar_codigo():
     """Lê o código do nadador. Levanta ValueError se for inválido."""
-
     codigo = input("Código: ").strip()
-
 
     if not codigo.isdecimal():
         raise ValueError("Código inválido. Digite um número inteiro positivo.")
@@ -160,17 +138,10 @@ def solicitar_codigo():
     codigo = int(codigo)
     if codigo <= 0:
         raise ValueError("O código deve ser maior que zero.")
-        
-    # Validando se é um número
-    codigo = validando_numero(codigo)
-    if codigo is None:
-        return None
 
     return codigo
 
 
-# ALTERADO: docstring corrigida e a mensagem de erro dizia "Código inválido";
-# agora diz "Quantidade inválida".
 def solicitar_quantidade(mensagem):
     """Lê uma quantidade de toalhas. Levanta ValueError se for inválida."""
     quantidade = input(mensagem).strip()
@@ -230,17 +201,10 @@ def menu_nadadores():
         try:
             opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== CADASTRO DE NADADOR =====\n")
-            nome = input("Nome: ").strip().title()
-            nome = validar_nome(nome)
-            if nome is None:
-                print("Erro: O nome não pode ter caracteres especiais ou números")
-                return -1
+            if opcao == 1:
+                cabecalho("\n===== CADASTRO DE NADADOR =====\n")
+                nome = input("Nome: ").strip().title()
 
-            codigo = cadastro_nadador(nome)
-
-                # ALTERADO: voltou a receber (codigo, erros) e a mostrar os erros.
                 codigo, erros = cadastro_nadador(nome)
 
                 if codigo is None:
@@ -255,7 +219,6 @@ def menu_nadadores():
 
                 lista = listar_nadadores()
 
-                # ALTERADO: tirei o espaço sobrando no final da linha.
                 if lista:
                     imprimir_tabela_nadadores(lista)
                 else:
@@ -277,8 +240,6 @@ def menu_nadadores():
                 cabecalho("\n===== PESQUISAR NADADOR =====\n")
                 consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
 
-                # ALTERADO: NOVO. Busca vazia listava todos os nadadores.
-                # Agora levanta ValueError e o except do menu mostra a mensagem.
                 if consultar_nome == "":
                     raise ValueError("Informe um nome para a busca.")
 
@@ -288,14 +249,14 @@ def menu_nadadores():
                 if lista:
                     imprimir_tabela_nadadores(lista)
                 else:
-                    print("\nNenhum nadador encontrado.\n")
+                    print("Nenhum nadador encontrado.\n")
 
             elif opcao == 0:
                 print("Voltando ao menu principal...\n")
                 break
             else:
                 opcao_invalida()
-        # ALTERADO: as mensagens já terminam com ponto; agora só mostra a mensagem.
+
         except ValueError as erro:
             print(f"Erro: {erro}\n")
 
@@ -354,9 +315,6 @@ def menu_toalhas(toalhas_disponiveis):
                     print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
                     continue
 
-                # ALTERADO: era "quantidade, erros = solicitar_quantidade(...)" seguido de
-                # "if quantidade is None ... for erro in erros". Isso quebrava o programa
-                # (a função agora devolve só um número). Agora é só uma linha.
                 quantidade = solicitar_quantidade(
                     f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
                 )
@@ -392,7 +350,7 @@ def menu_toalhas(toalhas_disponiveis):
 
             else:
                 opcao_invalida()
-        # ALTERADO: só mostra a mensagem do erro.
+
         except ValueError as erro:
             print(f"Erro: {erro}\n")
 
@@ -428,8 +386,6 @@ def menu_movimentacoes():
             elif opcao == 2:
                 cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
 
-                # ALTERADO: removi o "if codigo is None: continue". Código inválido
-                # agora vai direto para o except, então esse if nunca seria verdadeiro.
                 codigo = solicitar_codigo()
 
                 movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
@@ -449,7 +405,6 @@ def menu_movimentacoes():
             else:
                 opcao_invalida()
 
-        # ALTERADO: só mostra a mensagem do erro.
         except ValueError as erro:
             print(f"Erro: {erro}\n")
 
@@ -468,28 +423,24 @@ def menu_principal(toalhas_disponiveis):
         print("3 - Movimentações")
         print("0 - Sair")
 
-        try:
+        opcao = solicitar_opcao_menu()
 
-            opcao = solicitar_opcao_menu()
-
-            if opcao == 1:
-                menu_nadadores()
-            elif opcao == 2:
-                toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
-            elif opcao == 3:
-                menu_movimentacoes()
-            elif opcao == 0:
-                print("Saindo do sistema... Até logo!")
-                break
-            else:
-                opcao_invalida()
-        # ALTERADO: só mostra a mensagem do erro.
-        except ValueError as erro:
-            print(f"Erro: {erro}\n")
+        if opcao == 1:
+            menu_nadadores()
+        elif opcao == 2:
+            toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
+        elif opcao == 3:
+            menu_movimentacoes()
+        elif opcao == 0:
+            print("Saindo do sistema... Até logo!")
+            break
+        else:
+            opcao_invalida()
 
 
 # ============================================================
 # PROGRAMA PRINCIPAL
 # ============================================================
+
 
 menu_principal(toalhas_disponiveis)
