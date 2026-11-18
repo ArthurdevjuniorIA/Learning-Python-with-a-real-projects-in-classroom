@@ -423,19 +423,23 @@ def menu_principal(toalhas_disponiveis):
         print("3 - Movimentações")
         print("0 - Sair")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            menu_nadadores()
-        elif opcao == 2:
-            toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
-        elif opcao == 3:
-            menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break
-        else:
-            opcao_invalida()
+            if opcao == 1:
+                menu_nadadores()
+            elif opcao == 2:
+                toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
+            elif opcao == 3:
+                menu_movimentacoes()
+            elif opcao == 0:
+                print("Saindo do sistema... Até logo!")
+                break
+            else:
+                opcao_invalida()
+
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
