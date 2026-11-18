@@ -13,6 +13,15 @@ toalhas_disponiveis = TOTAL_TOALHAS
 
 
 # ============================================================
+# VALIDAÇÕES
+# ============================================================
+
+def validar_nome(nome):
+    """Retorna True se o nome tem apenas letras e espaços (e não é vazio)."""
+    return nome.replace(" ", "").isalpha()
+
+
+# ============================================================
 # GERENCIAMENTO DE NADADORES
 # ============================================================
 
@@ -23,55 +32,34 @@ def buscar_nadador_por_codigo(codigo):
             return nadador
     return None
 
+
 def listar_nadadores():
     return nadadores
 
+
 def buscar_nadador_por_nome(consultar_nome):
     """Retorna a lista de nadadores cujo nome contém o texto buscado (lista vazia se nenhum)."""
-    lista = [n for n in nadadores if consultar_nome in n['nome'].lower()]
-    return lista
+    return [n for n in nadadores if consultar_nome in n['nome'].lower()]
+
 
 def cadastro_nadador(nome):
+    """Cadastra um nadador. Retorna (codigo, erros). Se houver erros, codigo é None."""
     global proximo_id_nadador
 
-    if not nome:
-        return None
+    erros = []
+
+    if nome == "":
+        erros.append("O nome não pode ser vazio.")
+    elif not validar_nome(nome):
+        erros.append("O nome não pode ter caracteres especiais ou números.")
+
+    if erros:
+        return None, erros
 
     codigo = proximo_id_nadador
     proximo_id_nadador += 1
     nadadores.append({'codigo': codigo, 'nome': nome, 'toalha': 0})
-    return codigo
-
-
-# ============================================================
-# GERENCIAMENTO DE MOVIMENTAÇÕES
-# ============================================================
-
-def listar_movimentacoes():
-    return historico_movimentacoes
-
-def registrar_movimentacao(nadador, quantidade, acao):
-    """Adiciona uma retirada ou devolução ao histórico."""
-    global proximo_id_movimentacao
-
-    historico_movimentacoes.append({
-        'ordem': proximo_id_movimentacao,
-        'codigo': nadador['codigo'],
-        'nome': nadador['nome'],
-        'toalha': quantidade,
-        'acao': acao,
-    })
-
-    proximo_id_movimentacao += 1
-
-
-def filtrar_movimentacoes_por_codigo(codigo):
-    """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
-    return [
-        item
-        for item in historico_movimentacoes
-        if item['codigo'] == codigo
-    ]
+    return codigo, erros
 
 
 def retirar_toalhas(nadador, quantidade, toalhas_disponiveis):
@@ -100,6 +88,34 @@ def filtrar_nadadores_com_toalhas():
 
 
 # ============================================================
+# GERENCIAMENTO DE MOVIMENTAÇÕES
+# ============================================================
+
+def listar_movimentacoes():
+    return historico_movimentacoes
+
+
+def registrar_movimentacao(nadador, quantidade, acao):
+    """Adiciona uma retirada ou devolução ao histórico."""
+    global proximo_id_movimentacao
+
+    historico_movimentacoes.append({
+        'ordem': proximo_id_movimentacao,
+        'codigo': nadador['codigo'],
+        'nome': nadador['nome'],
+        'toalha': quantidade,
+        'acao': acao,
+    })
+
+    proximo_id_movimentacao += 1
+
+
+def filtrar_movimentacoes_por_codigo(codigo):
+    """Retorna os registros do nadador, cada um com sua chave 'ordem'."""
+    return [item for item in historico_movimentacoes if item['codigo'] == codigo]
+
+
+# ============================================================
 # FUNÇÕES AUXILIARES
 # ============================================================
 
@@ -113,32 +129,29 @@ def solicitar_opcao_menu():
 
 
 def solicitar_codigo():
-    """Lê o código do nadador. Retorna None (com mensagem) se for inválido."""
+    """Lê o código do nadador. Levanta ValueError se for inválido."""
     codigo = input("Código: ").strip()
 
     if not codigo.isdecimal():
-        print("Código inválido. Digite um número inteiro positivo.\n")
-        return None
+        raise ValueError("Código inválido. Digite um número inteiro positivo.")
 
     codigo = int(codigo)
     if codigo <= 0:
-        print("O código deve ser maior que zero.\n")
-        return None
+        raise ValueError("O código deve ser maior que zero.")
+
     return codigo
 
 
 def solicitar_quantidade(mensagem):
-    """Lê uma quantidade de toalhas. Retorna None (com mensagem) se for inválida."""
+    """Lê uma quantidade de toalhas. Levanta ValueError se for inválida."""
     quantidade = input(mensagem).strip()
 
     if not quantidade.isdecimal():
-        print("Quantidade inválida. Digite um número inteiro positivo.\n")
-        return None
+        raise ValueError("Quantidade inválida. Digite um número inteiro positivo.")
 
     quantidade = int(quantidade)
     if quantidade <= 0:
-        print("Quantidade inválida. Digite um número maior que zero.\n")
-        return None
+        raise ValueError("A quantidade deve ser maior que zero.")
     return quantidade
 
 
@@ -185,58 +198,67 @@ def menu_nadadores():
         print("4 - Pesquisar nadador por nome")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== CADASTRO DE NADADOR =====\n")
-            nome = input("Nome: ").strip().title()
-            codigo = cadastro_nadador(nome)
+            if opcao == 1:
+                cabecalho("\n===== CADASTRO DE NADADOR =====\n")
+                nome = input("Nome: ").strip().title()
 
-            if codigo is None:
-                print("Dados inválidos! O nome não pode ser vazio.\n")
+                codigo, erros = cadastro_nadador(nome)
+
+                if codigo is None:
+                    for erro in erros:
+                        print(f"Erro: {erro}")
+                    print("")
+                else:
+                    print(f"\nNadador cadastrado com sucesso! Código: {codigo}\n")
+
+            elif opcao == 2:
+                print(f"\n{' NADADORES '.center(51, '=')}\n")
+
+                lista = listar_nadadores()
+
+                if lista:
+                    imprimir_tabela_nadadores(lista)
+                else:
+                    print("Nenhum nadador cadastrado.\n")
+
+            elif opcao == 3:
+                cabecalho("\n===== CONSULTAR NADADOR =====\n")
+                codigo = solicitar_codigo()
+
+                nadador = buscar_nadador_por_codigo(codigo)
+
+                if nadador:
+                    print("\nNadador encontrado:\n")
+                    imprimir_tabela_nadadores([nadador])
+                else:
+                    print("\nNadador não encontrado.\n")
+
+            elif opcao == 4:
+                cabecalho("\n===== PESQUISAR NADADOR =====\n")
+                consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
+
+                if consultar_nome == "":
+                    raise ValueError("Informe um nome para a busca.")
+
+                print("")
+
+                lista = buscar_nadador_por_nome(consultar_nome)
+                if lista:
+                    imprimir_tabela_nadadores(lista)
+                else:
+                    print("Nenhum nadador encontrado.\n")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                break
             else:
-                print(f"\nNadador cadastrado com sucesso! Código: {codigo}\n")
+                opcao_invalida()
 
-        elif opcao == 2:
-            print(f"\n{' NADADORES '.center(51, '=')}\n")
-
-            lista = listar_nadadores()
-
-            if lista:
-                    imprimir_tabela_nadadores(lista) 
-            else:
-                print("Nenhum nadador cadastrado.\n")
-
-        elif opcao == 3:
-            cabecalho("\n===== CONSULTAR NADADOR =====\n")
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
-
-            nadador = buscar_nadador_por_codigo(codigo)
-            
-            if nadador:
-                print("\nNadador encontrado:\n")
-                imprimir_tabela_nadadores([nadador])
-            else:
-                print("\nNadador não encontrado.\n")
-
-        elif opcao == 4:
-            cabecalho("\n===== PESQUISAR NADADOR =====\n")
-            consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
-            print("")
-
-            lista = buscar_nadador_por_nome(consultar_nome)
-            if lista:
-                imprimir_tabela_nadadores(lista)
-            else:
-                print("\nNenhum nadador encontrado.\n")
-
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            break
-        else:
-            opcao_invalida()
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -252,89 +274,85 @@ def menu_toalhas(toalhas_disponiveis):
         print("4 - Consultar toalhas disponíveis")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
+            if opcao == 1:
+                cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
 
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
+                codigo = solicitar_codigo()
 
-            nadador = buscar_nadador_por_codigo(codigo)
-            if nadador is None:
-                print(f"Código '{codigo}' não encontrado!\n")
-                continue
+                nadador = buscar_nadador_por_codigo(codigo)
+                if nadador is None:
+                    print(f"Código '{codigo}' não encontrado!\n")
+                    continue
 
-            quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
-            if quantidade is None:
-                continue
+                quantidade = solicitar_quantidade("Quantidade de toalhas a retirar: ")
 
-            sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
+                sucesso, toalhas_disponiveis = retirar_toalhas(nadador, quantidade, toalhas_disponiveis)
 
-            if sucesso:
-                print("\nRetirada registrada com sucesso!")
-                print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+                if sucesso:
+                    print("\nRetirada registrada com sucesso!")
+                    print(f"Retirada de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
 
-                registrar_movimentacao(nadador, quantidade, "Retirada")
-            else:
-                print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
+                    registrar_movimentacao(nadador, quantidade, "Retirada")
+                else:
+                    print(f"\nEstoque insuficiente para {quantidade} toalha(s).")
 
-            print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
-
-        elif opcao == 2:
-            cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
-
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
-
-            nadador = buscar_nadador_por_codigo(codigo)
-            if nadador is None:
-                print(f"Código '{codigo}' não encontrado!\n")
-                continue
-
-            if nadador['toalha'] == 0:
-                print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
-                continue
-
-            quantidade = solicitar_quantidade(
-                f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
-            )
-            if quantidade is None:
-                continue
-
-            sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
-
-            if sucesso:
-                print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
-                print("Devolução registrada com sucesso! Movimentação concluída.\n")
-
-                registrar_movimentacao(nadador, quantidade, "Devolução")
-            else:
-                print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
-
-        elif opcao == 3:
-            print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
-            com_toalhas = filtrar_nadadores_com_toalhas()
-
-            if com_toalhas:
-                imprimir_tabela_nadadores(com_toalhas)
                 print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+
+            elif opcao == 2:
+                cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+
+                codigo = solicitar_codigo()
+
+                nadador = buscar_nadador_por_codigo(codigo)
+                if nadador is None:
+                    print(f"Código '{codigo}' não encontrado!\n")
+                    continue
+
+                if nadador['toalha'] == 0:
+                    print(f"O nadador {nadador['nome']} (Código: {codigo}) não possui toalhas para devolver.\n")
+                    continue
+
+                quantidade = solicitar_quantidade(
+                    f"Nadador possui {nadador['toalha']} toalha(s). Quantas deseja devolver? "
+                )
+
+                sucesso, toalhas_disponiveis = devolver_toalhas(nadador, quantidade, toalhas_disponiveis)
+
+                if sucesso:
+                    print(f"\nDevolução de {quantidade} toalha(s) pelo nadador {nadador['nome']} (Código: {codigo})")
+                    print("Devolução registrada com sucesso! Movimentação concluída.\n")
+
+                    registrar_movimentacao(nadador, quantidade, "Devolução")
+                else:
+                    print(f"Erro: O nadador {nadador['nome']} possui apenas {nadador['toalha']} toalha(s).\n")
+
+            elif opcao == 3:
+                print("\n" + " TOALHAS EM USO ".center(51, '=') + "\n")
+                com_toalhas = filtrar_nadadores_com_toalhas()
+
+                if com_toalhas:
+                    imprimir_tabela_nadadores(com_toalhas)
+                    print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
+                else:
+                    print("Nenhum nadador está com toalhas no momento.\n")
+
+            elif opcao == 4:
+                print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
+                print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                # Devolve o valor final atualizado para quem chamou o menu_toalhas
+                return toalhas_disponiveis
+
             else:
-                print("Nenhum nadador está com toalhas no momento.\n")
+                opcao_invalida()
 
-        elif opcao == 4:
-            print("\n" + " ESTOQUE DE TOALHAS ".center(51, '=') + "\n")
-            print(f"Toalhas disponíveis: {toalhas_disponiveis} de {TOTAL_TOALHAS}\n")
-
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            # Devolve o valor final atualizado para quem chamou o menu_toalhas
-            return toalhas_disponiveis
-
-        else:
-            opcao_invalida()
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -348,45 +366,47 @@ def menu_movimentacoes():
         print("2 - Consultar movimentações do nadador")
         print("0 - Voltar")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            cabecalho("\n===== MOVIMENTAÇÕES =====")
-            
-            lista = listar_movimentacoes()
+            if opcao == 1:
+                cabecalho("\n===== MOVIMENTAÇÕES =====")
 
-            if not lista:
-                print("\nNenhuma movimentação registrada.\n")
-                continue
+                lista = listar_movimentacoes()
 
-            imprimir_cabecalho_movimentacoes()
-            for item in lista:
-                imprimir_movimentacao(item)
-            print("")
+                if not lista:
+                    print("\nNenhuma movimentação registrada.\n")
+                    continue
 
-        elif opcao == 2:
-            cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
+                imprimir_cabecalho_movimentacoes()
+                for item in lista:
+                    imprimir_movimentacao(item)
+                print("")
 
-            codigo = solicitar_codigo()
-            if codigo is None:
-                continue
+            elif opcao == 2:
+                cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
 
-            movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
+                codigo = solicitar_codigo()
 
-            if not movimentacoes:
-                print("\nNenhuma movimentação encontrada para esse código.\n")
-                continue
+                movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
 
-            imprimir_cabecalho_movimentacoes()
-            for item in movimentacoes:
-                imprimir_movimentacao(item)
-            print("")
-        
-        elif opcao == 0:
-            print("Voltando ao menu principal...\n")
-            break
-        else:
-            opcao_invalida()
+                if not movimentacoes:
+                    print("\nNenhuma movimentação encontrada para esse código.\n")
+                    continue
+
+                imprimir_cabecalho_movimentacoes()
+                for item in movimentacoes:
+                    imprimir_movimentacao(item)
+                print("")
+
+            elif opcao == 0:
+                print("Voltando ao menu principal...\n")
+                break
+            else:
+                opcao_invalida()
+
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
@@ -402,7 +422,7 @@ def menu_principal(toalhas_disponiveis):
         print("2 - Toalhas")
         print("3 - Movimentações")
         print("0 - Sair")
-        
+
         opcao = solicitar_opcao_menu()
 
         if opcao == 1:
@@ -421,5 +441,6 @@ def menu_principal(toalhas_disponiveis):
 # ============================================================
 # PROGRAMA PRINCIPAL
 # ============================================================
+
 
 menu_principal(toalhas_disponiveis)
