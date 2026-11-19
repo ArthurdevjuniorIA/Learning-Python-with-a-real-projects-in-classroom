@@ -17,8 +17,8 @@ toalhas_disponiveis = TOTAL_TOALHAS
 # ============================================================
 
 def validar_nome(nome):
-    """Retorna True se o nome tem apenas letras e espaços (e não é vazio)."""
-    return nome.replace(" ", "").isalpha()
+    """Retorna True se o nome não é vazio."""
+    return nome.strip() != ""
 
 
 # ============================================================
@@ -48,10 +48,8 @@ def cadastro_nadador(nome):
 
     erros = []
 
-    if nome == "":
+    if not validar_nome(nome):
         erros.append("O nome não pode ser vazio.")
-    elif not validar_nome(nome):
-        erros.append("O nome não pode ter caracteres especiais ou números.")
 
     if erros:
         return None, erros
