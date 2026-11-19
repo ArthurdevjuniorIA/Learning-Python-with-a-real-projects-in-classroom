@@ -159,10 +159,6 @@ def opcao_invalida():
     print("Opção inválida. Por favor, selecione um número do submenu.\n")
 
 
-def cabecalho(mensagem):
-    print(mensagem)
-
-
 def cabecalho_da_tabela(texto):
     print(texto)
     print('-' * 61)
@@ -202,7 +198,7 @@ def menu_nadadores():
             opcao = solicitar_opcao_menu()
 
             if opcao == 1:
-                cabecalho("\n===== CADASTRO DE NADADOR =====\n")
+                print("\n===== CADASTRO DE NADADOR =====\n")
                 nome = input("Nome: ").strip().title()
 
                 codigo, erros = cadastro_nadador(nome)
@@ -225,7 +221,7 @@ def menu_nadadores():
                     print("Nenhum nadador cadastrado.\n")
 
             elif opcao == 3:
-                cabecalho("\n===== CONSULTAR NADADOR =====\n")
+                print("\n===== CONSULTAR NADADOR =====\n")
                 codigo = solicitar_codigo()
 
                 nadador = buscar_nadador_por_codigo(codigo)
@@ -237,7 +233,7 @@ def menu_nadadores():
                     print("\nNadador não encontrado.\n")
 
             elif opcao == 4:
-                cabecalho("\n===== PESQUISAR NADADOR =====\n")
+                print("\n===== PESQUISAR NADADOR =====\n")
                 consultar_nome = input("Digite o nome ou parte do nome: ").strip().lower()
 
                 if consultar_nome == "":
@@ -278,7 +274,7 @@ def menu_toalhas(toalhas_disponiveis):
             opcao = solicitar_opcao_menu()
 
             if opcao == 1:
-                cabecalho("\n===== RETIRADA DE TOALHAS =====\n")
+                print("\n===== RETIRADA DE TOALHAS =====\n")
 
                 codigo = solicitar_codigo()
 
@@ -302,7 +298,7 @@ def menu_toalhas(toalhas_disponiveis):
                 print(f"Toalhas disponíveis no estoque: {toalhas_disponiveis}\n")
 
             elif opcao == 2:
-                cabecalho("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
+                print("\n===== DEVOLUÇÃO DE TOALHAS =====\n")
 
                 codigo = solicitar_codigo()
 
@@ -345,7 +341,6 @@ def menu_toalhas(toalhas_disponiveis):
 
             elif opcao == 0:
                 print("Voltando ao menu principal...\n")
-                # Devolve o valor final atualizado para quem chamou o menu_toalhas
                 return toalhas_disponiveis
 
             else:
@@ -370,7 +365,7 @@ def menu_movimentacoes():
             opcao = solicitar_opcao_menu()
 
             if opcao == 1:
-                cabecalho("\n===== MOVIMENTAÇÕES =====")
+                print("\n===== MOVIMENTAÇÕES =====")
 
                 lista = listar_movimentacoes()
 
@@ -384,7 +379,7 @@ def menu_movimentacoes():
                 print("")
 
             elif opcao == 2:
-                cabecalho("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
+                print("\n===== MOVIMENTAÇÕES DO NADADOR =====\n")
 
                 codigo = solicitar_codigo()
 
