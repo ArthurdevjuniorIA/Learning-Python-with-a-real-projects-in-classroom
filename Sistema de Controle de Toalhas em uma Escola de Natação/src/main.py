@@ -122,11 +122,12 @@ def filtrar_movimentacoes_por_codigo(codigo):
 # ============================================================
 
 def solicitar_opcao_menu():
-    """Lê a opção do menu. Retorna -1 se não for um número inteiro positivo."""
+    """Lê a opção do menu. Levanta ValueError se não for um número inteiro positivo."""
     opcao = input("\nEscolha uma opção: ").strip()
 
     if not opcao.isdecimal():
-        return -1
+        raise ValueError("Opção inválida. Digite um número inteiro positivo.")
+
     return int(opcao)
 
 
@@ -425,19 +426,23 @@ def menu_principal(toalhas_disponiveis):
         print("3 - Movimentações")
         print("0 - Sair")
 
-        opcao = solicitar_opcao_menu()
+        try:
+            opcao = solicitar_opcao_menu()
 
-        if opcao == 1:
-            menu_nadadores()
-        elif opcao == 2:
-            toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
-        elif opcao == 3:
-            menu_movimentacoes()
-        elif opcao == 0:
-            print("Saindo do sistema... Até logo!")
-            break
-        else:
-            opcao_invalida()
+            if opcao == 1:
+                menu_nadadores()
+            elif opcao == 2:
+                toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
+            elif opcao == 3:
+                menu_movimentacoes()
+            elif opcao == 0:
+                print("Saindo do sistema... Até logo!")
+                break
+            else:
+                opcao_invalida()
+
+        except ValueError as erro:
+            print(f"Erro: {erro}\n")
 
 
 # ============================================================
