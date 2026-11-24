@@ -17,8 +17,15 @@ toalhas_disponiveis = TOTAL_TOALHAS
 # ============================================================
 
 def validar_nome(nome):
-    """Retorna True se o nome não é vazio."""
-    return nome.strip() != ""
+    """Retorna a lista de erros do nome (lista vazia se o nome é válido)."""
+    erros = []
+
+    if nome.strip() == "":
+        erros.append("O nome não pode ser vazio.")
+    elif not nome.replace(" ", "").replace("-", "").replace("'", "").isalpha():
+        erros.append("O nome deve conter apenas letras, espaços, hífen ou apóstrofo.")
+
+    return erros
 
 
 # ============================================================
@@ -46,10 +53,7 @@ def cadastro_nadador(nome):
     """Cadastra um nadador. Retorna (codigo, erros). Se houver erros, codigo é None."""
     global proximo_id_nadador
 
-    erros = []
-
-    if not validar_nome(nome):
-        erros.append("O nome não pode ser vazio.")
+    erros = validar_nome(nome)
 
     if erros:
         return None, erros
@@ -381,10 +385,15 @@ def menu_movimentacoes():
 
                 codigo = solicitar_codigo()
 
+                nadador = buscar_nadador_por_codigo(codigo)
+                if nadador is None:
+                    print(f"\nCódigo '{codigo}' não encontrado!\n")
+                    continue
+
                 movimentacoes = filtrar_movimentacoes_por_codigo(codigo)
 
                 if not movimentacoes:
-                    print("\nNenhuma movimentação encontrada para esse código.\n")
+                    print(f"\nO nadador {nadador['nome']} ainda não possui movimentações.\n")
                     continue
 
                 imprimir_cabecalho_movimentacoes()
@@ -416,23 +425,19 @@ def menu_principal(toalhas_disponiveis):
         print("3 - Movimentações")
         print("0 - Sair")
 
-        try:
-            opcao = solicitar_opcao_menu()
+        opcao = solicitar_opcao_menu()
 
-            if opcao == 1:
-                menu_nadadores()
-            elif opcao == 2:
-                toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
-            elif opcao == 3:
-                menu_movimentacoes()
-            elif opcao == 0:
-                print("Saindo do sistema... Até logo!")
-                break
-            else:
-                opcao_invalida()
-
-        except ValueError as erro:
-            print(f"Erro: {erro}\n")
+        if opcao == 1:
+            menu_nadadores()
+        elif opcao == 2:
+            toalhas_disponiveis = menu_toalhas(toalhas_disponiveis)
+        elif opcao == 3:
+            menu_movimentacoes()
+        elif opcao == 0:
+            print("Saindo do sistema... Até logo!")
+            break
+        else:
+            opcao_invalida()
 
 
 # ============================================================
